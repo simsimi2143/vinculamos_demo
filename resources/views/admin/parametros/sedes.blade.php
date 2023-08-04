@@ -83,7 +83,7 @@
                                                         data-placement="top" title="Editar"><i class="fas fa-edit"></i></a>
                                                     <a href="javascript:void(0)" class="btn btn-icon btn-danger"
                                                         onclick="eliminarSede({{ $sede->sede_codigo }})"
-                                                        data-toggle="tooltip" data-placement="top" title="Eliminar sede"><i
+                                                        data-toggle="tooltip" data-placement="top" title="Eliminar"><i
                                                             class="fas fa-trash"></i></a>
                                                 </td>
                                             </tr>
@@ -103,7 +103,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalCrearsedesLabel">Crear Sede</h5>
+                    <h5 class="modal-title" id="modalCrearsedesLabel">Crear Campus</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -111,9 +111,8 @@
                 <div class="modal-body">
                     <form action="{{ route('admin.crear.sedes') }}" method="POST">
                         @csrf
-
                         <div class="form-group">
-                            <label>Nombre de la sede</label>
+                            <label>Nombre del Campus</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
@@ -127,6 +126,21 @@
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
+                        <div class="form-group">
+                            <label>Dirección del Campus</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control" id="sede_direccion" name="sede_direccion"
+                                    value="{{ old('sede_direccion') }}" autocomplete="off">
+                            </div>
+                            @error('sede_direccion')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
                         {{-- <div class="form-group">
                             <label>Descripción</label>
                             <div class="input-group">
@@ -137,7 +151,7 @@
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div> --}}
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label>Meta Estudiantes</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -167,7 +181,7 @@
                             @error('sede_meta_docentes')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
-                        </div>
+                        </div> --}}
                         {{-- <div class="form-group">
                             <label>Meta Socios</label>
                             <div class="input-group">
@@ -219,7 +233,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalEditarsedes-{{ $sede->sede_codigo }}">Editar Sede</h5>
+                        <h5 class="modal-title" id="modalEditarsedes-{{ $sede->sede_codigo }}">Editar Campus</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -230,7 +244,7 @@
                             @csrf
 
                             <div class="form-group">
-                                <label>Nombre de la sede</label>
+                                <label>Nombre de la Campus</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
@@ -241,13 +255,28 @@
                                         value="{{ $sede->sede_nombre }}" autocomplete="off">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label>Dirección del Campus</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="form-control" id="sede_direccion" name="sede_direccion"
+                                        value="{{ $sede->sede_direccion }}" autocomplete="off">
+                                </div>
+                                @error('sede_direccion')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
                             {{-- <div class="form-group">
                                 <label>Descripción</label>
                                 <div class="input-group">
                                     <textarea rows="6" class="form-control" id="sede_descripcion" name="sede_descripcion">{{ $sede->sede_descripcion }}</textarea>
                                 </div>
                             </div> --}}
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label>Meta Estudiantes</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -272,7 +301,7 @@
                                         name="sede_meta_docentes" value="{{ $sede->sede_meta_docentes }}"
                                         autocomplete="off">
                                 </div>
-                            </div>
+                            </div> --}}
                             {{-- <div class="form-group">
                                 <label>Meta Socios</label>
                                 <div class="input-group">
@@ -318,14 +347,14 @@
                     @method('DELETE')
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalEliminar">Eliminar sede</h5>
+                        <h5 class="modal-title" id="modalEliminar">Eliminar campus</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body text-center">
                         <i class="fas fa-ban text-danger" style="font-size: 50px; color"></i>
-                        <h6 class="mt-2">La sede dejará de existir dentro del sistema. <br> ¿Desea continuar de todos
+                        <h6 class="mt-2">El campus dejará de existir dentro del sistema. <br> ¿Desea continuar de todos
                             modos?</h6>
                         <input type="hidden" id="sedecodigo" name="sedecodigo" value="">
                     </div>

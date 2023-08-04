@@ -67,7 +67,7 @@ Route::middleware('verificar.admin')->group(function () {
     Route::post('admin/convenios/{conv_codigo}/actualizar', [ParametrosController::class, 'actualizarConvenios'])->name('admin.actualizar.convenios');
 
     //Sedes
-    Route::get('admin/listar-sedes', [ParametrosController::class, 'listarSedes'])->name('admin.listar.sedes');
+    Route::get('admin/listar-campus', [ParametrosController::class, 'listarSedes'])->name('admin.listar.sedes');
     Route::post('/admin/crear/sedes', [ParametrosController::class, 'crearSede'])->name('admin.crear.sedes');
     Route::delete('admin/eliminar-sedes', [ParametrosController::class, 'eliminarSedes'])->name('admin.eliminar.sedes');
     Route::get('admin/editar/sedes/{sede_codigo}', [ParametrosController::class, 'editarSedes'])->name('admin.editar.sedes');

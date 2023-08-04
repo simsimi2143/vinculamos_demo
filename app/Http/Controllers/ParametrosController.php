@@ -396,25 +396,26 @@ class ParametrosController extends Controller
         // Validar los datos enviados en el formulario
         $validatedData = $request->validate([
             'sede_nombre' => 'required|string',
-            'sede_meta_estudiantes' => 'required|numeric',
+            /* 'sede_meta_estudiantes' => 'required|numeric',
             'sede_meta_docentes' => 'required|numeric',
-            /* 'sede_meta_socios' => 'required|numeric',
+            'sede_meta_socios' => 'required|numeric',
             'sede_meta_iniciativas' => 'required|numeric', */
         ], [
             'sede_nombre.required' => 'El campo Nombre de la sede es requerido.',
-            'sede_meta_estudiantes.required' => 'El campo Estudiantes es requerido.',
+            /* 'sede_meta_estudiantes.required' => 'El campo Estudiantes es requerido.',
             'sede_meta_docentes.required' => 'El campo Docentes es requerido.',
-            /* 'sede_meta_socios.required' => 'El campo Socios es requerido.', */
-            /* 'sede_meta_iniciativas.required' => 'El campo Iniciativas es requerido.', */
+            'sede_meta_socios.required' => 'El campo Socios es requerido.',
+            'sede_meta_iniciativas.required' => 'El campo Iniciativas es requerido.',
             'sede_meta_estudiantes.numeric' => 'El campo Estudiantes debe ser numérico.',
             'sede_meta_docentes.numeric' => 'El campo Docentes debe ser numérico.',
-            /* 'sede_meta_socios.numeric' => 'El campo Socios debe ser numérico.',
+            'sede_meta_socios.numeric' => 'El campo Socios debe ser numérico.',
             'sede_meta_iniciativas.numeric' => 'El campo Iniciativas debe ser numérico.', */
         ]);
 
         // Crear una nueva instancia del modelo Sede
         $sede = new Sedes();
         $sede->sede_nombre = $request->input('sede_nombre');
+        $sede->sede_direccion = $request->input('sede_direccion');
         $sede->sede_descripcion = $request->input('sede_descripcion');
         $sede->sede_meta_estudiantes = $request->input('sede_meta_estudiantes');
         $sede->sede_meta_docentes = $request->input('sede_meta_docentes');
@@ -462,23 +463,24 @@ class ParametrosController extends Controller
         // Validar los datos enviados en el formulario
         $validatedData = $request->validate([
             'sede_nombre' => 'required|string',
-            'sede_meta_estudiantes' => 'required|numeric',
+            /* 'sede_meta_estudiantes' => 'required|numeric',
             'sede_meta_docentes' => 'required|numeric',
-            /* 'sede_meta_socios' => 'required|numeric',
-            'sede_meta_iniciativas' => 'required|numeric', */
+            'sede_meta_socios' => 'required|numeric',
+            'sede_meta_iniciativas' => 'required|numeric',  */
         ], [
             'sede_nombre.required' => 'El campo Nombre de la sede es requerido.',
-            'sede_meta_estudiantes.required' => 'El campo Estudiantes es requerido.',
+            /* 'sede_meta_estudiantes.required' => 'El campo Estudiantes es requerido.',
             'sede_meta_docentes.required' => 'El campo Docentes es requerido.',
-            /* 'sede_meta_socios.required' => 'El campo Socios es requerido.',
-            'sede_meta_iniciativas.required' => 'El campo Iniciativas es requerido.', */
+            'sede_meta_socios.required' => 'El campo Socios es requerido.',
+            'sede_meta_iniciativas.required' => 'El campo Iniciativas es requerido.',
             'sede_meta_estudiantes.numeric' => 'El campo Estudiantes debe ser numérico.',
             'sede_meta_docentes.numeric' => 'El campo Docentes debe ser numérico.',
-            /* 'sede_meta_socios.numeric' => 'El campo Socios debe ser numérico.',
+            'sede_meta_socios.numeric' => 'El campo Socios debe ser numérico.',
             'sede_meta_iniciativas.numeric' => 'El campo Iniciativas debe ser numérico.', */
         ]);
 
         $sede->sede_nombre = $request->input('sede_nombre');
+        $sede->sede_direccion = $request->input('sede_direccion');
         $sede->sede_descripcion = $request->input('sede_descripcion');
         $sede->sede_meta_estudiantes = $request->input('sede_meta_estudiantes');
         $sede->sede_meta_docentes = $request->input('sede_meta_docentes');
