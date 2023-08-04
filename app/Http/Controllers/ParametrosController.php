@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ambitos;
+use App\Models\AmbitosAccion;
 use App\Models\Carreras;
 use App\Models\Comuna;
 use App\Models\Convenios;
@@ -98,7 +99,7 @@ class ParametrosController extends Controller
         $ambito = Ambitos::find($amb_codigo);
         //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
         if (!$ambito) {
-            return redirect()->route('admin.listar.ambitos')->with('errorAmbito', 'El ámbito de contribución no se encuentra registrado en el sistema.')->withInput();;
+            return redirect()->route('admin.listar.ambitos')->with('errorAmbito', 'El impacto no se encuentra registrado en el sistema.')->withInput();;
         }
 
         $ambito->amb_nombre = $request->input('nombre');
@@ -110,9 +111,88 @@ class ParametrosController extends Controller
         // Guardar la actualización del programa en la base de datos
         $ambito->save();
 
-        return redirect()->back()->with('exitoAmbito', 'Ámbito de contribución actualizado exitosamente')->withInput();;
+        return redirect()->back()->with('exitoAmbito', 'Impacto actualizado exitosamente')->withInput();;
     }
 
+    //TODO: Ambito de acción
+    public function listarAmbitosAccion()
+    {
+        return view('admin.parametros.aaccion', [
+            'ambitos' => AmbitosAccion::orderBy('amb_codigo', 'asc')->get()
+        ]);
+    }
+
+    public function crearAmbitosAccion(Request $request)
+    {
+        $validacion = Validator::make($request->all(), [
+            'nombre' => 'required|max:100',
+        ], [
+            'nombre.required' => 'El nombre es requerido.',
+            'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+        ]);
+
+        if ($validacion->fails()) {
+            return redirect()->route('admin.listar.ambitosAccion')->withErrors($validacion)->withInput();
+        }
+
+        $ambito = new AmbitosAccion();
+        $ambito->amac_nombre = $request->input('nombre');
+        $ambito->amac_descripcion = $request->input('descripcion');
+        $ambito->amac_director = $request->input('director');
+        $ambito->amac_creado = now();
+        $ambito->amac_actualizado = now();
+
+        // Guardar el programa en la base de datos
+        $ambito->save();
+
+        return redirect()->back()->with('exitoAmbito', 'Ámbito de acción  creado exitosamente');
+    }
+
+    public function eliminarAmbitosAccion(Request $request)
+    {
+        $ambito = AmbitosAccion::where('amac_codigo', $request->amac_codigo)->first();
+
+        if (!$ambito) {
+            return redirect()->route('admin.listar.ambitosAccion')->with('errorAmbito', 'El ámbito de acción  no se encuentra registrado en el sistema.');
+        }
+
+        $ambito = AmbitosAccion::where('amac_codigo', $request->amac_codigo)->delete();
+
+        return redirect()->route('admin.listar.ambitosAccion')->with('exitoAmbito', 'El ámbito de acción  fue eliminado correctamente.');
+    }
+
+    public function actualizarAmbitosAccion(Request $request, $amac_codigo)
+    {
+        $validacion = Validator::make($request->all(), [
+            'nombre' => 'required|max:255',
+        ], [
+            'nombre.required' => 'El nombre es requerido.',
+            'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (255).',
+        ]);
+
+        if ($validacion->fails()) {
+            return redirect()->route('admin.listar.ambitosAccion')->withErrors($validacion)->withInput();
+        }
+
+        $ambito = AmbitosAccion::find($amac_codigo);
+        //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
+        if (!$ambito) {
+            return redirect()->route('admin.listar.ambitosAccion')->with('errorAmbito', 'El ámbito de acción no se encuentra registrado en el sistema.')->withInput();;
+        }
+
+        $ambito->amac_nombre = $request->input('nombre');
+        $ambito->amac_descripcion = $request->input('descripcion');
+        $ambito->amac_director = $request->input('director');
+        $ambito->amac_creado = now();
+        $ambito->amac_actualizado = now();
+
+        // Guardar la actualización del programa en la base de datos
+        $ambito->save();
+
+        return redirect()->back()->with('exitoAmbito', 'Ámbito de acción  actualizado exitosamente')->withInput();;
+    }
+
+    //TODO: Programas
     public function listarProgramas()
     {
         $programas = Programas::orderBy('prog_codigo', 'asc')->get();
