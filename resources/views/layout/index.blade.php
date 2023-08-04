@@ -26,7 +26,7 @@
         integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
     <link rel="stylesheet" href="{{ asset('public/css/mapa.css') }}" />
     {{-- <script src="{{asset('public/js/mapa.js')}}"></script> --}}
-    <link rel='shortcut icon' type='image/x-icon' href='{{ asset('public/img/aiep_chico.png') }}' />
+
     <link rel="stylesheet" href="{{ asset('public/css/leaflet.legend.css') }}" />
     <script src="{{ asset('public/js/leaflet.legend.js') }}"></script>
     <!-- componentes del formulario -->
@@ -37,7 +37,9 @@
     <link rel="stylesheet" href="{{ asset('public/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('public/css/components.css') }}">
     <link rel="stylesheet" href="{{ asset('public/css/custom.css') }}">
-    <link rel='shortcut icon' type='image/x-icon' href='{{ asset('public/img/aiep_chico.png') }}' />
+
+                                                                    {{-- TODO: IMAGEN DE LA PESTAÑA --}}
+    <link rel='shortcut icon' type='image/x-icon' href={{-- '{{ asset('public/img/aiep_chico.png') }}' --}} />
 
 </head>
 
@@ -61,7 +63,7 @@
                 </div>
                 <ul class="navbar-nav navbar-right" style="margin-top: 0px;">
                     <div class="sidebar-brand">
-                        <a href="javascript:void(0)"> <img alt="image" src="{{ asset('public/img/logoaiep.png') }}"
+                        <a href="javascript:void(0)"> <img alt="image" {{-- src="{{ asset('public/img/logoaiep.png') }}" --}} {{-- Logo esquina superior derecha --}}
                                 class="header-logo" style="transform: scale(0.4);transform-origin: right;position: fixed;
                                 top: -30px;
                                 right: 10px;" />

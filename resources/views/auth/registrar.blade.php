@@ -15,10 +15,10 @@
   <link rel="stylesheet" href="{{ asset('public/assets/css/components.css') }}">
   <!-- Custom style CSS -->
   <link rel="stylesheet" href="{{ asset('public/assets/css/custom.css') }}">
-  <link rel='shortcut icon' type='image/x-icon' href='{{ asset('public/img/aiep_chico.png') }}' />
+  <link rel='shortcut icon' type='image/x-icon' href={{-- '{{ asset('public/img/aiep_chico.png') }}' --}} />
 </head>
 
-<body style="background: url({{ asset('public/img/imagen1.jpg') }});background-size:cover; background-repeat:repeat;background-attachment: fixed;background-position: center;">
+<body style="background: /* url({{ asset('public/img/imagen1.jpg') }}) */;background-size:cover; background-repeat:repeat;background-attachment: fixed;background-position: center;">
   <div class="loader"></div>
   <div id="app">
     <section class="section">
@@ -54,7 +54,7 @@
                     </div>
                   </div>
                   </div>
-                  
+
                   <div class="row">
                     <div class="form-group col-6">
                       <label for="password" class="d-block">Password</label>

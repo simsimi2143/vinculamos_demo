@@ -13,7 +13,8 @@
     <!-- Custom style CSS -->
     <link rel="stylesheet" href="{{ asset('public/css/custom.css') }}">
     {{-- <link rel='shortcut icon' type='image/x-icon' href='{{ asset('public/img/camanchaca.png') }}' /> --}}
-    <link rel='shortcut icon' type='image/x-icon' href='{{ asset('public/img/aiep_chico.png') }}' />
+                                                                    {{-- TODO: IMAGEN DE LA PESTAÑA --}}
+    <link rel='shortcut icon' type='image/x-icon' href={{-- '{{ asset('public/img/aiep_chico.png') }}' --}} />
 </head>
 
 <body>
@@ -35,7 +36,7 @@
 
                 <ul class="navbar-nav navbar-right">
                     <div class="sidebar-brand">
-                        <a href="javascript:void(0)"> <img alt="image" src="{{ asset('public/img/logoaiep.png') }}"
+                        <a href="javascript:void(0)"> <img alt="image" src={{-- "{{ asset('public/img/logoaiep.png') }}" --}}
                                 class="header-logo" style="transform: scale(0.4);transform-origin: right;" />
                             <span class="logo-name" style="font-size: 15px;"></span>
                         </a>
