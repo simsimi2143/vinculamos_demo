@@ -66,7 +66,7 @@ class ParametrosController extends Controller
         // Guardar el programa en la base de datos
         $ambito->save();
 
-        return redirect()->back()->with('exitoAmbito', 'Ámbito de contribución creado exitosamente');
+        return redirect()->back()->with('exitoAmbito', 'Impacto creado exitosamente');
     }
 
     public function eliminarAmbitos(Request $request)
@@ -74,12 +74,12 @@ class ParametrosController extends Controller
         $ambito = Ambitos::where('amb_codigo', $request->amb_codigo)->first();
 
         if (!$ambito) {
-            return redirect()->route('admin.listar.ambitos')->with('errorAmbito', 'El ambito de contribución no se encuentra registrado en el sistema.');
+            return redirect()->route('admin.listar.ambitos')->with('errorAmbito', 'El impacto no se encuentra registrado en el sistema.');
         }
 
         $ambito = Ambitos::where('amb_codigo', $request->amb_codigo)->delete();
 
-        return redirect()->route('admin.listar.ambitos')->with('exitoAmbito', 'El ámbito de contribución fue eliminado correctamente.');
+        return redirect()->route('admin.listar.ambitos')->with('exitoAmbito', 'El impacto fue eliminado correctamente.');
     }
 
     public function actualizarAmbitos(Request $request, $amb_codigo)
@@ -401,7 +401,7 @@ class ParametrosController extends Controller
             'sede_meta_socios' => 'required|numeric',
             'sede_meta_iniciativas' => 'required|numeric', */
         ], [
-            'sede_nombre.required' => 'El campo Nombre de la sede es requerido.',
+            'sede_nombre.required' => 'El campo Nombre del campus es requerido.',
             /* 'sede_meta_estudiantes.required' => 'El campo Estudiantes es requerido.',
             'sede_meta_docentes.required' => 'El campo Docentes es requerido.',
             'sede_meta_socios.required' => 'El campo Socios es requerido.',
@@ -433,7 +433,7 @@ class ParametrosController extends Controller
         $sede->save();
 
         // Redireccionar o realizar alguna acción adicional si es necesario
-        return redirect()->back()->with('success', 'Sede creada exitosamente');
+        return redirect()->back()->with('success', 'Campus creado exitosamente');
     }
 
     public function eliminarSedes(Request $request)
@@ -441,7 +441,7 @@ class ParametrosController extends Controller
         $verificarDrop = Sedes::where('sede_codigo', $request->sedecodigo)->first();
 
         if (!$verificarDrop) {
-            return redirect()->route('admin.listar.sedes')->with('errorSede', 'La sede no se encuentra registrada en el sistema.');
+            return redirect()->route('admin.listar.sedes')->with('errorSede', 'El campus no se encuentra registrado en el sistema.');
         }
 
         $sededrop = Sedes::where('sede_codigo', $request->sedecodigo)->delete();
@@ -449,7 +449,7 @@ class ParametrosController extends Controller
             return redirect()->back()->with('errorSede', 'Ocurrió un error en el sistema.');
         }
 
-        return redirect()->route('admin.listar.sedes')->with('exitoSede', 'La sede fue eliminada correctamente.');
+        return redirect()->route('admin.listar.sedes')->with('exitoSede', 'El campus fue eliminado correctamente.');
     }
 
     public function actualizarSedes(Request $request, $sede_codigo)
@@ -457,7 +457,7 @@ class ParametrosController extends Controller
         $sede = Sedes::find($sede_codigo);
 
         if (!$sede) {
-            return redirect()->route('admin.listar.sedes')->with('errorSede', 'La sede no se encuentra registrada en el sistema.');
+            return redirect()->route('admin.listar.sedes')->with('errorSede', 'El campus no se encuentra registrado en el sistema.');
         }
 
         // Validar los datos enviados en el formulario
@@ -490,7 +490,7 @@ class ParametrosController extends Controller
         // Resto de la lógica para actualizar la sede
         $sede->save(); // Guardar los cambios en la base de datos
 
-        return redirect()->route('admin.listar.sedes')->with('exitoSede', 'La sede fue actualizada correctamente.');
+        return redirect()->route('admin.listar.sedes')->with('exitoSede', 'El campus fue actualizado correctamente.');
     }
 
     //TODO: Parametro Carreras

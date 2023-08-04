@@ -49,7 +49,7 @@ Route::middleware('verificar.admin')->group(function () {
     // TODO: inicio rutas para gestionar parametros
 
     //Ambito de COntribucion
-    Route::get('admin/listar-ambito', [ParametrosController::class, 'listarAmbitos'])->name('admin.listar.ambitos');
+    Route::get('admin/listar-impacto', [ParametrosController::class, 'listarAmbitos'])->name('admin.listar.ambitos');
     Route::delete('admin/eliminar-ambito/', [ParametrosController::class, 'eliminarAmbitos'])->name('admin.eliminar.ambitos');
     Route::put('admin/editar-ambito/{amb_codigo}', [ParametrosController::class, 'actualizarAmbitos'])->name('admin.actualizar.ambitos');
     Route::post('admin/crear-ambito/', [ParametrosController::class, 'crearAmbitos'])->name('admin.crear.ambitos');
