@@ -118,7 +118,7 @@ class ParametrosController extends Controller
     public function listarAmbitosAccion()
     {
         return view('admin.parametros.aaccion', [
-            'ambitos' => AmbitosAccion::orderBy('amb_codigo', 'asc')->get()
+            'ambitos' => AmbitosAccion::orderBy('amac_codigo', 'asc')->get()
         ]);
     }
 
