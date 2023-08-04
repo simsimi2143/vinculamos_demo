@@ -19,6 +19,7 @@ class Sedes extends Model
         'sede_codigo',
         'sede_nombre',
         'sede_descripcion',
+        'sede_direccion',
         'sede_meta_estudiantes',
         'sede_meta_docentes',
         'sede_meta_socios',
