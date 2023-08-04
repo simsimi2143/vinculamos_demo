@@ -103,28 +103,29 @@
                                         @endif
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6 col-md-6 col-lg-6">
+                                <div class="col-4 col-md-4 col-lg-4">
                                     <div class="form-group">
-                                        <label style="font-size: 110%">Pertinencia local</label> <label for=""
+                                        <label style="font-size: 110%">Descripción</label> <label for=""
                                             style="color: red;">*</label>
                                         <div class="input-group">
-                                            <textarea class="formbold-form-input" id="pertinencial" name="pertinencial" rows="5" style="width: 100%;">{{ old('pertinencial') ?? @$iniciativa->inic_pertinencia_local }}</textarea>
+                                            <textarea class="formbold-form-input" id="descripcion" name="descripcion" rows="2" style="width: 100%;">{{ old('descripcion') ?? @$iniciativa->inic_descripcion }}</textarea>
                                         </div>
-                                        @if ($errors->has('pertinencial'))
+                                        @if ($errors->has('descripcion'))
                                             <div class="alert alert-warning alert-dismissible show fade mt-2">
                                                 <div class="alert-body">
                                                     <button class="close"
                                                         data-dismiss="alert"><span>&times;</span></button>
-                                                    <strong>{{ $errors->first('pertinencial') }}</strong>
+                                                    <strong>{{ $errors->first('descripcion') }}</strong>
                                                 </div>
                                             </div>
                                         @endif
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row">
 
-                                <div class="col-6 col-md-6 col-lg-6">
+
+                                {{-- <div class="col-6 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label style="font-size: 110%">Pertinencia disciplinar</label> <label for=""
                                             style="color: red;">*</label>
@@ -141,7 +142,7 @@
                                             </div>
                                         @endif
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
 
                             <div class="row">
