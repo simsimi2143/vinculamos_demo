@@ -43,10 +43,10 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h4>Listado de Sedes</h4>
+                            <h4>Listado de Campus</h4>
                             <div class="card-header-action">
                                 <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#modalCrearsedes"><i class="fas fa-plus"></i> Añadir nueva sede </button>
+                                    data-target="#modalCrearsedes"><i class="fas fa-plus"></i> Añadir nuevo campus </button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -56,6 +56,7 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Nombre</th>
+                                            <th>Dirección</th>
                                             {{-- <th>Descipción</th> --}}
                                             {{-- <th>Director</th> --}}
                                             <th>Acciones</th>
@@ -73,6 +74,7 @@
                                             <tr>
                                                 <td>{{ $contadorSedes }}</td>
                                                 <td>{{ $sede->sede_nombre }}</td>
+                                                <td>{{ $sede->sede_direccion }}</td>
                                                 {{-- <td>{{ $sede->sede_descripcion }}</td> --}}
                                                 {{-- <td>{{ $sede->sede_director }}</td> --}}
                                                 <td>
