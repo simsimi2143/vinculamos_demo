@@ -147,7 +147,7 @@
                             <div class="row">
                                 <div class="col-6 col-md-6 col-lg-6">
                                     <div class="form-group">
-                                        <label style="font-size: 110%">Sede</label> <label for=""
+                                        <label style="font-size: 110%">Campus</label> <label for=""
                                             style="color: red;">*</label><input type="checkbox" id="selectAllSedes"
                                             style="margin-left: 60%"> <label for="selectAllSedes">Todas</label>
                                         <select class="form-control select2" multiple="" id="sedes" name="sedes[]"

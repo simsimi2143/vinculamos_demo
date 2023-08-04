@@ -43,7 +43,7 @@
 
                                             <th>Nombre</th>
                                             <th>Mecanismo</th>
-                                            <th>Sedes</th>
+                                            <th>Campus</th>
                                             <th>Escuelas</th>
                                             <th>Estado</th>
                                             <th>Acciones</th>
