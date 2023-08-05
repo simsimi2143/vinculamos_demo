@@ -7,6 +7,10 @@ use App\Http\Controllers\ParametrosController;
 use App\Http\Controllers\IniciativasController;
 use App\Http\Controllers\UsuariosController;
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,6 +31,22 @@ Route::post('ingresar', [AutenticationController::class, 'validarIngreso'])->nam
 Route::get('salir', [AutenticationController::class, 'cerrarSesion'])->name('auth.cerrar');
 Route::get('registrarSuperadmin', [AutenticationController::class, 'registrarSuperadmin'])->name('registrarsuperadmin.formulario');
 Route::post('registrarSuperadmin', [AutenticationController::class, 'guardarSuperadmin'])->name('auth.registrar.superadmin');
+
+
+
+// Reset password routes
+// Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+// Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+// Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+// Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+
+Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post'); 
+Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
+
+
 
 Route::middleware('verificar.superadmin')->group(function () {
     // inicio rutas para gestionar usuarios
@@ -49,16 +69,10 @@ Route::middleware('verificar.admin')->group(function () {
     // TODO: inicio rutas para gestionar parametros
 
     //Ambito de COntribucion
-    Route::get('admin/listar-impacto', [ParametrosController::class, 'listarAmbitos'])->name('admin.listar.ambitos');
+    Route::get('admin/listar-ambito', [ParametrosController::class, 'listarAmbitos'])->name('admin.listar.ambitos');
     Route::delete('admin/eliminar-ambito/', [ParametrosController::class, 'eliminarAmbitos'])->name('admin.eliminar.ambitos');
     Route::put('admin/editar-ambito/{amb_codigo}', [ParametrosController::class, 'actualizarAmbitos'])->name('admin.actualizar.ambitos');
     Route::post('admin/crear-ambito/', [ParametrosController::class, 'crearAmbitos'])->name('admin.crear.ambitos');
-
-    //Ambito de Acción
-    Route::get('admin/listar-ambitosaccion', [ParametrosController::class, 'listarAmbitosAccion'])->name('admin.listar.ambitosaccion');
-    Route::delete('admin/eliminar-ambitosaccion/', [ParametrosController::class, 'eliminarAmbitosAccion'])->name('admin.eliminar.ambitosaccion');
-    Route::put('admin/editar-ambitosaccion/{amb_codigo}', [ParametrosController::class, 'actualizarAmbitosAccion'])->name('admin.actualizar.ambitosaccion');
-    Route::post('admin/crear-ambitosaccion/', [ParametrosController::class, 'crearAmbitosAccion'])->name('admin.crear.ambitosaccion');
 
     //Programas
     Route::get('admin/listar-programas', [ParametrosController::class, 'listarProgramas'])->name('admin.listar.programas');
@@ -73,7 +87,7 @@ Route::middleware('verificar.admin')->group(function () {
     Route::post('admin/convenios/{conv_codigo}/actualizar', [ParametrosController::class, 'actualizarConvenios'])->name('admin.actualizar.convenios');
 
     //Sedes
-    Route::get('admin/listar-campus', [ParametrosController::class, 'listarSedes'])->name('admin.listar.sedes');
+    Route::get('admin/listar-sedes', [ParametrosController::class, 'listarSedes'])->name('admin.listar.sedes');
     Route::post('/admin/crear/sedes', [ParametrosController::class, 'crearSede'])->name('admin.crear.sedes');
     Route::delete('admin/eliminar-sedes', [ParametrosController::class, 'eliminarSedes'])->name('admin.eliminar.sedes');
     Route::get('admin/editar/sedes/{sede_codigo}', [ParametrosController::class, 'editarSedes'])->name('admin.editar.sedes');

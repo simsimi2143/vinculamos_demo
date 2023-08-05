@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>VINCULAMOS LOS LEONES</title>
+    <title>VINCULAMOS AIEP</title>
     <!-- General CSS Files -->
     <link href="{{ asset('public/css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('public/css/social.css') }}" rel="stylesheet">
@@ -39,7 +39,7 @@
     <link rel="stylesheet" href="{{ asset('public/css/custom.css') }}">
 
                                                                     {{-- TODO: IMAGEN DE LA PESTAÑA --}}
-    <link rel='shortcut icon' type='image/x-icon' href='{{ asset('public/img/logo_chico.png') }}' />
+    <link rel='shortcut icon' type='image/x-icon' href={{-- '{{ asset('public/img/aiep_chico.png') }}' --}} />
 
 </head>
 
@@ -63,9 +63,9 @@
                 </div>
                 <ul class="navbar-nav navbar-right" style="margin-top: 0px;">
                     <div class="sidebar-brand">
-                        <a href="javascript:void(0)"> <img alt="image" src="{{ asset('public/img/logoleones.png') }}" {{-- Logo esquina superior derecha --}}
-                                class="header-logo" style="transform: scale(0.3);transform-origin: right;position: fixed;
-                                top: -65px;
+                        <a href="javascript:void(0)"> <img alt="image" {{-- src="{{ asset('public/img/logoaiep.png') }}" --}} {{-- Logo esquina superior derecha --}}
+                                class="header-logo" style="transform: scale(0.4);transform-origin: right;position: fixed;
+                                top: -30px;
                                 right: 10px;" />
                             <span class="logo-name" style="font-size: 15px;"></span>
                         </a>

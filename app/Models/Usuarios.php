@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Notifications\Notifiable;
+use App\Notifications\ResetPasswordNotification;
 
-class Usuarios extends Model
+class Usuarios extends Model implements CanResetPassword
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $table = 'usuarios';
 
@@ -26,4 +29,19 @@ class Usuarios extends Model
         'usua_vigente',
         'usua_usuario_mod'
     ];
+
+    public function getAuthPassword()
+    {
+        return $this->usua_clave;
+    }
+
+    public function getEmailForPasswordReset()
+    {
+        return $this->usua_email;
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
+    }
 }

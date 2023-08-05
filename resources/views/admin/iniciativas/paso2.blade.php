@@ -172,7 +172,7 @@
                             <div class="row">
                                 <div class="col-2 div-col-md-2 col-lg-2">
                                     <div class="form-group">
-                                        <label style="font-size: 110%">Campus</label> <label for="" style="color: red;">*</label>
+                                        <label style="font-size: 110%">Sede</label> <label for="" style="color: red;">*</label>
                                         <select class="form-control select2" id="sedes" name="sedes" style="width: 100%">
                                             <option value="" selected disabled>Seleccione...</option>
                                             @forelse ($sedes as $sede)

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ambitos;
-use App\Models\AmbitosAccion;
 use App\Models\Carreras;
 use App\Models\Comuna;
 use App\Models\Convenios;
@@ -67,7 +66,7 @@ class ParametrosController extends Controller
         // Guardar el programa en la base de datos
         $ambito->save();
 
-        return redirect()->back()->with('exitoAmbito', 'Impacto creado exitosamente');
+        return redirect()->back()->with('exitoAmbito', 'Ámbito de contribución creado exitosamente');
     }
 
     public function eliminarAmbitos(Request $request)
@@ -75,12 +74,12 @@ class ParametrosController extends Controller
         $ambito = Ambitos::where('amb_codigo', $request->amb_codigo)->first();
 
         if (!$ambito) {
-            return redirect()->route('admin.listar.ambitos')->with('errorAmbito', 'El impacto no se encuentra registrado en el sistema.');
+            return redirect()->route('admin.listar.ambitos')->with('errorAmbito', 'El ambito de contribución no se encuentra registrado en el sistema.');
         }
 
         $ambito = Ambitos::where('amb_codigo', $request->amb_codigo)->delete();
 
-        return redirect()->route('admin.listar.ambitos')->with('exitoAmbito', 'El impacto fue eliminado correctamente.');
+        return redirect()->route('admin.listar.ambitos')->with('exitoAmbito', 'El ámbito de contribución fue eliminado correctamente.');
     }
 
     public function actualizarAmbitos(Request $request, $amb_codigo)
@@ -99,7 +98,7 @@ class ParametrosController extends Controller
         $ambito = Ambitos::find($amb_codigo);
         //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
         if (!$ambito) {
-            return redirect()->route('admin.listar.ambitos')->with('errorAmbito', 'El impacto no se encuentra registrado en el sistema.')->withInput();;
+            return redirect()->route('admin.listar.ambitos')->with('errorAmbito', 'El ámbito de contribución no se encuentra registrado en el sistema.')->withInput();;
         }
 
         $ambito->amb_nombre = $request->input('nombre');
@@ -111,88 +110,9 @@ class ParametrosController extends Controller
         // Guardar la actualización del programa en la base de datos
         $ambito->save();
 
-        return redirect()->back()->with('exitoAmbito', 'Impacto actualizado exitosamente')->withInput();;
+        return redirect()->back()->with('exitoAmbito', 'Ámbito de contribución actualizado exitosamente')->withInput();;
     }
 
-    //TODO: Ambito de acción
-    public function listarAmbitosAccion()
-    {
-        return view('admin.parametros.aaccion', [
-            'ambitos' => AmbitosAccion::orderBy('amac_codigo', 'asc')->get()
-        ]);
-    }
-
-    public function crearAmbitosAccion(Request $request)
-    {
-        $validacion = Validator::make($request->all(), [
-            'nombre' => 'required|max:100',
-        ], [
-            'nombre.required' => 'El nombre es requerido.',
-            'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
-        ]);
-
-        if ($validacion->fails()) {
-            return redirect()->route('admin.listar.ambitosAccion')->withErrors($validacion)->withInput();
-        }
-
-        $ambito = new AmbitosAccion();
-        $ambito->amac_nombre = $request->input('nombre');
-        $ambito->amac_descripcion = $request->input('descripcion');
-        $ambito->amac_director = $request->input('director');
-        $ambito->amac_creado = now();
-        $ambito->amac_actualizado = now();
-
-        // Guardar el programa en la base de datos
-        $ambito->save();
-
-        return redirect()->back()->with('exitoAmbito', 'Ámbito de acción  creado exitosamente');
-    }
-
-    public function eliminarAmbitosAccion(Request $request)
-    {
-        $ambito = AmbitosAccion::where('amac_codigo', $request->amac_codigo)->first();
-
-        if (!$ambito) {
-            return redirect()->route('admin.listar.ambitosAccion')->with('errorAmbito', 'El ámbito de acción  no se encuentra registrado en el sistema.');
-        }
-
-        $ambito = AmbitosAccion::where('amac_codigo', $request->amac_codigo)->delete();
-
-        return redirect()->route('admin.listar.ambitosAccion')->with('exitoAmbito', 'El ámbito de acción  fue eliminado correctamente.');
-    }
-
-    public function actualizarAmbitosAccion(Request $request, $amac_codigo)
-    {
-        $validacion = Validator::make($request->all(), [
-            'nombre' => 'required|max:255',
-        ], [
-            'nombre.required' => 'El nombre es requerido.',
-            'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (255).',
-        ]);
-
-        if ($validacion->fails()) {
-            return redirect()->route('admin.listar.ambitosAccion')->withErrors($validacion)->withInput();
-        }
-
-        $ambito = AmbitosAccion::find($amac_codigo);
-        //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
-        if (!$ambito) {
-            return redirect()->route('admin.listar.ambitosAccion')->with('errorAmbito', 'El ámbito de acción no se encuentra registrado en el sistema.')->withInput();;
-        }
-
-        $ambito->amac_nombre = $request->input('nombre');
-        $ambito->amac_descripcion = $request->input('descripcion');
-        $ambito->amac_director = $request->input('director');
-        $ambito->amac_creado = now();
-        $ambito->amac_actualizado = now();
-
-        // Guardar la actualización del programa en la base de datos
-        $ambito->save();
-
-        return redirect()->back()->with('exitoAmbito', 'Ámbito de acción  actualizado exitosamente')->withInput();;
-    }
-
-    //TODO: Programas
     public function listarProgramas()
     {
         $programas = Programas::orderBy('prog_codigo', 'asc')->get();
@@ -476,26 +396,25 @@ class ParametrosController extends Controller
         // Validar los datos enviados en el formulario
         $validatedData = $request->validate([
             'sede_nombre' => 'required|string',
-            /* 'sede_meta_estudiantes' => 'required|numeric',
+            'sede_meta_estudiantes' => 'required|numeric',
             'sede_meta_docentes' => 'required|numeric',
-            'sede_meta_socios' => 'required|numeric',
+            /* 'sede_meta_socios' => 'required|numeric',
             'sede_meta_iniciativas' => 'required|numeric', */
         ], [
-            'sede_nombre.required' => 'El campo Nombre del campus es requerido.',
-            /* 'sede_meta_estudiantes.required' => 'El campo Estudiantes es requerido.',
+            'sede_nombre.required' => 'El campo Nombre de la sede es requerido.',
+            'sede_meta_estudiantes.required' => 'El campo Estudiantes es requerido.',
             'sede_meta_docentes.required' => 'El campo Docentes es requerido.',
-            'sede_meta_socios.required' => 'El campo Socios es requerido.',
-            'sede_meta_iniciativas.required' => 'El campo Iniciativas es requerido.',
+            /* 'sede_meta_socios.required' => 'El campo Socios es requerido.', */
+            /* 'sede_meta_iniciativas.required' => 'El campo Iniciativas es requerido.', */
             'sede_meta_estudiantes.numeric' => 'El campo Estudiantes debe ser numérico.',
             'sede_meta_docentes.numeric' => 'El campo Docentes debe ser numérico.',
-            'sede_meta_socios.numeric' => 'El campo Socios debe ser numérico.',
+            /* 'sede_meta_socios.numeric' => 'El campo Socios debe ser numérico.',
             'sede_meta_iniciativas.numeric' => 'El campo Iniciativas debe ser numérico.', */
         ]);
 
         // Crear una nueva instancia del modelo Sede
         $sede = new Sedes();
         $sede->sede_nombre = $request->input('sede_nombre');
-        $sede->sede_direccion = $request->input('sede_direccion');
         $sede->sede_descripcion = $request->input('sede_descripcion');
         $sede->sede_meta_estudiantes = $request->input('sede_meta_estudiantes');
         $sede->sede_meta_docentes = $request->input('sede_meta_docentes');
@@ -513,7 +432,7 @@ class ParametrosController extends Controller
         $sede->save();
 
         // Redireccionar o realizar alguna acción adicional si es necesario
-        return redirect()->back()->with('success', 'Campus creado exitosamente');
+        return redirect()->back()->with('success', 'Sede creada exitosamente');
     }
 
     public function eliminarSedes(Request $request)
@@ -521,7 +440,7 @@ class ParametrosController extends Controller
         $verificarDrop = Sedes::where('sede_codigo', $request->sedecodigo)->first();
 
         if (!$verificarDrop) {
-            return redirect()->route('admin.listar.sedes')->with('errorSede', 'El campus no se encuentra registrado en el sistema.');
+            return redirect()->route('admin.listar.sedes')->with('errorSede', 'La sede no se encuentra registrada en el sistema.');
         }
 
         $sededrop = Sedes::where('sede_codigo', $request->sedecodigo)->delete();
@@ -529,7 +448,7 @@ class ParametrosController extends Controller
             return redirect()->back()->with('errorSede', 'Ocurrió un error en el sistema.');
         }
 
-        return redirect()->route('admin.listar.sedes')->with('exitoSede', 'El campus fue eliminado correctamente.');
+        return redirect()->route('admin.listar.sedes')->with('exitoSede', 'La sede fue eliminada correctamente.');
     }
 
     public function actualizarSedes(Request $request, $sede_codigo)
@@ -537,30 +456,29 @@ class ParametrosController extends Controller
         $sede = Sedes::find($sede_codigo);
 
         if (!$sede) {
-            return redirect()->route('admin.listar.sedes')->with('errorSede', 'El campus no se encuentra registrado en el sistema.');
+            return redirect()->route('admin.listar.sedes')->with('errorSede', 'La sede no se encuentra registrada en el sistema.');
         }
 
         // Validar los datos enviados en el formulario
         $validatedData = $request->validate([
             'sede_nombre' => 'required|string',
-            /* 'sede_meta_estudiantes' => 'required|numeric',
+            'sede_meta_estudiantes' => 'required|numeric',
             'sede_meta_docentes' => 'required|numeric',
-            'sede_meta_socios' => 'required|numeric',
-            'sede_meta_iniciativas' => 'required|numeric',  */
+            /* 'sede_meta_socios' => 'required|numeric',
+            'sede_meta_iniciativas' => 'required|numeric', */
         ], [
             'sede_nombre.required' => 'El campo Nombre de la sede es requerido.',
-            /* 'sede_meta_estudiantes.required' => 'El campo Estudiantes es requerido.',
+            'sede_meta_estudiantes.required' => 'El campo Estudiantes es requerido.',
             'sede_meta_docentes.required' => 'El campo Docentes es requerido.',
-            'sede_meta_socios.required' => 'El campo Socios es requerido.',
-            'sede_meta_iniciativas.required' => 'El campo Iniciativas es requerido.',
+            /* 'sede_meta_socios.required' => 'El campo Socios es requerido.',
+            'sede_meta_iniciativas.required' => 'El campo Iniciativas es requerido.', */
             'sede_meta_estudiantes.numeric' => 'El campo Estudiantes debe ser numérico.',
             'sede_meta_docentes.numeric' => 'El campo Docentes debe ser numérico.',
-            'sede_meta_socios.numeric' => 'El campo Socios debe ser numérico.',
+            /* 'sede_meta_socios.numeric' => 'El campo Socios debe ser numérico.',
             'sede_meta_iniciativas.numeric' => 'El campo Iniciativas debe ser numérico.', */
         ]);
 
         $sede->sede_nombre = $request->input('sede_nombre');
-        $sede->sede_direccion = $request->input('sede_direccion');
         $sede->sede_descripcion = $request->input('sede_descripcion');
         $sede->sede_meta_estudiantes = $request->input('sede_meta_estudiantes');
         $sede->sede_meta_docentes = $request->input('sede_meta_docentes');
@@ -570,7 +488,7 @@ class ParametrosController extends Controller
         // Resto de la lógica para actualizar la sede
         $sede->save(); // Guardar los cambios en la base de datos
 
-        return redirect()->route('admin.listar.sedes')->with('exitoSede', 'El campus fue actualizado correctamente.');
+        return redirect()->route('admin.listar.sedes')->with('exitoSede', 'La sede fue actualizada correctamente.');
     }
 
     //TODO: Parametro Carreras
