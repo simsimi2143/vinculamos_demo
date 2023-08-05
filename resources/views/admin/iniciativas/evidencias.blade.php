@@ -174,5 +174,5 @@
         </div>
     </div>
 
-    <script src="{{ asset('public/js/admin/iniciativas/evidencias.js') }}"></script>
+    <script src="{{ asset('/js/admin/iniciativas/evidencias.js') }}"></script>
 @endsection

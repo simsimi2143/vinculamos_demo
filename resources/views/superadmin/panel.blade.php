@@ -6,15 +6,15 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>Panel Superadministrador AIEP</title>
     <!-- General CSS Files -->
-    <link rel="stylesheet" href="{{ asset('public/css/app.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/app.min.css') }}">
     <!-- Template CSS -->
-    <link rel="stylesheet" href="{{ asset('public/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('public/css/components.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/components.css') }}">
     <!-- Custom style CSS -->
-    <link rel="stylesheet" href="{{ asset('public/css/custom.css') }}">
-    {{-- <link rel='shortcut icon' type='image/x-icon' href='{{ asset('public/img/camanchaca.png') }}' /> --}}
+    <link rel="stylesheet" href="{{ asset('/css/custom.css') }}">
+    {{-- <link rel='shortcut icon' type='image/x-icon' href='{{ asset('/img/camanchaca.png') }}' /> --}}
                                                                     {{-- TODO: IMAGEN DE LA PESTAÑA --}}
-    <link rel='shortcut icon' type='image/x-icon' href={{-- '{{ asset('public/img/aiep_chico.png') }}' --}} />
+    <link rel='shortcut icon' type='image/x-icon' href={{-- '{{ asset('/img/aiep_chico.png') }}' --}} />
 </head>
 
 <body>
@@ -36,7 +36,7 @@
 
                 <ul class="navbar-nav navbar-right">
                     <div class="sidebar-brand">
-                        <a href="javascript:void(0)"> <img alt="image" src={{-- "{{ asset('public/img/logoaiep.png') }}" --}}
+                        <a href="javascript:void(0)"> <img alt="image" src={{-- "{{ asset('/img/logoaiep.png') }}" --}}
                                 class="header-logo" style="transform: scale(0.4);transform-origin: right;" />
                             <span class="logo-name" style="font-size: 15px;"></span>
                         </a>
@@ -116,15 +116,15 @@
         </div>
     </div>
     <!-- General JS Scripts -->
-    <script src="{{ asset('public/js/app.min.js') }}"></script>
+    <script src="{{ asset('/js/app.min.js') }}"></script>
     <!-- JS Libraies -->
-    <!--<script src="{{ asset('public/bundles/apexcharts/apexcharts.min.js') }}"></script>-->
+    <!--<script src="{{ asset('/bundles/apexcharts/apexcharts.min.js') }}"></script>-->
     <!-- Page Specific JS File -->
-    <!--<script src="{{ asset('public/js/page/index.js') }}"></script>-->
+    <!--<script src="{{ asset('/js/page/index.js') }}"></script>-->
     <!-- Template JS File -->
-    <script src="{{ asset('public/js/scripts.js') }}"></script>
+    <script src="{{ asset('/js/scripts.js') }}"></script>
     <!-- Custom JS File -->
-    <script src="{{ asset('public/js/custom.js') }}"></script>
+    <script src="{{ asset('/js/custom.js') }}"></script>
 </body>
 
 

@@ -8,17 +8,17 @@
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
   <title>Registrar nuevo registro</title>
   <!-- General CSS Files -->
-  <link rel="stylesheet" href="{{ asset('public/assets/css/app.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('public/assets/bundles/jquery-selectric/selectric.css') }}">
+  <link rel="stylesheet" href="{{ asset('/assets/css/app.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('/assets/bundles/jquery-selectric/selectric.css') }}">
   <!-- Template CSS -->
-  <link rel="stylesheet" href="{{ asset('public/assets/css/style.css') }}">
-  <link rel="stylesheet" href="{{ asset('public/assets/css/components.css') }}">
+  <link rel="stylesheet" href="{{ asset('/assets/css/style.css') }}">
+  <link rel="stylesheet" href="{{ asset('/assets/css/components.css') }}">
   <!-- Custom style CSS -->
-  <link rel="stylesheet" href="{{ asset('public/assets/css/custom.css') }}">
-  <link rel='shortcut icon' type='image/x-icon' href={{-- '{{ asset('public/img/aiep_chico.png') }}' --}} />
+  <link rel="stylesheet" href="{{ asset('/assets/css/custom.css') }}">
+  <link rel='shortcut icon' type='image/x-icon' href={{-- '{{ asset('/img/aiep_chico.png') }}' --}} />
 </head>
 
-<body style="background: /* url({{ asset('public/img/imagen1.jpg') }}) */;background-size:cover; background-repeat:repeat;background-attachment: fixed;background-position: center;">
+<body style="background: /* url({{ asset('/img/imagen1.jpg') }}) */;background-size:cover; background-repeat:repeat;background-attachment: fixed;background-position: center;">
   <div class="loader"></div>
   <div id="app">
     <section class="section">
@@ -87,16 +87,16 @@
     </section>
   </div>
   <!-- General JS Scripts -->
-  <script src="{{ asset('public/assets/js/app.min.js') }}"></script>
+  <script src="{{ asset('/assets/js/app.min.js') }}"></script>
   <!-- JS Libraies -->
-  <script src="{{ asset('public/assets/bundles/jquery-pwstrength/jquery.pwstrength.min.js') }}"></script>
-  <script src="{{ asset('public/assets/bundles/jquery-selectric/jquery.selectric.min.js') }}"></script>
+  <script src="{{ asset('/assets/bundles/jquery-pwstrength/jquery.pwstrength.min.js') }}"></script>
+  <script src="{{ asset('/assets/bundles/jquery-selectric/jquery.selectric.min.js') }}"></script>
   <!-- Page Specific JS File -->
-  <script src="{{ asset('public/assets/js/page/auth-register.js') }}"></script>
+  <script src="{{ asset('/assets/js/page/auth-register.js') }}"></script>
   <!-- Template JS File -->
-  <script src="{{ asset('public/assets/js/scripts.js') }}"></script>
+  <script src="{{ asset('/assets/js/scripts.js') }}"></script>
   <!-- Custom JS File -->
-  <script src="{{ asset('public/assets/js/custom.js') }}"></script>
+  <script src="{{ asset('/assets/js/custom.js') }}"></script>
 </body>
 
 

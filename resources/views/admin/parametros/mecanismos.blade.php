@@ -263,13 +263,13 @@
     </script>
 
 
-    {{-- <link rel="stylesheet" href="{{ asset('public/bundles/datatables/datatables.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('/bundles/datatables/datatables.min.css') }}">
     <link rel="stylesheet"
-        href="{{ asset('public/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css') }}">
+        href="{{ asset('/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css') }}">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <script src="{{ asset('public/bundles/datatables/datatables.min.js') }}"></script>
-    <script src="{{ asset('public/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('public/bundles/jquery-ui/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('public/js/page/datatables.js') }}"></script> --}}
+    <script src="{{ asset('/bundles/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('/bundles/jquery-ui/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('/js/page/datatables.js') }}"></script> --}}
 @endsection

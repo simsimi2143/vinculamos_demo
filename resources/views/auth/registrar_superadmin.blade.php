@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>Registro Superadministrador Viculamos AIEP</title>
-    <link rel="stylesheet" href="{{ asset('public/css/app.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('public/bundles/jquery-selectric/selectric.css') }}">
-    <link rel="stylesheet" href="{{ asset('public/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('public/css/components.css') }}">
-    <link rel="stylesheet" href="{{ asset('public/css/custom.css') }}">
-    {{-- <link rel='shortcut icon' type='image/x-icon' href='{{ asset('public/img/camanchaca.png') }}' /> --}}
+    <link rel="stylesheet" href="{{ asset('/css/app.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/bundles/jquery-selectric/selectric.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/components.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/custom.css') }}">
+    {{-- <link rel='shortcut icon' type='image/x-icon' href='{{ asset('/img/camanchaca.png') }}' /> --}}
 </head>
 
 <body class="light light-sidebar theme-white sidebar-gone">
@@ -131,12 +131,12 @@
         </section>
     </div>
 
-    <script src="{{ asset('public/js/app.min.js') }}"></script>
-    <script src="{{ asset('public/bundles/jquery-pwstrength/jquery.pwstrength.min.js') }}"></script>
-    <script src="{{ asset('public/bundles/jquery-selectric/jquery.selectric.min.js') }}"></script>
-    <script src="{{ asset('public/js/page/auth-register.js') }}"></script>
-    <script src="{{ asset('public/js/scripts.js') }}"></script>
-    <script src="{{ asset('public/js/custom.js') }}"></script>
+    <script src="{{ asset('/js/app.min.js') }}"></script>
+    <script src="{{ asset('/bundles/jquery-pwstrength/jquery.pwstrength.min.js') }}"></script>
+    <script src="{{ asset('/bundles/jquery-selectric/jquery.selectric.min.js') }}"></script>
+    <script src="{{ asset('/js/page/auth-register.js') }}"></script>
+    <script src="{{ asset('/js/scripts.js') }}"></script>
+    <script src="{{ asset('/js/custom.js') }}"></script>
 </body>
 
 </html>

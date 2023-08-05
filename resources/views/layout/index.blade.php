@@ -10,36 +10,36 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>VINCULAMOS AIEP</title>
     <!-- General CSS Files -->
-    <link href="{{ asset('public/css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('public/css/social.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/social.css') }}" rel="stylesheet">
     <!-- Select2 CSS -->
-    <link rel="stylesheet" href="{{ asset('public/bundles/select2/dist/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/bundles/select2/dist/css/select2.min.css') }}">
     <!-- Template CSS -->
-    <link href="{{ asset('public/css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('public/css/components.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/components.css') }}" rel="stylesheet">
     <!-- Custom style CSS -->
-    <link href="{{ asset('public/css/custom.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/custom.css') }}" rel="stylesheet">
     <link rel='shortcut icon' type='image/x-icon' href='assets/img/favicon.ico' />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
         integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
-    <link rel="stylesheet" href="{{ asset('public/css/mapa.css') }}" />
-    {{-- <script src="{{asset('public/js/mapa.js')}}"></script> --}}
+    <link rel="stylesheet" href="{{ asset('/css/mapa.css') }}" />
+    {{-- <script src="{{asset('/js/mapa.js')}}"></script> --}}
 
-    <link rel="stylesheet" href="{{ asset('public/css/leaflet.legend.css') }}" />
-    <script src="{{ asset('public/js/leaflet.legend.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('/css/leaflet.legend.css') }}" />
+    <script src="{{ asset('/js/leaflet.legend.js') }}"></script>
     <!-- componentes del formulario -->
-    <link rel="stylesheet" href="{{ asset('public/css/app.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('public/bundles/jquery-selectric/selectric.css') }}">
-    <link rel="stylesheet" href="{{ asset('public/bundles/izitoast/css/iziToast.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('public/bundles/pretty-checkbox/pretty-checkbox.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('public/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('public/css/components.css') }}">
-    <link rel="stylesheet" href="{{ asset('public/css/custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/app.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/bundles/jquery-selectric/selectric.css') }}">
+    <link rel="stylesheet" href="{{ asset('/bundles/izitoast/css/iziToast.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/bundles/pretty-checkbox/pretty-checkbox.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/components.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/custom.css') }}">
 
                                                                     {{-- TODO: IMAGEN DE LA PESTAÑA --}}
-    <link rel='shortcut icon' type='image/x-icon' href={{-- '{{ asset('public/img/aiep_chico.png') }}' --}} />
+    <link rel='shortcut icon' type='image/x-icon' href={{-- '{{ asset('/img/aiep_chico.png') }}' --}} />
 
 </head>
 
@@ -63,7 +63,7 @@
                 </div>
                 <ul class="navbar-nav navbar-right" style="margin-top: 0px;">
                     <div class="sidebar-brand">
-                        <a href="javascript:void(0)"> <img alt="image" {{-- src="{{ asset('public/img/logoaiep.png') }}" --}} {{-- Logo esquina superior derecha --}}
+                        <a href="javascript:void(0)"> <img alt="image" {{-- src="{{ asset('/img/logoaiep.png') }}" --}} {{-- Logo esquina superior derecha --}}
                                 class="header-logo" style="transform: scale(0.4);transform-origin: right;position: fixed;
                                 top: -30px;
                                 right: 10px;" />
@@ -129,41 +129,41 @@
     <script>
 
     </script>
-    <link rel="stylesheet" href="{{ asset('public/bundles/datatables/datatables.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('public/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/bundles/datatables/datatables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <script src="{{ asset('public/bundles/datatables/datatables.min.js') }}"></script>
-    <script src="{{ asset('public/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('public/bundles/jquery-ui/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('public/js/page/datatables.js') }}"></script>
+    <script src="{{ asset('/bundles/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('/bundles/jquery-ui/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('/js/page/datatables.js') }}"></script>
     <!-- General JS Scripts -->
-    <script src="{{ asset('public/js/app.min.js') }}"></script>
+    <script src="{{ asset('/js/app.min.js') }}"></script>
     <!-- JS Libraies -->
-    <script src="{{ asset('public/js/chart.min.js') }}"></script>
+    <script src="{{ asset('/js/chart.min.js') }}"></script>
     <!-- Page Specific JS File -->
-    {{-- <script src="{{ asset('public//js/chart-chartjs.js') }}"></script> --}}
-    <script src="{{ asset('public/bundles/select2/dist/js/select2.full.min.js') }}"></script>
-    <script src="{{ asset('public/bundles/izitoast/js/iziToast.min.js') }}"></script>
-    <script src="{{ asset('public/js/page/toastr.js') }}"></script>
+    {{-- <script src="{{ asset('//js/chart-chartjs.js') }}"></script> --}}
+    <script src="{{ asset('/bundles/select2/dist/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('/bundles/izitoast/js/iziToast.min.js') }}"></script>
+    <script src="{{ asset('/js/page/toastr.js') }}"></script>
     <!-- Template JS File -->
-    <script src="{{ asset('public/js/scripts.js') }}"></script>
+    <script src="{{ asset('/js/scripts.js') }}"></script>
     <!-- Custom JS File -->
-    <script src="{{ asset('public/js/custom.js') }}"></script>
-    {{-- <script src="{{ asset('public/js/index.js') }}"></script> --}}
+    <script src="{{ asset('/js/custom.js') }}"></script>
+    {{-- <script src="{{ asset('/js/index.js') }}"></script> --}}
     {{-- <!-- General JS Scripts -->
-            <script src="{{ asset('public/js/app.min.js') }}"></script>
+            <script src="{{ asset('/js/app.min.js') }}"></script>
             <!-- JS Libraies -->
-            <script src="{{ asset('public/js/apex.min.js') }}"></script>
+            <script src="{{ asset('/js/apex.min.js') }}"></script>
             <!-- Page Specific JS File -->
-            <script src="{{ asset('public/js/index.js') }}"></script>
+            <script src="{{ asset('/js/index.js') }}"></script>
             <!-- Template JS File -->
-            <script src="{{ asset('public/js/scripts.js') }}"></script>
+            <script src="{{ asset('/js/scripts.js') }}"></script>
             <!-- Custom JS File -->
-            <script src="{{ asset('public/js/custom.js') }}"></script> --}}
+            <script src="{{ asset('/js/custom.js') }}"></script> --}}
 
-    <script src="{{ asset('public/bundles/jquery-pwstrength/jquery.pwstrength.min.js') }}"></script>
-    <script src="{{ asset('public/bundles/jquery-selectric/jquery.selectric.min.js') }}"></script>
-    <script src="{{ asset('public/js/page/auth-register.js') }}"></script>
+    <script src="{{ asset('/bundles/jquery-pwstrength/jquery.pwstrength.min.js') }}"></script>
+    <script src="{{ asset('/bundles/jquery-selectric/jquery.selectric.min.js') }}"></script>
+    <script src="{{ asset('/js/page/auth-register.js') }}"></script>
 
 </body>
 
