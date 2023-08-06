@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ambitos;
+use App\Models\AmbitosAccion;
 use App\Models\Carreras;
 use App\Models\Comuna;
 use App\Models\Convenios;
@@ -66,7 +67,7 @@ class ParametrosController extends Controller
         // Guardar el programa en la base de datos
         $ambito->save();
 
-        return redirect()->back()->with('exitoAmbito', 'Ámbito de contribución creado exitosamente');
+        return redirect()->back()->with('exitoAmbito', 'Impacto creado exitosamente');
     }
 
     public function eliminarAmbitos(Request $request)
@@ -74,12 +75,12 @@ class ParametrosController extends Controller
         $ambito = Ambitos::where('amb_codigo', $request->amb_codigo)->first();
 
         if (!$ambito) {
-            return redirect()->route('admin.listar.ambitos')->with('errorAmbito', 'El ambito de contribución no se encuentra registrado en el sistema.');
+            return redirect()->route('admin.listar.ambitos')->with('errorAmbito', 'El impacto no se encuentra registrado en el sistema.');
         }
 
         $ambito = Ambitos::where('amb_codigo', $request->amb_codigo)->delete();
 
-        return redirect()->route('admin.listar.ambitos')->with('exitoAmbito', 'El ámbito de contribución fue eliminado correctamente.');
+        return redirect()->route('admin.listar.ambitos')->with('exitoAmbito', 'El impacto fue eliminado correctamente.');
     }
 
     public function actualizarAmbitos(Request $request, $amb_codigo)
@@ -98,7 +99,7 @@ class ParametrosController extends Controller
         $ambito = Ambitos::find($amb_codigo);
         //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
         if (!$ambito) {
-            return redirect()->route('admin.listar.ambitos')->with('errorAmbito', 'El ámbito de contribución no se encuentra registrado en el sistema.')->withInput();;
+            return redirect()->route('admin.listar.ambitos')->with('errorAmbito', 'El impacto no se encuentra registrado en el sistema.')->withInput();;
         }
 
         $ambito->amb_nombre = $request->input('nombre');
@@ -110,9 +111,88 @@ class ParametrosController extends Controller
         // Guardar la actualización del programa en la base de datos
         $ambito->save();
 
-        return redirect()->back()->with('exitoAmbito', 'Ámbito de contribución actualizado exitosamente')->withInput();;
+        return redirect()->back()->with('exitoAmbito', 'Impacto actualizado exitosamente')->withInput();;
     }
 
+    //TODO: Ambito de acción
+    public function listarAmbitosAccion()
+    {
+        return view('admin.parametros.aaccion', [
+            'ambitos' => AmbitosAccion::orderBy('amac_codigo', 'asc')->get()
+        ]);
+    }
+
+    public function crearAmbitosAccion(Request $request)
+    {
+        $validacion = Validator::make($request->all(), [
+            'nombre_aa' => 'required|max:100',
+        ], [
+            'nombre_aa.required' => 'El nombre es requerido.',
+            'nombre_aa.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+        ]);
+
+        if ($validacion->fails()) {
+            return redirect()->route('admin.listar.ambitosaccion')->withErrors($validacion)->withInput();
+        }
+
+        $ambito = new AmbitosAccion();
+        $ambito->amac_nombre = $request->input('nombre_aa');
+        $ambito->amac_descripcion = $request->input('descripcion_aa');
+        $ambito->amac_director = $request->input('director_aa');
+        $ambito->amac_creado = now();
+        $ambito->amac_actualizado = now();
+
+        // Guardar el programa en la base de datos
+        $ambito->save();
+
+        return redirect()->back()->with('exitoAmbito', 'Ámbito de acción creado exitosamente');
+    }
+
+    public function eliminarAmbitosAccion(Request $request)
+    {
+        $ambito = AmbitosAccion::where('amac_codigo', $request->amac_codigo)->first();
+
+        if (!$ambito) {
+            return redirect()->route('admin.listar.ambitosaccion')->with('errorAmbito', 'El ámbito de acción  no se encuentra registrado en el sistema.');
+        }
+
+        $ambito = AmbitosAccion::where('amac_codigo', $request->amac_codigo)->delete();
+
+        return redirect()->route('admin.listar.ambitosaccion')->with('exitoAmbito', 'El ámbito de acción  fue eliminado correctamente.');
+    }
+
+    public function actualizarAmbitosAccion(Request $request, $amac_codigo)
+    {
+        $validacion = Validator::make($request->all(), [
+            'nombre_aa' => 'required|max:255',
+        ], [
+            'nombre_aa.required' => 'El nombre es requerido.',
+            'nombre_aa.max' => 'El nombre excede el máximo de caracteres permitidos (255).',
+        ]);
+
+        if ($validacion->fails()) {
+            return redirect()->route('admin.listar.ambitosaccion')->withErrors($validacion)->withInput();
+        }
+
+        $ambito = AmbitosAccion::find($amac_codigo);
+        //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
+        if (!$ambito) {
+            return redirect()->route('admin.listar.ambitosaccion')->with('errorAmbito', 'El ámbito de acción no se encuentra registrado en el sistema.')->withInput();;
+        }
+
+        $ambito->amac_nombre = $request->input('nombre_aa');
+        $ambito->amac_descripcion = $request->input('descripcion_aa');
+        $ambito->amac_director = $request->input('director_aa');
+        $ambito->amac_creado = now();
+        $ambito->amac_actualizado = now();
+
+        // Guardar la actualización del programa en la base de datos
+        $ambito->save();
+
+        return redirect()->back()->with('exitoAmbito', 'Ámbito de acción  actualizado exitosamente')->withInput();;
+    }
+
+    //TODO: Programas
     public function listarProgramas()
     {
         $programas = Programas::orderBy('prog_codigo', 'asc')->get();
@@ -440,7 +520,7 @@ class ParametrosController extends Controller
         $verificarDrop = Sedes::where('sede_codigo', $request->sedecodigo)->first();
 
         if (!$verificarDrop) {
-            return redirect()->route('admin.listar.sedes')->with('errorSede', 'La sede no se encuentra registrada en el sistema.');
+            return redirect()->route('admin.listar.sedes')->with('errorSede', 'El campus no se encuentra registrado en el sistema.');
         }
 
         $sededrop = Sedes::where('sede_codigo', $request->sedecodigo)->delete();
@@ -448,7 +528,7 @@ class ParametrosController extends Controller
             return redirect()->back()->with('errorSede', 'Ocurrió un error en el sistema.');
         }
 
-        return redirect()->route('admin.listar.sedes')->with('exitoSede', 'La sede fue eliminada correctamente.');
+        return redirect()->route('admin.listar.sedes')->with('exitoSede', 'El campus fue eliminado correctamente.');
     }
 
     public function actualizarSedes(Request $request, $sede_codigo)
@@ -456,7 +536,7 @@ class ParametrosController extends Controller
         $sede = Sedes::find($sede_codigo);
 
         if (!$sede) {
-            return redirect()->route('admin.listar.sedes')->with('errorSede', 'La sede no se encuentra registrada en el sistema.');
+            return redirect()->route('admin.listar.sedes')->with('errorSede', 'El campus no se encuentra registrado en el sistema.');
         }
 
         // Validar los datos enviados en el formulario
@@ -488,7 +568,7 @@ class ParametrosController extends Controller
         // Resto de la lógica para actualizar la sede
         $sede->save(); // Guardar los cambios en la base de datos
 
-        return redirect()->route('admin.listar.sedes')->with('exitoSede', 'La sede fue actualizada correctamente.');
+        return redirect()->route('admin.listar.sedes')->with('exitoSede', 'El campus fue actualizado correctamente.');
     }
 
     //TODO: Parametro Carreras
@@ -502,7 +582,6 @@ class ParametrosController extends Controller
             'escuelas' => $escuelas
         ]);
     }
-
 
     public function eliminarCarreras(Request $request)
     {

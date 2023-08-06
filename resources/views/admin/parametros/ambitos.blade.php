@@ -35,11 +35,10 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h4>Listado de ámbitos de contribución</h4>
+                            <h4>Listado de impactos</h4>
                             <div class="card-header-action">
                                 <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#modalCrearAmbito"><i class="fas fa-plus"></i> Nuevo ambito de
-                                    contribución</button>
+                                    data-target="#modalCrearAmbito"><i class="fas fa-plus"></i> Nuevo impacto</button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -126,7 +125,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalEditarAmbito">Editar ámbito de contribución</h5>
+                        <h5 class="modal-title" id="modalEditarAmbito">Editar impacto</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -137,7 +136,7 @@
                             @csrf
 
                             <div class="form-group">
-                                <label>Nombre del ámbito de contribución</label>
+                                <label>Nombre del impacto</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
@@ -149,14 +148,14 @@
                                 </div>
                             </div>
                             {{-- <div class="form-group">
-                                <label>Descripción del ámbito de contribución</label>
+                                <label>Descripción del impacto</label>
                                 <div class="input-group">
                                     <textarea rows="6" class="formbold-form-input" id="descripcion" name="descripcion" autocomplete="off"
                                         style="width:100%">{{ $ambi->amb_descripcion }}</textarea>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Director/a del ámbito de contribución</label>
+                                <label>Director/a del impacto</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
@@ -183,7 +182,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="formModal">Nuevo ámbito de contribución</h5>
+                    <h5 class="modal-title" id="formModal">Nuevo impacto</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -192,7 +191,7 @@
                     <form action="{{ route('admin.crear.ambitos') }} " method="POST">
                         @csrf
                         <div class="form-group">
-                            <label>Nombre del ámbito de contribución</label>
+                            <label>Nombre del impacto</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
@@ -213,7 +212,7 @@
                             </div>
                         </div>
                         {{-- <div class="form-group">
-                            <label>Descripción del ámbito de contribución</label>
+                            <label>Descripción del impacto</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                 </div>
@@ -231,7 +230,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Director/a del ámbito de contribución</label>
+                            <label>Director/a del impacto</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
@@ -268,14 +267,14 @@
                     @method('DELETE')
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalEliminar">Eliminar Ámbito de contribución</h5>
+                        <h5 class="modal-title" id="modalEliminar">Eliminar impacto</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body text-center">
                         <i class="fas fa-ban text-danger" style="font-size: 50px; color"></i>
-                        <h6 class="mt-2">El ámbito de contribución dejará de existir dentro del sistema. <br> ¿Desea continuar de todos
+                        <h6 class="mt-2">El impacto dejará de existir dentro del sistema. <br> ¿Desea continuar de todos
                             modos?</h6>
                         <input type="hidden" id="amb_codigo" name="amb_codigo" value="">
                     </div>

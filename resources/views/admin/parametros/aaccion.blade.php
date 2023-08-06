@@ -111,14 +111,14 @@
                                             <i class="fas fa-pen-nib"></i>
                                         </div>
                                     </div>
-                                    <input type="text" class="form-control" id="nombre" name="nombre"
+                                    <input type="text" class="form-control" id="nombre_aa" name="nombre_aa"
                                         value="{{ $ambi->amb_nombre }}" autocomplete="off">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>Descripción del ámbito de acción</label>
                                 <div class="input-group">
-                                    <textarea rows="6" class="formbold-form-input" id="descripcion" name="descripcion" autocomplete="off"
+                                    <textarea rows="6" class="formbold-form-input" id="descripcion_aa" name="descripcion_aa" autocomplete="off"
                                         style="width:100%">{{ $ambi->amb_descripcion }}</textarea>
                                 </div>
                             </div>
@@ -130,7 +130,7 @@
                                             <i class="fas fa-pen-nib"></i>
                                         </div>
                                     </div>
-                                    <input type="text" class="form-control" id="director" name="director"
+                                    <input type="text" class="form-control" id="director_aa" name="director_aa"
                                         value="{{ $ambi->amb_director }}" autocomplete="off">
                                 </div>
                             </div>
@@ -166,14 +166,14 @@
                                         <i class="fas fa-pen-nib"></i>
                                     </div>
                                 </div>
-                                <input type="text" class="form-control" id="nombre" name="nombre"
+                                <input type="text" class="form-control" id="nombre_aa" name="nombre_aa"
                                     placeholder="" autocomplete="off">
-                                @if ($errors->has('nombre'))
+                                @if ($errors->has('nombre_aa'))
                                     <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
                                         style="width:100%">
                                         <div class="alert-body">
                                             <button class="close" data-dismiss="alert"><span>&times;</span></button>
-                                            <strong>{{ $errors->first('nombre') }}</strong>
+                                            <strong>{{ $errors->first('nombre_aa') }}</strong>
                                         </div>
                                     </div>
                                 @endif
@@ -184,14 +184,14 @@
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                 </div>
-                                <textarea rows="6" class="formbold-form-input" id="descripcion" name="descripcion"
-                                    autocomplete="off" style="width:100%">{{ old('descripcion') }}</textarea>
-                                @if ($errors->has('descripcion'))
+                                <textarea rows="6" class="formbold-form-input" id="descripcion_aa" name="descripcion_aa"
+                                    autocomplete="off" style="width:100%">{{ old('descripcion_aa') }}</textarea>
+                                @if ($errors->has('descripcion_aa'))
                                     <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
                                         style="width:100%">
                                         <div class="alert-body">
                                             <button class="close" data-dismiss="alert"><span>&times;</span></button>
-                                            <strong>{{ $errors->first('descripcion') }}</strong>
+                                            <strong>{{ $errors->first('descripcion_aa') }}</strong>
                                         </div>
                                     </div>
                                 @endif
@@ -205,14 +205,14 @@
                                         <i class="fas fa-user-tie"></i>
                                     </div>
                                 </div>
-                                <input type="text" class="form-control" id="director" name="director"
+                                <input type="text" class="form-control" id="director_aa" name="director_aa"
                                     placeholder="" autocomplete="off">
-                                @if ($errors->has('director'))
+                                @if ($errors->has('director_aa'))
                                     <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
                                         style="width:100%">
                                         <div class="alert-body">
                                             <button class="close" data-dismiss="alert"><span>&times;</span></button>
-                                            <strong>{{ $errors->first('director') }}</strong>
+                                            <strong>{{ $errors->first('director_aa') }}</strong>
                                         </div>
                                     </div>
                                 @endif
