@@ -9,18 +9,22 @@
                 <i data-feather="home" id="saludo"></i><span>Inicio</span></a>
         </li>
         <li class="dropdown">
-            <a href="#" class="menu-toggle nav-link has-dropdown"><i
-                    data-feather="book-open"></i><span>Iniciativas</span></a>
+            <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="book-open"></i><span>Iniciativas</span></a>
             <ul class="dropdown-menu">
                 <li><a style="font-size: 90%;" class="nav-link" href="{{route('admin.iniciativa.listar')}}">Registro de iniciativas</a></li>
                 <li><a style="font-size: 90%;" class="nav-link" href="{{route('admin.inicitiativas.crear.primero')}}">Crear iniciativa</a></li>
             </ul>
         </li>
         <li class="dropdown">
-        <a href="javascript:void(0)" class="menu-toggle nav-link has-dropdown"><i data-feather="users"></i><span>Usuarios</span></a>
-        <ul class="dropdown-menu">
-            <li><a style="font-size: 90%;" class="nav-link" href="{{route("admin.listar.usuarios")}}">Listado de usuarios</a></li>
-        </ul>
+            <a href="#" class="menu-toggle nav-link has-dropdown"><i
+                    data-feather="clipboard"></i><span>Bitácora</span></a>
+            <ul class="dropdown-menu">
+                <li><a style="font-size: 90%;" class="nav-link" href={{-- "{{route('admin.bitacoras.listar.actividades')}}" --}}>Listar actividades</a></li>
+                <li><a style="font-size: 90%;" class="nav-link" href={{-- "{{route('admin.bitacoras.ingresar.actividades')}}" --}}>Ingresar actividades</a></li>
+                <li><a style="font-size: 90%;" class="nav-link" href={{-- "{{route('admin.bitacoras.listar.donaciones')}}" --}}>Listar donación</a></li>
+                <li><a style="font-size: 90%;" class="nav-link" href={{-- "{{route('admin.bitacoras.ingresar.donaciones')}}" --}}>Ingresar donación</a></li>
+            </ul>
+        </li>
         <li class="dropdown">
             <a href="#" class="menu-toggle nav-link has-dropdown"><i
                     data-feather="command"></i><span>Parámetros</span></a>
@@ -55,6 +59,12 @@
         <li class="dropdown">
             <a href="#" class="menu-toggle nav-link has-dropdown"><i
                     data-feather="arrow-left-circle"></i><span>Extracción de datos</span></a>
+        </li>
+        <li class="dropdown">
+            <a href="javascript:void(0)" class="menu-toggle nav-link has-dropdown"><i data-feather="users"></i><span>Usuarios</span></a>
+            <ul class="dropdown-menu">
+                <li><a style="font-size: 90%;" class="nav-link" href="{{route("admin.listar.usuarios")}}">Listado de usuarios</a></li>
+            </ul>
         </li>
 
 @endsection

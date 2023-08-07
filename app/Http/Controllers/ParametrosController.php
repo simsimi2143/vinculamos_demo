@@ -199,9 +199,10 @@ class ParametrosController extends Controller
     public function listarProgramas()
     {
         $programas = Programas::orderBy('prog_codigo', 'asc')->get();
-        $tipos = TipoIniciativa::orderBy('tmec_codigo', 'asc')->get();
+        $tipos = AmbitosAccion::orderBy('amac_codigo', 'asc')->get();
+        $mecanismos = Mecanismos::orderBy('meca_codigo', 'asc')->get();
 
-        return view('admin.parametros.programs', compact('programas', 'tipos'));
+        return view('admin.parametros.programs', compact('programas', 'tipos', 'mecanismos'));
     }
 
     public function crearProgramas(Request $request)
@@ -212,14 +213,20 @@ class ParametrosController extends Controller
             'tipo' => 'required',
             'meta_socios' => 'required',
             'meta_iniciativas' => 'required',
+            'meta_estudiantes' => 'required',
+            'meta_docentes' => 'required',
+            'meta_beneficiarios' => 'required',
         ], [
             'nombre.required' => 'El nombre es requerido.',
             'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (255).',
             /* 'director.required' => 'El nombre del director es requerido.',
             'director.max' => 'El nombre del director excede el máximo de caracteres permitidos (100).', */
-            'tipo.required' => 'Seleccione un tipo de iniciativa.',
+            'tipo.required' => 'Seleccione un ámbito de acción.',
             'meta_socios.required' => 'Una meta de socios es necesaria.',
-            'meta_iniciativas.required' => 'Una iniciativas de socios es necesaria.',
+            'meta_iniciativas.required' => 'Una meta de iniciativas de socios es necesaria.',
+            'meta_estudiantes.required' => 'Una meta de estudiantes de socios es necesaria.',
+            'meta_docentes.required' => 'Una meta de docentes de socios es necesaria.',
+            'meta_beneficiarios.required' => 'Una meta de beneficiarios de socios es necesaria.',
         ]);
 
         if ($validacion->fails()) {
@@ -232,7 +239,10 @@ class ParametrosController extends Controller
         $programa->prog_director = $request->input('director');
         $programa->prog_meta_socios = $request->input('meta_socios');
         $programa->prog_meta_iniciativas = $request->input('meta_iniciativas');
-        $programa->tmec_codigo = $request->input('tipo');
+        $programa->prog_meta_estudiantes = $request->input('meta_estudiantes');
+        $programa->prog_meta_docentes = $request->input('meta_docentes');
+        $programa->prog_meta_beneficiarios = $request->input('meta_beneficiarios');
+        $programa->meca_codigo = $request->input('tipo');
         $programa->prog_creado = now();
         $programa->prog_actualizado = now();
 
@@ -263,14 +273,20 @@ class ParametrosController extends Controller
             'tipo' => 'required',
             'meta_socios' => 'required',
             'meta_iniciativas' => 'required',
+            'meta_estudiantes' => 'required',
+            'meta_docentes' => 'required',
+            'meta_beneficiarios' => 'required',
         ], [
             'nombre.required' => 'El nombre es requerido.',
             'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (255).',
             /* 'director.required' => 'El nombre del director es requerido.',
             'director.max' => 'El nombre del director excede el máximo de caracteres permitidos (100).', */
-            'tipo.required' => 'Seleccione un tipo de iniciativa.',
+            'tipo.required' => 'Seleccione un ámbito de acción.',
             'meta_socios.required' => 'Una meta de socios es necesaria.',
-            'meta_iniciativas.required' => 'Una iniciativas de socios es necesaria.',
+            'meta_iniciativas.required' => 'Una meta de iniciativas de socios es necesaria.',
+            'meta_estudiantes.required' => 'Una meta de estudiantes de socios es necesaria.',
+            'meta_docentes.required' => 'Una meta de docentes de socios es necesaria.',
+            'meta_beneficiarios.required' => 'Una meta de beneficiarios de socios es necesaria.',
         ]);
 
         if ($validacion->fails()) {
@@ -288,7 +304,10 @@ class ParametrosController extends Controller
         $programa->prog_director = $request->input('director');
         $programa->prog_meta_socios = $request->input('meta_socios');
         $programa->prog_meta_iniciativas = $request->input('meta_iniciativas');
-        $programa->tmec_codigo = $request->input('tipo');
+        $programa->prog_meta_estudiantes = $request->input('meta_estudiantes');
+        $programa->prog_meta_docentes = $request->input('meta_docentes');
+        $programa->prog_meta_beneficiarios = $request->input('meta_beneficiarios');
+        $programa->meca_codigo = $request->input('tipo');
         $programa->prog_actualizado = now();
 
         // Guardar la actualización del programa en la base de datos
@@ -434,7 +453,7 @@ class ParametrosController extends Controller
                 'archivo.required' => 'El archivo del convenio es requerido.',
             ]
         );
-        if (!$validacion) return redirect()->route('admin.listar.programas')->with('errorConvenio', 'Problemas al crear el programa.');
+        if (!$validacion) return redirect()->route('admin.listar.convenios')->with('errorConvenio', 'Problemas al crear el copnvenio.');
 
         $convenio = new Convenios();
         $convenio->conv_nombre = $request->input('nombre');
@@ -1282,7 +1301,6 @@ public function crearUnidades(Request $request)
     $nuevo->unid_nickname_mod = Session::get('admin')->usua_nickname;
     $nuevo->unid_rol_mod = Session::get('admin')->rous_codigo;
 
-    // Guardar el programa en la base de datos
     $nuevo->save();
 
     return redirect()->back()->with('exito', 'Unidad creada exitosamente');
@@ -1372,7 +1390,6 @@ public function actualizarUnidades(Request $request, $unid_codigo)
             $nuevo->suni_nickname_mod = Session::get('admin')->usua_nickname;
             $nuevo->suni_rol_mod = Session::get('admin')->rous_codigo;
 
-            // Guardar el programa en la base de datos
             $nuevo->save();
 
             return redirect()->back()->with('exito', 'SubUnidad creada exitosamente');

@@ -138,14 +138,14 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Tipo de iniciativa del programa</label>
+                            <label>Ámbito de acción del programa</label>
                             <div class="input-group">
                                 <select class="form-control @error('tipo') is-invalid @enderror" id="tipo" name="tipo">
-                                    <option value="" selected disabled>Seleccione...</option>
+                                    <option value="" selected disable d>Seleccione...</option>
                                     @forelse ($tipos as $tip)
-                                        <option value="{{ $tip->tmec_codigo }}"
-                                            {{ old('tipo') == $tip->tmec_codigo ? 'selected' : '' }}>
-                                            {{ $tip->tmec_nombre }}</option>
+                                        <option value="{{ $tip->amac_codigo }}"
+                                            {{ old('tipo') == $tip->amac_codigo ? 'selected' : '' }}>
+                                            {{ $tip->amac_nombre }}</option>
                                     @empty
                                         <option value="-1">No existen registros</option>
                                     @endforelse
@@ -168,7 +168,7 @@
                                 @enderror
                             </div>
                         </div> --}}
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label>Director/a del programa</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -184,7 +184,7 @@
                                     </div>
                                 @enderror
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                             <label>Meta Socios</label>
                             <div class="input-group">
@@ -213,6 +213,51 @@
                                     value="{{ old('meta_iniciativas') }}" autocomplete="off">
                             </div>
                             @error('meta_iniciativas')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Meta Estudiantes</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </div>
+                                </div>
+                                <input type="number" class="form-control" id="meta_estudiantes" name="meta_estudiantes"
+                                    value="{{ old('meta_estudiantes') }}" autocomplete="off">
+                            </div>
+                            @error('meta_estudiantes')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Meta Docentes</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </div>
+                                </div>
+                                <input type="number" class="form-control" id="meta_docentes" name="meta_docentes"
+                                    value="{{ old('meta_docentes') }}" autocomplete="off">
+                            </div>
+                            @error('meta_docentes')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Meta Beneficiarios</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </div>
+                                </div>
+                                <input type="number" class="form-control" id="meta_beneficiarios" name="meta_beneficiarios"
+                                    value="{{ old('meta_beneficiarios') }}" autocomplete="off">
+                            </div>
+                            @error('meta_beneficiarios')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
@@ -260,13 +305,13 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Tipo de iniciativa del programa</label>
+                            <label>Ámbito de acción del programa</label>
                             <div class="input-group">
                                 <select class="form-control @error('tipo') is-invalid @enderror" id="tipo" name="tipo">
                                     @foreach ($tipos as $tipo)
-                                        <option value="{{ $tipo->tmec_codigo }}"
-                                            {{ $tipo->tmec_codigo == $prog->tmec_codigo ? 'selected' : '' }}>
-                                            {{ $tipo->tmec_nombre }}
+                                        <option value="{{ $tipo->amac_codigo }}"
+                                            {{ $tipo->amac_codigo == $prog->amac_codigo ? 'selected' : '' }}>
+                                            {{ $tipo->amac_nombre }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -289,7 +334,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label>Director/a</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -305,7 +350,7 @@
                                     </div>
                                 @enderror
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                             <label>Meta Socios</label>
                             <div class="input-group">
@@ -331,6 +376,51 @@
                                     name="meta_iniciativas" value="{{ $prog->prog_meta_iniciativas }}"
                                     autocomplete="off">
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Meta Estudiantes</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </div>
+                                </div>
+                                <input type="number" class="form-control" id="meta_estudiantes" name="meta_estudiantes"
+                                    value="{{ $prog->prog_meta_estudiantes }}" autocomplete="off">
+                            </div>
+                            @error('meta_estudiantes')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Meta Docentes</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </div>
+                                </div>
+                                <input type="number" class="form-control" id="meta_docentes" name="meta_docentes"
+                                    value="{{ $prog->prog_meta_docentes }}" autocomplete="off">
+                            </div>
+                            @error('meta_docentes')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Meta Beneficiarios</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </div>
+                                </div>
+                                <input type="number" class="form-control" id="meta_beneficiarios" name="meta_beneficiarios"
+                                    value="{{ $prog->prog_meta_beneficiarios }}" autocomplete="off">
+                            </div>
+                            @error('meta_beneficiarios')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary waves-effect">Actualizar</button>

@@ -48,8 +48,8 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Nombre</th>
-                                            <th>Descripción</th>
-                                            <th>Director</th>
+                                            {{-- <th>Descripción</th>
+                                            <th>Director</th> --}}
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -63,9 +63,9 @@
                                             ?>
                                             <tr>
                                                 <td>{{ $contador }}</td>
-                                                <td>{{ $ambi->amb_nombre }}</td>
-                                                {{-- <td>{{ $ambi->amb_descripcion }}</td>
-                                                <td>{{ $ambi->amb_director }}</td> --}}
+                                                <td>{{ $ambi->amac_nombre }}</td>
+                                                {{-- <td>{{ $ambi->amac_descripcion }}</td>
+                                                <td>{{ $ambi->amac_director }}</td> --}}
                                                 <td>
                                                     <a href="javascript:void(0)" class="btn btn-icon btn-warning"
                                                         onclick="editarAmbi({{ $ambi->amac_codigo }})" data-toggle="tooltip"
@@ -99,7 +99,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('admin.actualizar.ambitos', $ambi->amac_codigo) }} " method="POST">
+                        <form action="{{ route('admin.actualizar.ambitosaccion', $ambi->amac_codigo) }} " method="POST">
                             @method('PUT')
                             @csrf
 
@@ -112,17 +112,17 @@
                                         </div>
                                     </div>
                                     <input type="text" class="form-control" id="nombre_aa" name="nombre_aa"
-                                        value="{{ $ambi->amb_nombre }}" autocomplete="off">
+                                        value="{{ $ambi->amac_nombre }}" autocomplete="off">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>Descripción del ámbito de acción</label>
                                 <div class="input-group">
                                     <textarea rows="6" class="formbold-form-input" id="descripcion_aa" name="descripcion_aa" autocomplete="off"
-                                        style="width:100%">{{ $ambi->amb_descripcion }}</textarea>
+                                        style="width:100%">{{ $ambi->amac_descripcion }}</textarea>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label>Director/a del ámbito de acción</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -131,9 +131,9 @@
                                         </div>
                                     </div>
                                     <input type="text" class="form-control" id="director_aa" name="director_aa"
-                                        value="{{ $ambi->amb_director }}" autocomplete="off">
+                                        value="{{ $ambi->amac_director }}" autocomplete="off">
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="text-center">
                                 <button type="submit" class="btn btn-primary waves-effect">Actualizar</button>
                             </div>
@@ -156,7 +156,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('admin.crear.ambitos') }} " method="POST">
+                    <form action="{{ route('admin.crear.ambitosaccion') }} " method="POST">
                         @csrf
                         <div class="form-group">
                             <label>Nombre del ámbito de acción</label>
@@ -197,7 +197,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label>Director/a del ámbito de acción</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -217,7 +217,7 @@
                                     </div>
                                 @endif
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary waves-effect">Guardar</button>
                         </div>
@@ -231,7 +231,7 @@
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <form action="{{ route('admin.eliminar.ambitos') }} " method="POST">
+                <form action="{{ route('admin.eliminar.ambitosaccion') }} " method="POST">
                     @method('DELETE')
                     @csrf
                     <div class="modal-header">
