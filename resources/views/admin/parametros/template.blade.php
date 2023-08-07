@@ -21,14 +21,6 @@ ______________________________________________
 ______________________________________________________________________________________________
 NOMBRE DEL PREFIJO DE LA TABLA (ej: NOMBRE_codigo, recuerda agregar el "_"): nombreprefijo_
 ______________________________________________________________________________________________
-NOMBRE DEL CAMPO (en editar y crear): CAMPO1
----NOMBRE DE LA ID DEL CAMPO (ej: id="nomnbre"): idcampo1
-
-consejo: Primero, copie y pegue a la par (en crear y editar) los campos
-    a utilizar, y cambie el numero a los nuevos campos (CAMPO2 ,
-    CAMPO3 ...) y a los idcampo (idcampo2, idcampo3 ....), Al final,
-    en ésta zona ir cambiando los nombres, o al mismo tiempo, nose,
-    ahí ves tu :P, Lo decia por el nombreprefijo_ mas que nada.
 ______________________________________________________________________________________________
 
 RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
@@ -84,7 +76,7 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
                             <h4>Listado de nombreparametros</h4>
                             <div class="card-header-action">
                                 <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#modalCrearregistroto"><i class="fas fa-plus"></i> Nuevo nombreparametro</button>
+                                    data-target="#modalCrearregistro"><i class="fas fa-plus"></i> Nuevo nombreparametro</button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -128,8 +120,8 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
     </section>
 
     @foreach ($REGISTROS as $registro)
-        <div class="modal fade" id="modaleditarRegistroto-{{ $registro->nombreprefijo_codigo }}" tabindex="-1" role="dialog"
-            aria-labelledby="modaleditarRegistroto" aria-hidden="true">
+        <div class="modal fade" id="modaleditarRegistro-{{ $registro->nombreprefijo_codigo }}" tabindex="-1" role="dialog"
+            aria-labelledby="modaleditarRegistro" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -153,6 +145,15 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
                                     </div>
                                     <input type="text" class="form-control" id="nombre" name="nombre"
                                         value="{{ $registro->nombreprefijo_nombre }}" autocomplete="off">
+                                    @if ($errors->has('nombre'))
+                                        <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
+                                            style="width:100%">
+                                            <div class="alert-body">
+                                                <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                                <strong>{{ $errors->first('nombre') }}</strong>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                             {{-- CAMPO TEMPLATE PARA COPIAR Y PEGAR (es en texto, asi que cambiar segun necesidad) --}}
@@ -167,6 +168,15 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
                                     </div>
                                     <input type="text" class="form-control" id="idcampo1" name="idcampo1"
                                         value="{{ $registro->nombreprefijo_idcampo1 }}" autocomplete="off">
+                                    @if ($errors->has('nombre'))
+                                        <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
+                                            style="width:100%">
+                                            <div class="alert-body">
+                                                <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                                <strong>{{ $errors->first('nombre') }}</strong>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 
@@ -195,7 +205,7 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
     @endforeach
 
 
-    <div class="modal fade" id="modalCrearregistroto" tabindex="-1" role="dialog" aria-labelledby="formModal"
+    <div class="modal fade" id="modalCrearregistro" tabindex="-1" role="dialog" aria-labelledby="formModal"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -348,12 +358,18 @@ public function crearnombreparametros(Request $request)
 
         $nuevo = new MODELO1();
         $nuevo->nombreprefijo_nombre = $request->input('nombre');
-        /* $nuevo->nombreprefijo_idcampo1 = $request->input('idcampo1'); */
+        /*  #########################################################  */
+        /* --------------- INGRESAR LOS NUEVOS CAMPOS -------------- */
+
+        $nuevo->nombreprefijo_idcampo1 = $request->input('idcampo1');
+
+        /*  ----------------------------------------------------------  */
+        /*  #########################################################  */
         $nuevo->nombreprefijo_creado = Carbon::now()->format('Y-m-d H:i:s');
         $nuevo->nombreprefijo_actualizado = Carbon::now()->format('Y-m-d H:i:s');
         $nuevo->nombreprefijo_visible = 1;
-        $nuevo->nombreprefijo_nombreprefijo_nickname_mod = Session::get('admin')->usua_nickname;
-        $nuevo->nombreprefijo_nombreprefijo_rol_mod = Session::get('admin')->rous_codigo;
+        $nuevo->nombreprefijo_nickname_mod = Session::get('admin')->usua_nickname;
+        $nuevo->nombreprefijo_rol_mod = Session::get('admin')->rous_codigo;
 
         // Guardar el programa en la base de datos
         $nuevo->save();
@@ -385,14 +401,21 @@ public function actualizarnombreparametros(Request $request, $nombreprefijo_codi
 
         $editado = MODELO1::find($nombreprefijo_codigo);
         //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
-        if (!$ambito) {return redirect()->route('admin.listar.nombreruta')->with('error', 'El nombreparametro no se encuentra registrado en el sistema.')->withInput();}
+        if (!$editado) {return redirect()->route('admin.listar.nombreruta')->with('error', 'El nombreparametro no se encuentra registrado en el sistema.')->withInput();}
 
         $editado->nombreprefijo_nombre = $request->input('nombre');
-        /* $editado->nombreprefijo_idcampo1 = $request->input('idcampo1'); */
+
+        /*  #########################################################  */
+        /* --------------- INGRESAR LOS NUEVOS CAMPOS -------------- */
+
+        $nuevo->nombreprefijo_idcampo1 = $request->input('idcampo1');
+
+        /*  ----------------------------------------------------------  */
+        /*  #########################################################  */
         $editado->nombreprefijo_actualizado = Carbon::now()->format('Y-m-d H:i:s');
         $editado->nombreprefijo_visible = 1;
-        $editado->nombreprefijo_nombreprefijo_nickname_mod = Session::get('admin')->usua_nickname;
-        $editado->nombreprefijo_nombreprefijo_rol_mod = Session::get('admin')->rous_codigo;
+        $editado->nombreprefijo_nickname_mod = Session::get('admin')->usua_nickname;
+        $editado->nombreprefijo_rol_mod = Session::get('admin')->rous_codigo;
         $editado->save();
 
         return redirect()->back()->with('exito', 'nombreparametro actualizado exitosamente')->withInput();;
@@ -403,14 +426,11 @@ public function actualizarnombreparametros(Request $request, $nombreprefijo_codi
 
 {{-- ######################            CORTAR Y PEGAR EN WEB.php       ################################# --}}
 
-<script>
-
 // nombreparametros
 Route::get('admin/listar-nombreruta', [ParametrosController::class, 'listarnombreparametros'])->name('admin.listar.nombreruta');
 Route::delete('admin/eliminar-nombreruta/', [ParametrosController::class, 'eliminarnombreparametros'])->name('admin.eliminar.nombreruta');
 Route::put('admin/editar-nombreruta/{nombreprefijo_codigo}', [ParametrosController::class, 'actualizarnombreparametros'])->name('admin.actualizar.nombreruta');
 Route::post('admin/crear-nombreruta/', [ParametrosController::class, 'crearnombreparametros'])->name('admin.crear.nombreruta');
 
-</script>
 
 @endsection

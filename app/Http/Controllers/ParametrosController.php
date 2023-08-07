@@ -389,6 +389,7 @@ class ParametrosController extends Controller
 
         $convenio = Convenios::where(['conv_codigo' => $conv_codigo])->update([
             'conv_nombre' => $request->input('nombre'),
+            'conv_tipo' => $request->input('tipo'),
             'conv_descripcion' => $request->input('descripcion'),
             'conv_nombre_archivo' => $request->input('nombrearchivo'),
             'conv_actualizado' => now(),
@@ -437,6 +438,7 @@ class ParametrosController extends Controller
 
         $convenio = new Convenios();
         $convenio->conv_nombre = $request->input('nombre');
+        $convenio->conv_tipo = $request->input('tipo');
         $convenio->conv_descripcion = $request->input('descripcion');
         $convenio->conv_nombre_archivo = $request->input('nombrearchivo');
 
@@ -1325,4 +1327,95 @@ public function actualizarUnidades(Request $request, $unid_codigo)
 
     return redirect()->back()->with('exito', 'Unidad actualizada exitosamente')->withInput();;
 }
-}
+    //TODO: SubUnidad
+    //--------------------------------------
+    //CAMBIAR NOMBRE MODELO POR: SubUnidades
+    //--------------------------------------
+
+    public function listarSubUnidades()
+        {
+
+            $REGISTROS = SubUnidades::orderBy('suni_codigo', 'asc')->get();
+            $REGISTROS2 = Unidades::orderBy('unid_codigo', 'asc')->get();
+
+            return view('admin.parametros.subunidades', [
+                'REGISTROS' => $REGISTROS,
+                'REGISTROS2' => $REGISTROS2
+            ]);
+        }
+
+    public function crearSubUnidades(Request $request)
+        {
+            $validacion = Validator::make($request->all(), [
+                'nombre' => 'required|max:100',
+                'select_join' => 'required',
+                /* 'idcampo1' => 'required', */
+            ], [
+                'nombre.required' => 'El nombre es requerido.',
+                'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+                'select_join.required' => 'La unidad es requerida.',
+            ]);
+
+            if ($validacion->fails()) {
+                return redirect()->route('admin.listar.subunidades')->withErrors($validacion)->withInput();
+            }
+
+            $nuevo = new SubUnidades();
+            $nuevo->suni_nombre = $request->input('nombre');
+            $nuevo->unid_codigo = $request->input('select_join');
+            $nuevo->suni_responsable = $request->input('responsable');
+            $nuevo->suni_descripcion = $request->input('descripcion');
+            /* $nuevo->suni_idcampo1 = $request->input('idcampo1'); */
+            $nuevo->suni_creado = Carbon::now()->format('Y-m-d H:i:s');
+            $nuevo->suni_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+            $nuevo->suni_visible = 1;
+            $nuevo->suni_nickname_mod = Session::get('admin')->usua_nickname;
+            $nuevo->suni_rol_mod = Session::get('admin')->rous_codigo;
+
+            // Guardar el programa en la base de datos
+            $nuevo->save();
+
+            return redirect()->back()->with('exito', 'SubUnidad creada exitosamente');
+        }
+
+    public function eliminarSubUnidades(Request $request)
+        {
+            $eliminado = SubUnidades::where('suni_codigo', $request->suni_codigo)->first();
+            if (!$eliminado) {return redirect()->route('admin.listar.subunidades')->with('error', 'La SubUnidad no se encuentra registrada en el sistema.');}
+
+            $eliminado = SubUnidades::where('suni_codigo', $request->suni_codigo)->delete();
+            return redirect()->route('admin.listar.subunidades')->with('exito', 'La SubUnidad fue eliminada correctamente.');
+        }
+
+    public function actualizarSubUnidades(Request $request, $suni_codigo)
+        {
+            $validacion = Validator::make($request->all(), [
+                'nombre' => 'required|max:100',
+                'select_join' => 'required',
+                /* 'idcampo1' => 'required', */
+            ], [
+                'nombre.required' => 'El nombre es requerido.',
+                'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+                'select_join.required' => 'La unidad es requerida.',
+            ]);
+
+
+            if ($validacion->fails()) {return redirect()->route('admin.listar.subunidades')->withErrors($validacion)->withInput();}
+
+            $editado = SubUnidades::find($suni_codigo);
+            //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
+            if (!$editado) {return redirect()->route('admin.listar.subunidades')->with('error', 'La SubUnidad no se encuentra registrada en el sistema.')->withInput();}
+
+            $editado->suni_nombre = $request->input('nombre');
+            $editado->unid_codigo = $request->input('select_join');
+            $editado->suni_responsable = $request->input('responsable');
+            $editado->suni_descripcion = $request->input('descripcion');
+            $editado->suni_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+            $editado->suni_visible = 1;
+            $editado->suni_nickname_mod = Session::get('admin')->usua_nickname;
+            $editado->suni_rol_mod = Session::get('admin')->rous_codigo;
+            $editado->save();
+
+            return redirect()->back()->with('exito', 'SubUnidad actualizada exitosamente')->withInput();;
+        }
+    }

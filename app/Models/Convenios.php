@@ -17,6 +17,7 @@ class Convenios extends Model
         'conv_codigo',
         'conv_nombre',
         'conv_descripcion',
+        'conv_tipo',
         'conv_nombre_archivo',
         'conv_ruta_archivo',
         'conv_creado',

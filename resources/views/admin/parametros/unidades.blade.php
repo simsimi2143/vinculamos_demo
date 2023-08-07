@@ -82,7 +82,7 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href)
                             <h4>Listado de Unidades</h4>
                             <div class="card-header-action">
                                 <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#modalCrearregistroto"><i class="fas fa-plus"></i> Nueva Unidad</button>
+                                    data-target="#modalCrearregistro"><i class="fas fa-plus"></i> Nueva Unidad</button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -124,8 +124,8 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href)
     </section>
 
     @foreach ($REGISTROS as $registro)
-        <div class="modal fade" id="modaleditarRegistroto-{{ $registro->unid_codigo }}" tabindex="-1" role="dialog"
-            aria-labelledby="modaleditarRegistroto" aria-hidden="true">
+        <div class="modal fade" id="modaleditarRegistro-{{ $registro->unid_codigo }}" tabindex="-1" role="dialog"
+            aria-labelledby="modaleditarRegistro" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -189,7 +189,7 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href)
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
-                                            <i class="fas fa-pen-nib"></i>
+                                            <i class="fas fa-user-tie"></i>
                                         </div>
                                     </div>
                                     <input type="text" class="form-control" id="responsable" name="responsable"
@@ -235,7 +235,7 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href)
     @endforeach
 
 
-    <div class="modal fade" id="modalCrearregistroto" tabindex="-1" role="dialog" aria-labelledby="formModal"
+    <div class="modal fade" id="modalCrearregistro" tabindex="-1" role="dialog" aria-labelledby="formModal"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -307,7 +307,7 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href)
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
-                                        <i class="fas fa-pen-nib"></i>
+                                        <i class="fas fa-user-tie"></i>
                                     </div>
                                 </div>
                                 <input type="text" class="form-control" id="responsable" name="responsable"

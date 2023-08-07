@@ -42,10 +42,10 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h4>Listado de Convenios</h4>
+                            <h4>Listado de documentos de colaboración</h4>
                             <div class="card-header-action">
                                 <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#modalCrearConvenio"><i class="fas fa-plus"></i> Nuevo Convenio</button>
+                                    data-target="#modalCrearConvenio"><i class="fas fa-plus"></i> Nuevo documento de colaboración</button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -56,7 +56,7 @@
                                             <th>#</th>
                                             <th>Nombre</th>
                                             <th>Descripción</th>
-                                            <th>Archivo del convenio</th>
+                                            <th>Documento de colaboración</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -101,7 +101,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalEditarConvenio">Editar Convenio</h5>
+                        <h5 class="modal-title" id="modalEditarConvenio">Editar documento de colaboración</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -123,14 +123,36 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Descripción de la Convenio</label>
+                                <label>Descripción del documento de colaboración</label>
                                 <div class="input-group">
                                     <textarea rows="6" class="formbold-form-input" id="descripcion" name="descripcion" autocomplete="off"
                                         style="width:100%">{{ $conv->conv_descripcion }}</textarea>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Nombre del archivo</label>
+                                <label>Tipo del documento de colaboración</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="tipo" name="tipo">
+                                        <option value="Convenio" {{ "Convenio" == $dato->unid_codigo ? 'selected' : '' }}>
+                                            Convenio
+                                        </option>
+                                        <option value="CartaAdhesion" {{ "CartaAdhesion" == $dato->unid_codigo ? 'selected' : '' }}>
+                                            Carta de adhesión
+                                        </option>
+                                    </select>
+                                    @if ($errors->has('tipo'))
+                                        <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
+                                            style="width:100%">
+                                            <div class="alert-body">
+                                                <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                                <strong>{{ $errors->first('tipo') }}</strong>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Nombre del archivo de colaboración</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
@@ -142,7 +164,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Ruta del archivo del convenio</label>
+                                <label>Ruta del archivo de colaboración</label>
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="alert alert-info">
@@ -186,7 +208,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="formModal">Nuevo Convenio</h5>
+                    <h5 class="modal-title" id="formModal">Nuevo documento de colaboración</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -195,7 +217,7 @@
                     <form action="{{ route('admin.crear.convenios') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
-                            <label>Nombre del convenio</label>
+                            <label>Nombre del documento de colaboración</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
@@ -216,7 +238,29 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Descripción del convenio</label>
+                            <label>Tipo del documento de colaboración</label>
+                            <div class="input-group">
+                                <select class="form-control" id="tipo" name="tipo">
+                                    <option value="Convenio">
+                                        Convenio
+                                    </option>
+                                    <option value="CartaAdhesion">
+                                        Carta de adhesión
+                                    </option>
+                                </select>
+                                @if ($errors->has('tipo'))
+                                    <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
+                                        style="width:100%">
+                                        <div class="alert-body">
+                                            <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                            <strong>{{ $errors->first('tipo') }}</strong>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Descripción del documento de colaboración</label>
                             <div class="input-group">
                                 <textarea rows="6" class="formbold-form-input" id="descripcion" name="descripcion" autocomplete="off"
                                     style="width:100%">{{ old('descripcion') }}</textarea>
@@ -232,7 +276,20 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Nombre del archivo del convenio</label>
+                                <label>Tipo del documento de colaboración</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="select_join" name="select_join">
+                                        <option value="Convenio">
+                                            Convenio
+                                        </option>
+                                        <option value="CartaAdhesion">
+                                            Carta de adhesión
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        <div class="form-group">
+                            <label>Nombre del archivo del documento de colaboración</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
@@ -253,7 +310,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Archivo del convenio</label>
+                            <label>Archivo del colaboración</label>
                             <div class="card">
                                 <div class="card-body">
                                     <div class="fallback">
@@ -295,7 +352,7 @@
                     </div>
                     <div class="modal-body text-center">
                         <i class="fas fa-ban text-danger" style="font-size: 50px; color"></i>
-                        <h6 class="mt-2">El convenio dejará de existir dentro del sistema. <br> ¿Desea continuar de todos
+                        <h6 class="mt-2">El documento de colaboración dejará de existir dentro del sistema. <br> ¿Desea continuar de todos
                             modos?</h6>
                         <input type="hidden" id="conv_codigo" name="conv_codigo" value="">
                     </div>
