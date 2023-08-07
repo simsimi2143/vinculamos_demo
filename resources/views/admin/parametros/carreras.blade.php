@@ -126,7 +126,7 @@
                             </div>
                         </div> --}}
                         <div class="form-group">
-                            <label>Director/a de la carrera</label>
+                            <label>Jefe/Jefa de la carrera</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
@@ -230,7 +230,7 @@
                             </div>
                         </div> --}}
                         <div class="form-group">
-                            <label>Director/a de la carrera</label>
+                            <label>Jefe/Jefa de la carrera</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">

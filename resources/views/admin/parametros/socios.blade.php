@@ -254,7 +254,7 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="form-group" style="align-items: center;"
+                            {{-- <div class="form-group" style="align-items: center;"
                                 id="sedesAsociadasContainer">
                                 <label>Sedes Asociadas</label>
                                 <div class="input-group">
@@ -287,15 +287,15 @@
                                         </div>
                                     @endif
                                 </div>
-                            </div>
-                            <div class="form-group" style="width: 100%">
+                            </div> --}}
+                            {{-- <div class="form-group" style="width: 100%">
                                 <div class="pretty p-switch p-fill">
                                     <input type="checkbox" id="nacional" name="nacional"/>
                                     <div class="state p-success">
                                         <label><strong>Asociar a todas las sedes (Socio nacional)</strong></label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="text-center">
                                 <button type="submit" class="btn btn-primary waves-effect"
                                     style="margin-top: 20px">Actualizar</button>
@@ -447,7 +447,7 @@
                                 </div>
                             @endif
                         </div>
-                        <label>Sedes Asociadas</label>
+                        {{-- <label>Sedes Asociadas</label>
                         <div class="input-group">
                             <select class="form-control select2" style="width: 100%" id="sedesT" name="sedesT[]"
                                 multiple>
@@ -473,7 +473,7 @@
                                     <label><strong>Asociar a todas las sedes (Socio nacional)</strong></label>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary waves-effect"
                                 style="margin-top: 20px">Guardar</button>

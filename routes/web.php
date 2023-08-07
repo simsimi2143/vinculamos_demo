@@ -153,6 +153,12 @@ Route::middleware('verificar.admin')->group(function () {
     Route::delete('/admin/eliminar/tematica', [ParametrosController::class, 'eliminarTematica'])
     ->name('admin.eliminar.tematica');
 
+    // Unidades
+    Route::get('admin/listar-unidades', [ParametrosController::class, 'listarUnidades'])->name('admin.listar.unidades');
+    Route::delete('admin/eliminar-unidades/', [ParametrosController::class, 'eliminarUnidades'])->name('admin.eliminar.unidades');
+    Route::put('admin/editar-unidades/{unid_codigo}', [ParametrosController::class, 'actualizarUnidades'])->name('admin.actualizar.unidades');
+    Route::post('admin/crear-unidades/', [ParametrosController::class, 'crearUnidades'])->name('admin.crear.unidades');
+
     // fin rutas para gestionar parametros
 
 

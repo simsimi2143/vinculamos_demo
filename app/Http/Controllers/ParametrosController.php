@@ -22,6 +22,9 @@ use App\Models\SociosComunitarios;
 use App\Models\SubGruposInteres;
 use App\Models\Tematicas;
 use App\Models\TipoActividades;
+use App\Models\TipoUnidades;
+use App\Models\Unidades;
+use App\Models\SubUnidades;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -205,15 +208,15 @@ class ParametrosController extends Controller
     {
         $validacion = Validator::make($request->all(), [
             'nombre' => 'required|max:255',
-            'director' => 'required|max:100',
+            /* 'director' => 'required|max:100', */
             'tipo' => 'required',
             'meta_socios' => 'required',
             'meta_iniciativas' => 'required',
         ], [
             'nombre.required' => 'El nombre es requerido.',
             'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (255).',
-            'director.required' => 'El nombre del director es requerido.',
-            'director.max' => 'El nombre del director excede el máximo de caracteres permitidos (100).',
+            /* 'director.required' => 'El nombre del director es requerido.',
+            'director.max' => 'El nombre del director excede el máximo de caracteres permitidos (100).', */
             'tipo.required' => 'Seleccione un tipo de iniciativa.',
             'meta_socios.required' => 'Una meta de socios es necesaria.',
             'meta_iniciativas.required' => 'Una iniciativas de socios es necesaria.',
@@ -256,15 +259,15 @@ class ParametrosController extends Controller
     {
         $validacion = Validator::make($request->all(), [
             'nombre' => 'required|max:255',
-            'director' => 'required|max:100',
+            /* 'director' => 'required|max:100', */
             'tipo' => 'required',
             'meta_socios' => 'required',
             'meta_iniciativas' => 'required',
         ], [
             'nombre.required' => 'El nombre es requerido.',
             'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (255).',
-            'director.required' => 'El nombre del director es requerido.',
-            'director.max' => 'El nombre del director excede el máximo de caracteres permitidos (100).',
+            /* 'director.required' => 'El nombre del director es requerido.',
+            'director.max' => 'El nombre del director excede el máximo de caracteres permitidos (100).', */
             'tipo.required' => 'Seleccione un tipo de iniciativa.',
             'meta_socios.required' => 'Una meta de socios es necesaria.',
             'meta_iniciativas.required' => 'Una iniciativas de socios es necesaria.',
@@ -609,14 +612,14 @@ class ParametrosController extends Controller
 
         $validacion = $request->validate([
             'care_nombre' => 'required|max:255',
-            'care_director' => 'required|max:100',
+            /* 'care_director' => 'required|max:100', */
             /* 'care_institucion' => 'required|max:100', */
             'escu_codigo' => 'required',
         ], [
             'care_nombre.required' => 'El nombre es requerido.',
             'care_nombre.max' => 'El nombre excede el máximo de caracteres permitidos (255).',
-            'care_director.required' => 'El nombre del director es requerido.',
-            'care_director.max' => 'El nombre del director excede el máximo de caracteres permitidos (100).',
+            /* 'care_director.required' => 'El nombre del director es requerido.',
+            'care_director.max' => 'El nombre del director excede el máximo de caracteres permitidos (100).', */
             /* 'care_institucion.required' => 'El nombre de la institución es requerido.',
             'care_institucion.max' => 'El nombre de la institución excede el máximo de caracteres permitidos (100).', */
             'escu_codigo.required' => 'Seleccione una escuela.',
@@ -644,14 +647,14 @@ class ParametrosController extends Controller
     {
         $validacion = $request->validate([
             'care_nombre' => 'required|max:255',
-            'care_director' => 'required|max:100',
+            /* 'care_director' => 'required|max:100', */
             /* 'care_institucion' => 'required|max:100', */
             'escu_codigo' => 'required',
         ], [
             'care_nombre.required' => 'El nombre es requerido.',
             'care_nombre.max' => 'El nombre excede el máximo de caracteres permitidos (255).',
-            'care_director.required' => 'El nombre del director es requerido.',
-            'care_director.max' => 'El nombre del director excede el máximo de caracteres permitidos (100).',
+            /* 'care_director.required' => 'El nombre del director es requerido.',
+            'care_director.max' => 'El nombre del director excede el máximo de caracteres permitidos (100).', */
             /* 'care_institucion.required' => 'El nombre de la institución es requerido.',
             'care_institucion.max' => 'El nombre de la institución excede el máximo de caracteres permitidos (100).', */
             'escu_codigo.required' => 'Seleccione una escuela.',
@@ -665,7 +668,7 @@ class ParametrosController extends Controller
         $carrera->care_nombre = $request->input('care_nombre');
         $carrera->care_descripcion = $request->input('care_descripcion');
         $carrera->care_director = $request->input('care_director');
-        $carrera->care_institucion = $request->input('care_institucion');
+        /* $carrera->care_institucion = $request->input('care_institucion'); */
         $carrera->escu_codigo = $request->input('escu_codigo');
 
         // Guardar la carrera en la base de datos
@@ -751,7 +754,7 @@ class ParametrosController extends Controller
         $escuela->escu_nombre = $request->input('nombre');
         $escuela->escu_descripcion = $request->input('descripcion');
         $escuela->escu_director = $request->input('director');
-        $escuela->escu_intitucion = $request->input('institucion',1);
+        /* $escuela->escu_intitucion = $request->input('institucion',1); */
 
         $escuela->escu_visible = $request->input('care_visible', 1);
         //TODO: SI NO QUEREMOS MORIR, CAMBIAR ESTO
@@ -784,7 +787,7 @@ class ParametrosController extends Controller
         if (!$verificarDrop) {
             return redirect()->route('admin.listar.socios')->with('errorSocio', 'El socio comunitario no se encuentra registrado en el sistema.');
         }
-        $Drop = SedesSocios::where('soco_codigo', $request->soco_codigo)->delete();
+        /* $Drop = SedesSocios::where('soco_codigo', $request->soco_codigo)->delete(); */
         $Drop = SociosComunitarios::where('soco_codigo', $request->soco_codigo)->delete();
         if (!$Drop) {
             return redirect()->back()->with('errorSocio', 'El socio comunitario no se pudo eliminar, intente más tarde.');
@@ -810,8 +813,8 @@ class ParametrosController extends Controller
                 /* 'domicilio' => 'required|max:255', */
                 /* 'telefono' => 'required|max:255', */
                 /* 'email' => 'required|max:255', */
-                'sedesT' => 'required_without_all:nacional', // 'sedesT' es requerido si 'nacional' no está marcado
-                'nacional' => 'required_without_all:sedesT', // 'nacional' es requerido si no se selecciona ninguna sede
+                /* 'sedesT' => 'required_without_all:nacional', // 'sedesT' es requerido si 'nacional' no está marcado
+                'nacional' => 'required_without_all:sedesT', // 'nacional' es requerido si no se selecciona ninguna sede */
 
             ],
             [
@@ -825,18 +828,18 @@ class ParametrosController extends Controller
                 'telefono.max' => 'El teléfono de la contraparte excede el máximo de caracteres permitidos (255).',
                 'email.required' => 'El email de la contraparte es requerido.',
                 'email.max' => 'El email de la contraparte excede el máximo de caracteres permitidos (255).', */
-                'sedesT.required_without_all' => 'Es necesario que seleccione al menos una sede a la cual este asociada el socio comunitario.',
-                'nacional.required_without_all' => 'Es necesario que seleccione al menos una sede a la cual este asociada el socio comunitario.',
+                /* 'sedesT.required_without_all' => 'Es necesario que seleccione al menos una sede a la cual este asociada el socio comunitario.',
+                'nacional.required_without_all' => 'Es necesario que seleccione al menos una sede a la cual este asociada el socio comunitario.', */
 
             ]
         );
 
-        $Drop = SedesSocios::where('soco_codigo', $soco_codigo)->delete();
+        /* $Drop = SedesSocios::where('soco_codigo', $soco_codigo)->delete(); */
         /* if (!$Drop) {
             return redirect()->back()->with('errorSocio', $soco_codigo);
         } */
         $socio = SociosComunitarios::where(['soco_codigo' => $soco_codigo])->update([
-            'sugr_codigo' => $request->input('grupo'),
+            'sugr_codigo' => $request->input('grupo',1),
             'soco_nombre_socio' => $request->input('nombre'),
             'soco_nombre_contraparte' => $request->input('nombre_contraparte'),
             'soco_domicilio_socio' => $request->input('domicilio'),
@@ -844,7 +847,7 @@ class ParametrosController extends Controller
             'soco_email_contraparte' => $request->input('email'),
         ]);
 
-        $seso = [];
+        /* $seso = [];
 
         if ($request->has('nacional')) {
             $sedes = Sedes::select('sede_codigo')->orderBy('sede_codigo', 'asc')->get();
@@ -868,15 +871,15 @@ class ParametrosController extends Controller
                     'seso_rol_mod' => Session::get('admin')->rous_codigo,
                 ]);
             }
-        }
+        } */
 
 
 
-        $sesoCrear = SedesSocios::insert($seso);
+        /* $sesoCrear = SedesSocios::insert($seso);
         if (!$sesoCrear) {
             SedesSocios::where('soco_codigo', $soco_codigo)->delete();
             return redirect()->back()->with('socoError', 'Ocurrió un error durante el registro de las sedes, intente más tarde.')->withInput();
-        }
+        } */
 
         return redirect()->back()->with('exitoSocio', 'El socio comunitario ha sido actualizado correctamente.')->withInput();
     }
@@ -891,8 +894,8 @@ class ParametrosController extends Controller
                 /* 'domicilio' => 'required|max:255', */
                 /* 'telefono' => 'required|max:255', */
                 /* 'email' => 'required|max:255', */
-                'sedesT' => 'required_without_all:nacional', // 'sedesT' es requerido si 'nacional' no está marcado
-                'nacional' => 'required_without_all:sedesT', // 'nacional' es requerido si no se selecciona ninguna sede
+                /* 'sedesT' => 'required_without_all:nacional', // 'sedesT' es requerido si 'nacional' no está marcado
+                'nacional' => 'required_without_all:sedesT', // 'nacional' es requerido si no se selecciona ninguna sede */
 
             ],
             [
@@ -906,8 +909,8 @@ class ParametrosController extends Controller
                 'telefono.max' => 'El teléfono de la contraparte excede el máximo de caracteres permitidos (255).',
                 'email.required' => 'El email de la contraparte es requerido.',
                 'email.max' => 'El email de la contraparte excede el máximo de caracteres permitidos (255).', */
-                'sedesT.required_without_all' => 'Es necesario que seleccione al menos una sede a la cual este asociada el socio comunitario.',
-                'nacional.required_without_all' => 'Es necesario que seleccione al menos una sede a la cual este asociada el socio comunitario.',
+                /* 'sedesT.required_without_all' => 'Es necesario que seleccione al menos una sede a la cual este asociada el socio comunitario.',
+                'nacional.required_without_all' => 'Es necesario que seleccione al menos una sede a la cual este asociada el socio comunitario.', */
 
             ]
         );
@@ -922,7 +925,7 @@ class ParametrosController extends Controller
             'sugr_codigo' => $request->grupo,
         ]);
 
-        if (!$socoCrear) {
+        /* if (!$socoCrear) {
             return redirect()->back()->with('socoError', 'Ocurrió un error al ingresar al socio, intente más tarde.')->withInput();
         }
 
@@ -958,7 +961,7 @@ class ParametrosController extends Controller
         if (!$sesoCrear) {
             SedesSocios::where('inic_codigo', $soco_codigo)->delete();
             return redirect()->back()->with('socoError', 'Ocurrió un error durante el registro de las sedes, intente más tarde.')->withInput();
-        }
+        } */
 
         return redirect()->back()->with('socoExito', 'Se agregó el socio comunitario correctamente.')->withInput();
     }
@@ -1233,4 +1236,93 @@ class ParametrosController extends Controller
         $socio->soco_nikcname_mod = Session::get('admin')->usua_nickname;
         $socio->soco_rol_mod = Session::get('admin')->rous_codigo; */
 
+    //TODO: Unidad
+//--------------------------------------
+//CAMBIAR NOMBRE MODELO POR: Unidades
+//--------------------------------------
+
+public function listarUnidades()
+{
+
+    $REGISTROS = Unidades::orderBy('unid_codigo', 'asc')->get();
+    $REGISTROS2 = TipoUnidades::orderBy('tuni_codigo', 'asc')->get();
+
+    return view('admin.parametros.unidades', [
+        'REGISTROS' => $REGISTROS,
+        'REGISTROS2' => $REGISTROS2
+    ]);
+}
+
+public function crearUnidades(Request $request)
+{
+    $validacion = Validator::make($request->all(), [
+        'nombre' => 'required|max:100',
+        /* 'idcampo1' => 'required', */
+    ], [
+        'nombre.required' => 'El nombre es requerido.',
+        'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+        /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
+    ]);
+
+    if ($validacion->fails()) {
+        return redirect()->route('admin.listar.unidades')->withErrors($validacion)->withInput();
+    }
+
+    $nuevo = new Unidades();
+    $nuevo->unid_nombre = $request->input('nombre');
+    $nuevo->tuni_codigo = $request->input('select_join');
+    $nuevo->unid_descripcion = $request->input('descripcion');
+    $nuevo->unid_responsable = $request->input('responsable');
+    $nuevo->unid_nombre_cargo = $request->input('nombre_cargo');
+    $nuevo->unid_creado = Carbon::now()->format('Y-m-d H:i:s');
+    $nuevo->unid_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+    $nuevo->unid_visible = 1;
+    $nuevo->unid_nickname_mod = Session::get('admin')->usua_nickname;
+    $nuevo->unid_rol_mod = Session::get('admin')->rous_codigo;
+
+    // Guardar el programa en la base de datos
+    $nuevo->save();
+
+    return redirect()->back()->with('exito', 'Unidad creada exitosamente');
+}
+
+public function eliminarUnidades(Request $request)
+{
+    $eliminado = Unidades::where('unid_codigo', $request->unid_codigo)->first();
+    if (!$eliminado) {return redirect()->route('admin.listar.unidades')->with('error', 'La Unidad no se encuentra registrada en el sistema.');}
+
+    $eliminado = Unidades::where('unid_codigo', $request->unid_codigo)->delete();
+    return redirect()->route('admin.listar.unidades')->with('exito', 'La Unidad fue eliminada correctamente.');
+}
+
+public function actualizarUnidades(Request $request, $unid_codigo)
+{
+    $validacion = Validator::make($request->all(), [
+        'nombre' => 'required|max:100',
+        /* 'idcampo1' => 'required', */
+    ], [
+        'nombre.required' => 'El nombre es requerido.',
+        'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (100).',
+        /* 'idcampo1.required' => 'El idcampo1 es requerido.', */
+    ]);
+
+    if ($validacion->fails()) {return redirect()->route('admin.listar.unidades')->withErrors($validacion)->withInput();}
+
+    $editado = Unidades::find($unid_codigo);
+    //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
+    if (!$ambito) {return redirect()->route('admin.listar.unidades')->with('error', 'La Unidad no se encuentra registrada en el sistema.')->withInput();}
+
+    $editado->unid_nombre = $request->input('nombre');
+    $editado->tuni_codigo = $request->input('select_join');
+    $editado->unid_descripcion = $request->input('descripcion');
+    $editado->unid_responsable = $request->input('responsable');
+    $editado->unid_nombre_cargo = $request->input('nombre_cargo');
+    $editado->unid_actualizado = Carbon::now()->format('Y-m-d H:i:s');
+    $editado->unid_visible = 1;
+    $editado->unid_nickname_mod = Session::get('admin')->usua_nickname;
+    $editado->unid_rol_mod = Session::get('admin')->rous_codigo;
+    $editado->save();
+
+    return redirect()->back()->with('exito', 'Unidad actualizada exitosamente')->withInput();;
+}
 }
