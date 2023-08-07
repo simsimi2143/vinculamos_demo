@@ -119,13 +119,13 @@
                         </div>
 
                         <!-- Olvidaste contraseña -->
-                        @if (Route::has('forget.password.get'))
+                        {{-- @if (Route::has('forget.password.get'))
                         <div class="form-group mb-1 forgot-password-container">
                             <a class="btn btn-link forgot-password-link" href="{{ route('forget.password.get') }}">
                                 {{ __('¿Olvidaste tu contraseña?') }}
                             </a>
                         </div>
-                        @endif
+                        @endif --}}
 
 
                         <div class="form-group">
