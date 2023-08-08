@@ -91,7 +91,7 @@
                         <!-- Inicio del Formulario -->
                         <div class="form-group mb-1" style="margin-top:-5%; width:100%;">
                             <label class="label" for="nickname" style="font-size: auto;">Nombre de Usuario</label>
-                            <input style="background-color:white; color:black; border: 1px solid #e76800;" type="text"
+                            <input style="background-color:white; color:black; border: 1px solid #016fe4;" type="text"
                                 class="form-control" placeholder="Ingrese su Nombre de Usuario" name="nickname"
                                 id="nickname" value="{{ old('nickname') }}" />
                             @if ($errors->has('nickname'))
@@ -119,13 +119,13 @@
                         </div>
 
                         <!-- Olvidaste contraseña -->
-                        {{-- @if (Route::has('forget.password.get'))
+                        @if (Route::has('forget.password.get'))
                         <div class="form-group mb-1 forgot-password-container">
                             <a class="btn btn-link forgot-password-link" href="{{ route('forget.password.get') }}">
                                 {{ __('¿Olvidaste tu contraseña?') }}
                             </a>
                         </div>
-                        @endif --}}
+                        @endif
 
 
                         <div class="form-group">
