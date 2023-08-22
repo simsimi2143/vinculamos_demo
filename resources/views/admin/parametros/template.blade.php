@@ -227,7 +227,7 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
                                     </div>
                                 </div>
                                 <input type="text" class="form-control" id="nombre" name="nombre"
-                                    placeholder="" autocomplete="off">
+                                    placeholder="" autocomplete="off" value="{{ old('care_nombre') }}">
                                 @if ($errors->has('nombre'))
                                     <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
                                         style="width:100%">
@@ -371,7 +371,6 @@ public function crearnombreparametros(Request $request)
         $nuevo->nombreprefijo_nickname_mod = Session::get('admin')->usua_nickname;
         $nuevo->nombreprefijo_rol_mod = Session::get('admin')->rous_codigo;
 
-        // Guardar el programa en la base de datos
         $nuevo->save();
 
         return redirect()->back()->with('exito', 'nombreparametro creado exitosamente');
@@ -400,7 +399,6 @@ public function actualizarnombreparametros(Request $request, $nombreprefijo_codi
         if ($validacion->fails()) {return redirect()->route('admin.listar.nombreruta')->withErrors($validacion)->withInput();}
 
         $editado = MODELO1::find($nombreprefijo_codigo);
-        //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
         if (!$editado) {return redirect()->route('admin.listar.nombreruta')->with('error', 'El nombreparametro no se encuentra registrado en el sistema.')->withInput();}
 
         $editado->nombreprefijo_nombre = $request->input('nombre');

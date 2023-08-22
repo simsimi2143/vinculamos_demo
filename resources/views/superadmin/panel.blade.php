@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>Panel Superadministrador AIEP</title>
+    <title>Panel Superadministrador LOS LEONES</title>
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('/css/app.min.css') }}">
     <!-- Template CSS -->
@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{{ asset('/css/custom.css') }}">
     {{-- <link rel='shortcut icon' type='image/x-icon' href='{{ asset('/img/camanchaca.png') }}' /> --}}
                                                                     {{-- TODO: IMAGEN DE LA PESTAÑA --}}
-    <link rel='shortcut icon' type='image/x-icon' href={{-- '{{ asset('/img/aiep_chico.png') }}' --}} />
+    <link rel='shortcut icon' type='image/x-icon' href='{{ asset('/img/logo_solo_sin_fondo.png') }}' />
 </head>
 
 <body>
@@ -36,8 +36,10 @@
 
                 <ul class="navbar-nav navbar-right">
                     <div class="sidebar-brand">
-                        <a href="javascript:void(0)"> <img alt="image" src={{-- "{{ asset('/img/logoaiep.png') }}" --}}
-                                class="header-logo" style="transform: scale(0.4);transform-origin: right;" />
+                        <a href="javascript:void(0)"> <img alt="image" src="{{ asset('/img/logo_texto.png') }}"
+                            class="header-logo" style="transform: scale(0.12);transform-origin: right;position: fixed;
+                            top: -24%;
+                            right: 10px;" />
                             <span class="logo-name" style="font-size: 15px;"></span>
                         </a>
                     </div>

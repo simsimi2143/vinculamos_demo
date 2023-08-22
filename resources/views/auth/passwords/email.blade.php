@@ -11,19 +11,19 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/reset.password.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/estilos.css') }}">
-    <link rel='shortcut icon' type='image/x-icon'  href={{ "/img/logo_solo_sin_fondo.png" }}/>
+    <link rel='shortcut icon' type='image/x-icon' href={{ '/img/logo_chico.png' }} />
     {{-- Logito de la pestaña --}}
 
 </head>
 
 <body
-    style=" background-color: #515151;border-color: #515151; background:  url({{ asset('/img/fondodemo.jpg')  }})   ;background-size:cover; background-repeat:repeat;background-attachment: fixed;background-position: center;">
+    style=" background-color: #515151;border-color: #515151; background:  url({{ asset('/img/fonologin.jpg') }})    ;background-size:cover; background-repeat:repeat;background-attachment: fixed;background-position: center;">
     <section class="ftco-section" style="margin-right: 1%; display: flex; align-items:center;">
         <div class="container" style="background: rgba(255,255,255,0.50);  border-radius: 50px; width:500px;">
             <div class="row">
                 <div class="col-md-12">
                     <div class="text-center" style="border-radius: 50px; margin: 0 auto;">
-                        <img src={{ '/img/logo_texto.png' }} alt="Imagen" class="img-fluid">
+                        <img src={{ '/img/logoleones.png' }} alt="Imagen" class="img-fluid">
                     </div>
                 </div>
             </div>
@@ -42,7 +42,7 @@
 
                             <div class="form-group">
                                 <label class="label" for="email">{{ __('Correo') }}</label>
-                                <input style="background-color:white; color:black; border: 1px solid #016fe4;"
+                                <input style="background-color:white; color:black; border: 1px solid #042344;"
                                     id="email" type="email"
                                     class="form-control @error('email') is-invalid @enderror" name="email"
                                     value="{{ old('email') }}" required autocomplete="email" autofocus>
@@ -52,7 +52,7 @@
                                 @endif
                             </div>
                             <div class="form-group">
-                                <button style="background-color:#016fe4; color:white;margin-top:5%;" type="submit"
+                                <button style="background-color:#e76800; color:white;margin-top:5%;" type="submit"
                                     class="form-control btn rounded submit px-3">
                                     {{ __('Restablecer contraseña') }}
                                 </button>

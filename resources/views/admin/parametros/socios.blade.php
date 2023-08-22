@@ -10,35 +10,37 @@
                         <div class="col-6">
                             @if (
                                 $errors->has('nombre') ||
-                                $errors->has('grupo') ||
-                                $errors->has('domicilio')||
-                                $errors->has('nombre_contraparte')||
-                                $errors->has('telefono')||
-                                $errors->has('email')
-                                )
-                            <div class="alert alert-warning alert-dismissible show fade mb-4 text-center">
-                                <div class="alert-body">
-                                    <button class="close" data-dismiss="alert"><span>&times;</span></button>
-                                    @if ($errors->has('nombre'))
-                                        <strong>{{ $errors->first('nombre') }}</strong><br>
-                                    @endif
-                                    @if ($errors->has('grupo'))
-                                        <strong>{{ $errors->first('grupo') }}</strong><br>
-                                    @endif
-                                    @if ($errors->has('domicilio'))
-                                        <strong>{{ $errors->first('domicilio') }}</strong><br>
-                                    @endif
-                                    @if ($errors->has('nombre_contraparte'))
-                                        <strong>{{ $errors->first('nombre_contraparte') }}</strong><br>
-                                    @endif
-                                    @if ($errors->has('telefono'))
-                                        <strong>{{ $errors->first('telefono') }}</strong><br>
-                                    @endif
-                                    @if ($errors->has('email'))
-                                        <strong>{{ $errors->first('email') }}</strong><br>
-                                    @endif
+                                    $errors->has('grupo') ||
+                                    $errors->has('domicilio') ||
+                                    $errors->has('nombre_contraparte') ||
+                                    $errors->has('telefono') ||
+                                    $errors->has('email'))
+                                <div class="alert alert-warning alert-dismissible show fade mb-4 text-center">
+                                    <div class="alert-body">
+                                        <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                        @if ($errors->has('nombre'))
+                                            <strong>{{ $errors->first('nombre') }}</strong><br>
+                                        @endif
+                                        @if ($errors->has('grupo'))
+                                            <strong>{{ $errors->first('grupo') }}</strong><br>
+                                        @endif
+                                        @if ($errors->has('domicilio'))
+                                            <strong>{{ $errors->first('domicilio') }}</strong><br>
+                                        @endif
+                                        @if ($errors->has('nombre_contraparte'))
+                                            <strong>{{ $errors->first('nombre_contraparte') }}</strong><br>
+                                        @endif
+                                        @if ($errors->has('telefono'))
+                                            <strong>{{ $errors->first('telefono') }}</strong><br>
+                                        @endif
+                                        @if ($errors->has('email'))
+                                            <strong>{{ $errors->first('email') }}</strong><br>
+                                        @endif
+                                        @if ($errors->has('subgrupo'))
+                                            <strong>{{ $errors->first('email') }}</strong><br>
+                                        @endif
+                                    </div>
                                 </div>
-                            </div>
                             @endif
                             @if (Session::has('exitoSocio'))
                                 <div class="alert alert-success alert-dismissible show fade mb-4 text-center">
@@ -54,11 +56,11 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h4>Listado de socios comunitarios</h4>
+                            <h4>Listado de socios/as comunitarios/as</h4>
                             <div class="card-header-action">
                                 <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#modalCrearSocio"><i class="fas fa-plus"></i> Nuevo socio
-                                    comunitario</button>
+                                    data-target="#modalCrearSocio"><i class="fas fa-plus"></i> Nuevo socio/a
+                                    comunitario/a</button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -67,7 +69,7 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Nombre del Socio Comunitario</th>
+                                            <th>Nombre del Socio/a Comunitario/a</th>
                                             <th>Nombre de la contraparte</th>
                                             <th>Teléfono de la contraparte</th>
                                             <th>Correo de la contraparte</th>
@@ -116,7 +118,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modaleditarSocio">Editar socio comunitario</h5>
+                        <h5 class="modal-title" id="modaleditarSocio">Editar socio/a comunitario/a</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -127,7 +129,7 @@
                             @csrf
 
                             <div class="form-group">
-                                <label>Nombre del socio comunitario</label>
+                                <label>Nombre del socio/a comunitario/a</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
@@ -153,11 +155,12 @@
                                     <label>Grupo de interés</label>
                                     <div class="input-group">
                                         <select class="form-control select2" style="width: 100%" id="grupo"
-                                            name="grupo">
+                                            name="grupo" onchange="cargarSubgrupos2()">
+                                            <option value="" disabled selected>Seleccione...</option>
                                             @foreach ($grupos as $grupo)
-                                                <option value="{{ $grupo->sugr_codigo }}"
-                                                    {{ $soci->sugr_codigo == $grupo->sugr_codigo ? 'selected' : '' }}>
-                                                    {{ $grupo->sugr_nombre }}
+                                                <option value="{{ $grupo->grin_codigo }}"
+                                                    {{ $soci->grin_codigo == $grupo->grin_codigo ? 'selected' : '' }}>
+                                                    {{ $grupo->grin_nombre }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -169,8 +172,33 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <label>Subgrupo de interés</label>
+                                <div class="input-group">
+                                    <select class="form-control select2" style="width: 100%" id="subgrupo2" name="subgrupo">
+                                        <option value="" disabled selected>Seleccione...</option>
+                                        @foreach ($subgrupos as $subgrupo )
+                                        <option value="{{ $subgrupo->sugr_codigo }}"
+                                            {{ $soci->sugr_codigo == $subgrupo->sugr_codigo ? 'selected' : '' }}>
+                                            {{ $subgrupo->sugr_nombre }}
+                                        </option>
+
+                                        @endforeach
+                                    </select>
+                                    @if ($errors->has('subgrupo'))
+                                        <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
+                                            style="width:100%">
+                                            <div class="alert-body">
+                                                <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                                <strong>{{ $errors->first('subgrupo') }}</strong>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
                             <div class="form-group" style="">
-                                <label>Domicilio del socio comunitario</label>
+                                <label>Domicilio del socio/a comunitario/a</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
@@ -313,7 +341,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="formModal">Nuevo socio comunitario</h5>
+                    <h5 class="modal-title" id="formModal">Nuevo socio/a comunitario/a</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -322,7 +350,7 @@
                     <form action="{{ route('admin.crear.socios') }} " method="POST">
                         @csrf
                         <div class="form-group">
-                            <label>Nombre del socio comunitario</label>
+                            <label>Nombre del socio/a comunitario/a</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
@@ -345,10 +373,12 @@
                         <div class="form-group">
                             <label>Grupo de interés</label>
                             <div class="input-group">
-                                <select class="form-control select2" style="width: 100%" id="grupo" name="grupo">
-                                    <option value="" disabled>Seleccione...</option>
-                                    @foreach ($grupos as $gp)
-                                        <option value="{{ $gp->sugr_codigo }}">{{ $gp->sugr_nombre }}</option>
+                                <select class="form-control select2" style="width: 100%" id="grupointres" name="grupo" onchange="cargarSubgrupos()">
+                                    <option value="" disabled selected>Seleccione...</option>
+                                    @foreach ($grupos as $grupo)
+                                        <option value="{{ $grupo->grin_codigo }}">
+                                            {{ $grupo->grin_nombre }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 @if ($errors->has('grupo'))
@@ -363,8 +393,27 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <label>Subgrupo de interés</label>
+                            <div class="input-group">
+                                <select class="form-control select2" style="width: 100%" id="subgrupo" name="subgrupo">
+                                    <option value="" disabled selected>Seleccione...</option>
+
+                                </select>
+                                @if ($errors->has('subgrupo'))
+                                    <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
+                                        style="width:100%">
+                                        <div class="alert-body">
+                                            <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                            <strong>{{ $errors->first('subgrupo') }}</strong>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group" style="">
-                            <label>Domicilio del socio comunitario</label>
+                            <label>Domicilio del socio/a comunitario/a</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
@@ -492,14 +541,15 @@
                     @method('DELETE')
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalEliminar">Eliminar Socio Comunitario</h5>
+                        <h5 class="modal-title" id="modalEliminar">Eliminar Socio/a Comunitario/a</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body text-center">
                         <i class="fas fa-ban text-danger" style="font-size: 50px; color"></i>
-                        <h6 class="mt-2">El socio comunitario dejará de existir dentro del sistema. <br> ¿Desea continuar
+                        <h6 class="mt-2">EL/La socio/a comunitario/a dejará de existir dentro del sistema. <br> ¿Desea
+                            continuar
                             de todos
                             modos?</h6>
                         <input type="hidden" id="soco_codigo" name="soco_codigo" value="">
@@ -522,15 +572,58 @@
         function editarSocio(soco_codigo) {
             $('#modaleditarSocio-' + soco_codigo).modal('show');
         }
+
+        function cargarSubgrupos() {
+            var grupo = $('#grupointres').val()
+            $.ajax({
+                url: `${window.location.origin}/admin/socios/listar-subgrupos`,
+                type: 'POST',
+                dataType: 'json',
+
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    grin_codigo: grupo
+                },
+                success: function(data) {
+                    console.log(data)
+                    $('#subgrupo').empty();
+                    $.each(data, function(key, value) {
+                        $('#subgrupo').append(
+                            `<option value="${value.sugr_codigo}">${value.sugr_nombre}</option>`
+                        );
+                    });
+                }
+            });
+
+
+        }
+        function cargarSubgrupos2() {
+            var grupo = $('#grupo').val()
+            $.ajax({
+                url: `${window.location.origin}/admin/socios/listar-subgrupos`,
+                type: 'POST',
+                dataType: 'json',
+
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    grin_codigo: grupo
+                },
+                success: function(data) {
+                    console.log(data)
+                    $('#subgrupo2').empty();
+                    $.each(data, function(key, value) {
+                        $('#subgrupo2').append(
+                            `<option value="${value.sugr_codigo}">${value.sugr_nombre}</option>`
+                        );
+                    });
+                }
+            });
+
+
+        }
     </script>
 
-    {{-- <link rel="stylesheet" href="{{ asset('/bundles/datatables/datatables.min.css') }}">
-    <link rel="stylesheet"
-        href="{{ asset('/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css') }}">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <script src="{{ asset('/bundles/datatables/datatables.min.js') }}"></script>
-    <script src="{{ asset('/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('/bundles/jquery-ui/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('/js/page/datatables.js') }}"></script> --}}
+    {{-- <script src="{{ asset('js/admin/parametros/socios.js') }}"></script> --}}
+
 @endsection

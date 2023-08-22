@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>VINCULAMOS AIEP</title>
+    <title>VINCULAMOS LOS LEONES</title>
     <!-- General CSS Files -->
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/social.css') }}" rel="stylesheet">
@@ -34,6 +34,7 @@
     <link rel="stylesheet" href="{{ asset('/bundles/jquery-selectric/selectric.css') }}">
     <link rel="stylesheet" href="{{ asset('/bundles/izitoast/css/iziToast.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/bundles/pretty-checkbox/pretty-checkbox.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('/bundles/select2/dist/css/select2.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/components.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/custom.css') }}">
@@ -82,7 +83,9 @@
                                     @elseif (Session::has('digitador'))
                                         {{ Str::upper(Session::get('digitador.usua_nombre')[0]) . Str::upper(Session::get('digitador.usua_apellido')[0]) }}
                                     @elseif(Session::has('observador'))
-                                        {{ Str::upper(Session::get('observador.usua_nombre')[0]) . Str::upper(Session::get('observador.usua_apellido')[0]) }} @endif
+                                        {{ Str::upper(Session::get('observador.usua_nombre')[0]) . Str::upper(Session::get('observador.usua_apellido')[0]) }}
+                                    @elseif(Session::has('supervisor'))
+                                        {{ Str::upper(Session::get('supervisor.usua_nombre')[0]) . Str::upper(Session::get('supervisor.usua_apellido')[0]) }} @endif
                                 ">
                             </figure>
                             <span class="logo-name" style="font-size: 12px;"id="usuario-nombre">
@@ -95,6 +98,9 @@
                                 @elseif(Session::has('observador'))
                                     {{ Session::get('observador.usua_nombre') }}
                                     {{ Session::get('observador.usua_apellido') }}
+                                @elseif(Session::has('supervisor'))
+                                    {{ Session::get('supervisor.usua_nombre') }}
+                                    {{ Session::get('supervisor.usua_apellido') }}
                                 @endif
                             </span>
                         </a>
