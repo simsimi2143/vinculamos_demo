@@ -11,19 +11,19 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/reset.password.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/estilos.css') }}">
-    <link rel='shortcut icon' type='image/x-icon' href={{ '/img/logo_chico.png' }} />
+    <link rel='shortcut icon' type='image/x-icon' href={{ '/img/logo_solo_sin_fondo.png' }} />
     {{-- Logito de la pestaña --}}
 
 </head>
 
 <body
-    style=" background-color: #515151;border-color: #515151; background:  url({{ asset('/img/fonologin.jpg') }})  ;background-size:cover; background-repeat:repeat;background-attachment: fixed;background-position: center;">
+    style=" background-color: #515151;border-color: #515151; background:  url({{ asset('/img/fondodemo.jpg') }})  ;background-size:cover; background-repeat:repeat;background-attachment: fixed;background-position: center;">
     <section class="ftco-section" style="margin-right: 1%; display: flex; align-items:center;">
         <div class="container" style="background: rgba(255,255,255,0.50);  border-radius: 50px; width:500px;">
             <div class="row">
                 <div class="col-md-12">
                     <div class="text-center" style="border-radius: 50px; margin: 0 auto; margin-top:5%;">
-                        <img src={{ '/img/logoleones.png' }} alt="Imagen" class="img-fluid">
+                        <img src={{ '/img/logo_texto.png' }} alt="Imagen" class="img-fluid">
                     </div>
                 </div>
             </div>
@@ -91,7 +91,7 @@
                         <!-- Inicio del Formulario -->
                         <div class="form-group mb-1" style="margin-top:-5%; width:100%;">
                             <label class="label" for="nickname" style="font-size: auto;">Nombre de Usuario</label>
-                            <input style="background-color:white; color:black; border: 1px solid #e76800;"
+                            <input style="background-color:white; color:black; border: 1px solid rgb(0, 153, 255);"
                                 type="text" class="form-control" placeholder="Ingrese su Nombre de Usuario"
                                 name="nickname" id="nickname" value="{{ old('nickname') }}" />
                             @if ($errors->has('nickname'))
@@ -105,7 +105,7 @@
                         </div>
                         <div class="form-group mb-1" style="font-size: auto;">
                             <label class="label" for="clave" style="font-size: auto; width:100%;">Contraseña</label>
-                            <input style="background-color:white; color:black; border: 1px solid #e76800;"
+                            <input style="background-color:white; color:black; border: 1px solid rgb(0, 153, 255);"
                                 style="" type="password" class="form-control" placeholder="Ingrese su contraseña"
                                 required id="clave" name="clave">
                             @if ($errors->has('clave'))
@@ -130,7 +130,7 @@
 
                         <div class="form-group">
                             <button type="submit" class="form-control btn rounded submit px-3"
-                                style="background-color:#e76800; color:white;margin-top:5%;">Ingresar</button>
+                                style="background-color:rgb(0, 153, 255); color:white;margin-top:5%;">Ingresar</button>
                         </div>
                     </form>
                 </div>
