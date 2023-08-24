@@ -33,7 +33,6 @@
                     <div class="card">
                         <div class="card-header">
                             <h4>Listado de Iniciativas</h4>
-
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -42,52 +41,63 @@
                                         <tr>
 
                                             <th>Nombre</th>
-                                            <th>Mecanismo</th>
-                                            <th>Sedes</th>
                                             <th>Escuelas</th>
+                                            <th>Carreras</th>
                                             <th>Estado</th>
-                                            <th>Acciones</th>
+                                            <th>Fecha de creación</th>
+                                            <th style="width: 250px">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($iniciativas as $iniciativa)
                                             <tr>
                                                 <td>{{ $iniciativa->inic_nombre }}</td>
-                                                <td>{{ $iniciativa->meca_nombre }}</td>
-                                                <td>{{ $iniciativa->sedes }}</td>
-                                                <td>{{ $iniciativa->escuelas }}</td>
                                                 <td>
-                                                    @if ($iniciativa->inic_estado == 1)
-                                                        <div class="badge badge-light badge-shadow">
-                                                            <i class="fas fa-history"></i> En revisión
-                                                        </div>
-                                                    @elseif ($iniciativa->inic_estado == 2)
-                                                        <div class="badge badge-info badge-shadow">
-                                                            <i class="fas fa-play-circle"></i> En ejecución
-                                                        </div>
-                                                    @elseif ($iniciativa->inic_estado == 3)
-                                                        <div class="badge badge-success badge-shadow">
-                                                            <i class="fas fa-lock"></i> Aceptada
-                                                        </div>
-                                                    @elseif ($iniciativa->inic_estado == 4)
-                                                        <div class="badge badge-info badge-shadow">
-                                                            <i class="fas fa-info-circle"></i> Falta info
-                                                        </div>
-                                                    @elseif ($iniciativa->inic_estado == 5)
-                                                        <div class="badge badge-primary badge-shadow">
-                                                            <i class="fas fa-pause-circle"></i> Cerrada
-                                                        </div>
-                                                    @elseif ($iniciativa->inic_estado == 6)
-                                                        <div class="badge badge-success badge-shadow">
-                                                            <i class="fas fa-check-double"></i> Finalizada
-                                                        </div>
+                                                    @php
+                                                        $escuelasArray = explode(',', $iniciativa->escuelas);
+                                                    @endphp
+                                                    @if (count($escuelasArray) > 3)
+                                                        Todas
+                                                    @else
+                                                        {{ $iniciativa->escuelas }}
+                                                    @endif
+                                                </td>
+                                                {{-- <td>{{ $iniciativa->carreras }}</td> --}}
+                                                <td>
+                                                    @php
+                                                        $carrerasArray = explode(',', $iniciativa->carreras);
+                                                    @endphp
+                                                    @if (count($carrerasArray) > 29)
+                                                        Todas
+                                                    @else
+                                                        {{ $iniciativa->carreras }}
                                                     @endif
                                                 </td>
                                                 <td>
+                                                    @php
+                                                        $estadoBadges = [
+                                                            1 => ['class' => 'light', 'icon' => 'history', 'text' => 'En revisión'],
+                                                            2 => ['class' => 'info', 'icon' => 'play-circle', 'text' => 'En ejecución'],
+                                                            3 => ['class' => 'success', 'icon' => 'lock', 'text' => 'Aceptada'],
+                                                            4 => ['class' => 'info', 'icon' => 'info-circle', 'text' => 'Falta info'],
+                                                            5 => ['class' => 'primary', 'icon' => 'pause-circle', 'text' => 'Cerrada'],
+                                                            6 => ['class' => 'success', 'icon' => 'check-double', 'text' => 'Finalizada'],
+                                                        ];
+                                                    @endphp
+
+                                                    <div
+                                                        class="badge badge-{{ $estadoBadges[$iniciativa->inic_estado]['class'] }} badge-shadow">
+                                                        <i
+                                                            class="fas fa-{{ $estadoBadges[$iniciativa->inic_estado]['icon'] }}"></i>
+                                                        {{ $estadoBadges[$iniciativa->inic_estado]['text'] }}
+                                                    </div>
+                                                </td>
+                                                <td>{{ $iniciativa->inic_creado }}</td>
+                                                <td>
                                                     <div class="dropdown d-inline">
                                                         <button class="btn btn-primary dropdown-toggle"
-                                                            id="dropdownMenuButton2"
-                                                            data-toggle="dropdown">Opciones</button>
+                                                            id="dropdownMenuButton2" data-toggle="dropdown"title="Opciones">
+                                                            <i class="fas fa-cog"></i> </button>
                                                         <div class="dropdown-menu dropright">
 
                                                             <a href="{{ route('admin.editar.paso1', $iniciativa->inic_codigo) }}"
@@ -101,25 +111,33 @@
                                                         </div>
                                                     </div>
 
-                                                    <a href="{{route('admin.iniciativas.detalles',$iniciativa->inic_codigo)}}" class="btn btn-icon btn-warning" data-toggle="tooltip"
+                                                    <a href="{{ route('admin.iniciativas.detalles', $iniciativa->inic_codigo) }}"
+                                                        class="btn btn-icon btn-warning" data-toggle="tooltip"
                                                         data-placement="top" title="Ver detalles"><i
                                                             class="fas fa-eye"></i></a>
 
-                                                    {{-- <a href="" class="btn btn-icon btn-warning" data-toggle="tooltip"
-                                                        data-placement="top" title="Calcular INVI"><i
-                                                            class="fas fa-tachometer-alt"></i></a> --}}
 
-                                                    <a href="{{route('admin.evidencias.listar',$iniciativa->inic_codigo)}}" class="btn btn-icon btn-warning" data-toggle="tooltip"
+                                                    <a href="{{ route('admin.evidencias.listar', $iniciativa->inic_codigo) }}"
+                                                        class="btn btn-icon btn-warning" data-toggle="tooltip"
                                                         data-placement="top" title="Adjuntar evidencia"><i
                                                             class="fas fa-paperclip"></i></a>
 
-                                                    <a href="" class="btn btn-icon btn-success" data-toggle="tooltip"
+                                                    <a href="{{ route('admin.cobertura.index', $iniciativa->inic_codigo) }}"
+                                                        class="btn btn-icon btn-success" data-toggle="tooltip"
+                                                        data-placement="top" title="Ingresar cobertura"><i
+                                                            class="fas fa-users"></i></a>
+                                                    <a href="{{ route('admin.resultados.listado', $iniciativa->inic_codigo) }}"
+                                                        class="btn btn-icon btn-success" data-toggle="tooltip"
+                                                        data-placement="top" title="Ingresar resultado"><i
+                                                            class="fas fa-flag"></i></a>
+
+                                                    {{-- <a href="" class="btn btn-icon btn-success" data-toggle="tooltip"
                                                         data-placement="top" title="Ingresar resultado"><i
                                                             class="fas fa-flag"></i></a>
 
                                                     <a href="" class="btn btn-icon btn-success" data-toggle="tooltip"
                                                         data-placement="top" title="Evaluar iniciativa"><i
-                                                            class="fas fa-file-signature"></i></a>
+                                                            class="fas fa-file-signature"></i></a> --}}
 
 
                                                 </td>
@@ -168,5 +186,4 @@
             $('#modalEliminaIniciativa').modal('show');
         }
     </script>
-
 @endsection

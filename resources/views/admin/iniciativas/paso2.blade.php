@@ -57,8 +57,8 @@
                             <h2 id="idIniciativa">{{ $iniciativa->inic_codigo }}</h2>
                             <h4>Iniciativa: {{ $iniciativa->inic_nombre }}</h4>
                             <div class="card-header-action">
-                                <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#modalCrearSocio"><i class="fas fa-plus"></i> Crear Socio</button>
+                                {{-- <button type="button" class="btn btn-primary" data-toggle="modal" --}}
+                                {{-- data-target="#modalCrearSocio"><i class="fas fa-plus"></i> Crear Socio/a</button> --}}
                             </div>
                         </div>
 
@@ -69,10 +69,12 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-2 col-md-2 col-lg-2">
+                                <div class="col-2 col-md-2 col-lg-3">
                                     <div class="form-group">
-                                        <label style="font-size: 110%">Subgrupos</label> <label for="" style="color: red;">*</label>
-                                        <select class="form-control select2" id="subgrupo" name="subgrupo" style="width: 100%">
+                                        <label style="font-size: 110%">Subgrupos</label> <label for=""
+                                            style="color: red;">*</label>
+                                        <select class="form-control select2" id="subgrupo" name="subgrupo"
+                                            style="width: 100%">
                                             <option value="">Seleccione...</option>
                                             @forelse ($subgrupos as $subgrupo)
                                                 <option value="{{ $subgrupo->sugr_codigo }}">{{ $subgrupo->sugr_nombre }}
@@ -96,9 +98,17 @@
 
                                 <div class="col-4 col-md-4 col-lg-4">
                                     <div class="form-group">
-                                        <label style="font-size: 110%">Socio comunitario</label> <label for="" style="color: red;">*</label>
-                                        <select class="form-control select2" id="socio" name="socio" style="width: 100%">
+                                        <label style="font-size: 110%">Socio/a comunitario</label> <label for=""
+                                            style="color: red;">*</label>
+                                        <select class="form-control select2" id="socio" name="socio"
+                                            style="width: 100%">
                                             <option value="">Seleccione...</option>
+                                            @forelse ($socios as $socio)
+                                                <option value="{{ $socio->soco_codigo }}">{{ $socio->soco_nombre_socio }}
+                                                </option>
+                                            @empty
+                                                <option value="-1">No existen registros</option>
+                                            @endforelse
                                         </select>
 
                                         @if ($errors->has('socio'))
@@ -134,7 +144,8 @@
                                 <div class="col-2 col-md-2 col-lg-2" style="position: relative;">
 
                                     <button style="position: absolute; top: 52%; transform: translateY(-50%);"
-                                        class="btn btn-primary mr-1 waves-effect" onclick="AgregarParticipantesExternos()"><i class="fas fa-plus"></i>
+                                        class="btn btn-primary mr-1 waves-effect"
+                                        onclick="AgregarParticipantesExternos()"><i class="fas fa-plus"></i>
                                         Agregar</button>
 
                                 </div>
@@ -161,6 +172,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
 
 
@@ -170,14 +182,34 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-2 div-col-md-2 col-lg-2">
+                                <div class="col-4 col-md-4 col-lg-3">
                                     <div class="form-group">
-                                        <label style="font-size: 110%">Sede</label> <label for="" style="color: red;">*</label>
-                                        <select class="form-control select2" id="sedes" name="sedes" style="width: 100%">
+                                        <label style="font-size: 110%">Escuela</label> <label for=""
+                                            style="color: red;">*</label>
+                                        <select class="form-control select2" id="escuelas" name="escuelas"
+                                            style="width: 100%">
                                             <option value="" selected disabled>Seleccione...</option>
-                                            @forelse ($sedes as $sede)
-                                                <option value="{{ $sede->sede_codigo }}">
-                                                    {{ $sede->sede_nombre }}
+                                            @forelse ($escuelas as $escuela)
+                                                <option value="{{ $escuela->escu_codigo }}">
+                                                    {{ $escuela->escu_nombre }}
+                                                </option>
+                                            @empty
+                                                <option value="-1">No existen registros</option>
+                                            @endforelse
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-2 div-col-md-2 col-lg-3">
+                                    <div class="form-group">
+                                        <label style="font-size: 110%">Carreras</label> <label for=""
+                                            style="color: red;">*</label>
+                                        <select class="form-control select2" id="carreras" name="carreras"
+                                            style="width: 100%">
+                                            <option value="" disabled selected>Seleccione...</option>
+                                            @forelse ($carreras as $carrera)
+                                                <option value="{{ $carrera->care_codigo }}">
+                                                    {{ $carrera->care_nombre }}
                                                 </option>
                                             @empty
                                                 <option value="-1">No existen registros</option>
@@ -185,35 +217,6 @@
                                         </select>
                                     </div>
                                 </div>
-
-                                <div class="col-4 col-md-4 col-lg-4">
-                                    <div class="form-group">
-                                        <label style="font-size: 110%">Escuela</label> <label for="" style="color: red;">*</label>
-                                        <select class="form-control select2" id="escuelas" name="escuelas" style="width: 100%">
-                                            <option value="" selected disabled>Seleccione...</option>
-
-                                        </select>
-                                    </div>
-                                </div>
-
-                                {{-- <div class="col-2 col-md-2 col-lg-2">
-                                    <div class="form-group">
-                                        <label>N° de participantes totales</label> <label for=""
-                                            style="color: red;">*</label>
-                                        <input type="number" class="form-control" id="ntotal" name="ntotal">
-
-                                        @if ($errors->has('ntotal'))
-                                            <div class="alert alert-warning alert-dismissible show fade mt-2">
-                                                <div class="alert-body">
-                                                    <button class="close"
-                                                        data-dismiss="alert"><span>&times;</span></button>
-                                                    <strong>{{ $errors->first('ntotal') }}</strong>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    </div>
-                                </div> --}}
-
                                 <div class="col-2 col-md-2 col-lg-2">
                                     <div class="form-group">
                                         <label style="font-size: 110%">Estudiantes</label> <label for=""
@@ -235,7 +238,8 @@
 
                                 <div class="col-2 col-md-2 col-lg-2">
                                     <div class="form-group">
-                                        <label style="font-size: 110%">Docentes</label> <label for="" style="color: red;">*</label>
+                                        <label style="font-size: 110%">Docentes</label> <label for=""
+                                            style="color: red;">*</label>
                                         <input type="number" class="form-control" id="ndocentes" name="ndocentes">
 
                                         @if ($errors->has('ndocentes'))
@@ -250,16 +254,39 @@
                                     </div>
                                 </div>
 
-                                <div class="col-2 col-md-2 col-lg-2" style="position: relative;">
+                                <div class="col-2 col-md-2 col-lg-2">
+                                    <div class="form-group">
+                                        <label style="font-size: 110%">Funcionarios/as</label> <label for=""
+                                            style="color: red;">*</label>
+                                        <input type="number" class="form-control" id="nfuncionarios"
+                                            name="nfuncionarios">
 
-                                    <button style="position: absolute; top: 50%; transform: translateY(-50%);"
+                                        @if ($errors->has('nfuncionarios'))
+                                            <div class="alert alert-warning alert-dismissible show fade mt-2">
+                                                <div class="alert-body">
+                                                    <button class="close"
+                                                        data-dismiss="alert"><span>&times;</span></button>
+                                                    <strong>{{ $errors->first('nfuncionarios') }}</strong>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="text-align: ">
+                                <div class="col-4"></div>
+                                <div class="col-4">
+
+                                    <button style="position: absolute; top: 50%;width: 70%;left: 15%;"
                                         onclick="modificar()" class="btn btn-primary mr-1 waves-effect"><i
                                             class="fas fa-plus"></i> Agregar
                                     </button>
 
                                 </div>
+                                <div class="col-4"></div>
                             </div>
-                            <div class="row">
+
+                            <div class="row" style="margin-top:75px">
                                 <div class="col-2"></div>
                                 <div class="col-8">
                                     <div class="card">
@@ -267,10 +294,11 @@
                                             <div class="table-responsive">
                                                 <table class="table table-bored table-md">
                                                     <thead>
-                                                        <th>Sedes</th>
                                                         <th>Escuelas</th>
+                                                        <th>Carreras</th>
                                                         <th>Estudiantes</th>
                                                         <th>Docentes</th>
+                                                        <th>Funcionarios/as</th>
                                                         {{-- <th>Total</th> --}}
                                                     </thead>
                                                     <tbody id="body-tabla-internos">
@@ -283,74 +311,70 @@
                                 </div>
                             </div>
 
-                            <form action="{{ route('admin.paso2.verificar', $iniciativa->inic_codigo) }}" method="POST">
-                                @csrf
-                                <div class="row">
-                                    <div class="col-6 col-md-6 col-lg-6">
-                                        <div class="row">
-                                            <div class="col-2"></div>
-                                            <h4 class="font-weight-light">¿La iniciativa se desarrolla con <br>alguno de los siguientes grupos?</h4>
-                                        </div>
-
-                                        <div class="row" style="margin-top: 5%">
-                                            <div class="col-2"></div>
-                                            <div class="form-grup">
-                                                @foreach ($grupos as $grupo)
-                                                    <div class="form-check">
-                                                        <input type="checkbox" name=grupos[] class="form-check-input"
-                                                            id="check{{ $grupo->grup_codigo }}"
-                                                            value="{{ $grupo->grup_codigo }}" @if(in_array($grupo->grup_codigo,$gruposSec)) checked @endif>
-                                                        <label for="check{{ $grupo->grup_codigo }}"
-                                                            class="form-check-label">
-                                                            <h6 class="font-weight-light">{{ $grupo->grup_nombre }}</h6>
-                                                        </label>
-                                                    </div>
-                                                @endforeach
+                            <div class="row">
+                                <div class="col-6 col-md-6 col-lg-6">
+                                    <h6>Resultados esperados</h6>
+                                    <div class="row mt-3">
+                                        <div class="col-3 col-md-3 col-lg-3">
+                                            <div class="form-group">
+                                                <label>Cuantificación</label> <label for=""
+                                                    style="color: red;">*</label>
+                                                <input type="number" class="form-control" id="cuantificacion"
+                                                    name="cuantificacion" autocomplete="off" min="0">
                                             </div>
                                         </div>
-                                    </div>
-
-
-                                    <div class="col-6 col-md-6 col-lg-6">
-                                        <div class="row">
-                                            <div class="col-2"></div>
-                                            <h4 class="font-weight-light"class="font-weight-light">¿La iniciativa aborda alguna de <br>las siguientes temáticas?</h4>
-                                        </div>
-
-                                        <div class="row" style="margin-top: 5%">
-                                            <div class="col-2"></div>
-                                            <div class="form-grup">
-                                                @foreach ($tematicas as $tematica)
-                                                    <div class="form-check">
-                                                        <input type="checkbox" name=tematicas[] class="form-check-input"
-                                                            id="check{{ $tematica->tema_codigo }}t"
-                                                            value="{{ $tematica->tema_codigo }}" @if(in_array($tematica->tema_codigo,$tematicasSec)) checked @endif>
-                                                        <label for="check{{ $tematica->tema_codigo }}t"
-                                                            class="form-check-label">
-                                                            <h6 class="font-weight-light">{{ $tematica->tema_nombre }}</h6>
-                                                        </label>
-                                                    </div>
-                                                @endforeach
+                                        <div class="col-7 col-md-7 col-lg-7">
+                                            <div class="form-group">
+                                                <label>Resultado esperado</label> <label for=""
+                                                    style="color: red;">*</label>
+                                                <input type="text" class="form-control" id="resultado"
+                                                    name="resultado" autocomplete="off">
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-12 col-md-12 col-log-12">
-                                        <div class="text-right">
-                                            <strong>
-                                                <a href="{{ route('admin.editar.paso1', $iniciativa->inic_codigo) }}"
-                                                    type="button" class="btn mr-1 waves-effect" style="background-color:#042344; color:white"><i
-                                                        class="fas fa-chevron-left"></i>
-                                                    Paso anterior</a>
-                                            </strong>
-                                            <button type="submit" class="btn btn-primary mr-1 waves-effect"><i
-                                                    class="fas fa-save"></i> Guardar</button>
+                                        <div class="col-2 col-md-2 col-lg-2" style="position: relative;">
+                                            <button style="position: absolute; top: 50%; transform: translateY(-50%);"
+                                                type="button" class="btn btn-primary waves-effect"
+                                                onclick="agregarResultado()"><i class="fas fa-plus"></i></button>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-lg-12 text-center" id="div-alert-resultado">
                                         </div>
                                     </div>
+                                    <div class="card" id="card-tabla-resultados" style="display: none;">
+                                        <div class="card-body p-0">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-md">
+                                                    <tr>
+                                                        <th>Cuantificación</th>
+                                                        <th>Resultado</th>
+                                                        <th>Acción</th>
+                                                    </tr>
+                                                    <tbody id="body-tabla-resultados">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="iniciativa" name="iniciativa"
+                                            value="{{ $iniciativa->inic_codigo }}">
+                                    </div>
                                 </div>
-                            </form>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 col-md-12 col-log-12">
+                                    <div class="text-right">
+                                        <strong>
+                                            <a href="{{ route('admin.editar.paso1', $iniciativa->inic_codigo) }}"
+                                                type="button" class="btn mr-1 waves-effect"
+                                                style="background-color:#042344; color:white"><i
+                                                    class="fas fa-chevron-left"></i>
+                                                Paso anterior</a>
+                                        </strong>
+                                        <a href="{{ route('admin.editar.paso3', $iniciativa->inic_codigo) }}"
+                                            type="button" class="btn btn-primary mr-1 waves-effect">
+                                            Paso siguiente <i class="fas fa-chevron-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
@@ -456,7 +480,8 @@
 
                             <label>Subgrupo</label>
                             <div class="input-group">
-                                <select class="form-control select2" style="width: 100%" id="subgrupo" name="subgrupo" style="width: 100%">
+                                <select class="form-control select2" style="width: 100%" id="subgrupo" name="subgrupo"
+                                    style="width: 100%">
                                     <option value="" selected disabled>Seleccione...</option>
                                     @foreach ($subgrupos as $subgrupo)
                                         <option value="{{ $subgrupo->sugr_codigo }}">{{ $subgrupo->sugr_nombre }}
@@ -474,21 +499,21 @@
                                 @endif
                             </div>
 
-                            <label>Sedes Asociadas</label>
+                            <label>Escuelas Asociadas</label>
                             <div class="input-group">
-                                <select class="form-control select2" style="width: 100%" id="sedesT" name="sedesT[]" style="width: 100%"
-                                    multiple>
+                                <select class="form-control select2" style="width: 100%" id="escuelasT"
+                                    name="escuelasT[]" style="width: 100%" multiple>
                                     <option value="" disabled>Seleccione...</option>
-                                    @foreach ($sedesT as $sede)
-                                        <option value="{{ $sede->sede_codigo }}">{{ $sede->sede_nombre }}</option>
+                                    @foreach ($escuelasTotales as $escuela)
+                                        <option value="{{ $escuela->escu_codigo }}">{{ $escuela->escu_nombre }}</option>
                                     @endforeach
                                 </select>
-                                @if ($errors->has('sedesT'))
+                                @if ($errors->has('escuelasT'))
                                     <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
                                         style="width:100%">
                                         <div class="alert-body">
                                             <button class="close" data-dismiss="alert"><span>&times;</span></button>
-                                            <strong>{{ $errors->first('sedesT') }}</strong>
+                                            <strong>{{ $errors->first('escuelasT') }}</strong>
                                         </div>
                                     </div>
                                 @endif
@@ -514,6 +539,7 @@
             modificar();
             sociosBySubgrupos();
             listarExterno();
+            listarResultados();
         });
 
         function getURLParams(url) {
@@ -524,6 +550,131 @@
             return params;
         }
 
+        function listarResultados() {
+            var inic_codigo = $('#iniciativa').val();
+            var datosResultados, fila, alertError;
+            $('#div-alert-resultado').html('');
+
+            // TODO: petición para listar resultados asociados a la iniciativa
+            $.ajax({
+                type: 'GET',
+                url: `${window.location.origin}/admin/iniciativa/listar-resultados`,
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    iniciativa: inic_codigo
+                },
+                success: function(resListar) {
+                    respuesta = JSON.parse(resListar);
+                    console.log(respuesta);
+
+                    $('#body-tabla-resultados').empty();
+
+                    if (!respuesta.estado) {
+                        if (respuesta.resultado != '') {
+                            alertError =
+                                `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                            $('#div-alert-resultado').html(alertError);
+                        }
+                        $('#card-tabla-resultados').hide();
+                        return;
+                    }
+
+                    datosResultados = respuesta.resultado;
+                    datosResultados.forEach(registro => {
+                        fila = '<tr>' +
+                            '<td>' + registro.resu_cuantificacion_inicial + '</td>' +
+                            '<td>' + registro.resu_nombre + '</td>' +
+                            '<td>' +
+                            '<button type="button" class="btn btn-icon btn-danger" onclick="eliminarResultado(' +
+                            registro.resu_codigo + ', ' + registro.inic_codigo +
+                            ')"><i class="fas fa-trash"></i></button>' +
+                            '</td>' +
+                            '</tr>';
+                        $('#body-tabla-resultados').append(fila);
+                    });
+                    $('#card-tabla-resultados').show();
+
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function agregarResultado() {
+            var inic_codigo = $('#iniciativa').val();
+            console.log(inic_codigo);
+            var resu_cantidad = $('#cuantificacion').val();
+            var resu_nombre = $('#resultado').val();
+            var alertError, alertExito;
+            $('#div-alert-resultado').html('');
+
+            // petición para guardar un resultado asociado a la iniciativa
+            $.ajax({
+                type: 'POST',
+                url: window.location.origin + '/admin/iniciativa/guardar-resultado',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    inic_codigo: inic_codigo,
+                    cantidad: resu_cantidad,
+                    nombre: resu_nombre
+                },
+                success: function(resGuardar) {
+                    respuesta = JSON.parse(resGuardar);
+                    if (!respuesta.estado) {
+                        alertError =
+                            `<div class="alert alert-warning alert-dismissible show fade"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                        $('#div-alert-resultado').html(alertError);
+                        return;
+                    }
+                    alertExito =
+                        `<div class="alert alert-success alert-dismissible show fade"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                    $('#cuantificacion').val('');
+                    $('#resultado').val('');
+                    listarResultados();
+                    $('#div-alert-resultado').html(alertExito);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function eliminarResultado(resu_codigo, inic_codigo) {
+            var alertError, alertExito;
+            $('#div-alert-resultado').html('');
+
+            // petición para eliminar un resultado asociada a la iniciativa
+            $.ajax({
+                type: 'POST',
+                url: `${window.location.origin}/admin/iniciativa/eliminar-resultado`,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    resu_codigo: resu_codigo,
+                    inic_codigo: inic_codigo
+                },
+                success: function(resEliminar) {
+                    respuesta = JSON.parse(resEliminar);
+                    if (!respuesta.estado) {
+                        alertError =
+                            `<div class="alert alert-danger alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                        $('#div-alert-resultado').html(alertError);
+                        return;
+                    }
+                    alertExito =
+                        `<div class="alert alert-success alert-dismissible show fade mb-3"><div class="alert-body"><button class="close" data-dismiss="alert"><span>&times;</span></button><strong>${respuesta.resultado}</strong></div></div>`;
+                    listarResultados();
+                    $('#div-alert-resultado').html(alertExito);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
 
 
         function escuelasBySedesPaso2() {
@@ -585,20 +736,24 @@
         }
 
         function modificar() {
+
             $.ajax({
                 type: 'POST',
                 url: `${window.location.origin}/admin/actualizar/participantes-internos`,
                 data: {
                     _token: '{{ csrf_token() }}',
                     inic_codigo: $("#idIniciativa").text(),
-                    sede_codigo: $("#sedes").val(),
                     escu_codigo: $("#escuelas").val(),
+                    care_codigo: $("#carreras").val(),
                     pain_docentes: $("#ndocentes").val(),
                     pain_estudiantes: $("#nestudiantes").val(),
+                    pain_funcionarios: $("#nfuncionarios").val(),
+
                     // pain_total: $("#ntotal").val()
                 },
                 success: function(resConsultar) {
                     respuesta = JSON.parse(resConsultar);
+                    // console.log(respuesta)
                     $('#body-tabla-internos').empty();
 
                     datosInternos = respuesta.resultado;
@@ -617,14 +772,17 @@
 
                         // <td>${registro.pain_total}</td>
                         fila = `<tr>
-                                <td>${registro.sede_nombre}</td>
                                 <td>${registro.escu_nombre}</td>
+                                <td>${registro.care_nombre}</td>
                                 <td>${registro.pain_estudiantes}</td>
                                 <td>${registro.pain_docentes}</td>
+                                <td>${registro.pain_funcionarios}</td>
                                 </tr>`
                         $('#body-tabla-internos').append(fila)
+                        listarInterno()
                     })
                 }
+
 
             })
         }
@@ -683,27 +841,28 @@
             })
         }
 
-        function eliminarExterno(inic_codigo,sugr_codigo,soco_codigo){
+        function eliminarExterno(inic_codigo, sugr_codigo, soco_codigo) {
             $.ajax({
-                type:'POST',
-                url : `${window.location.origin}/admin/inicitiativa/eliminar-externo`,
+                type: 'POST',
+                url: `${window.location.origin}/admin/inicitiativa/eliminar-externo`,
                 data: {
-                    _token:'{{csrf_token()}}',
-                    inic_codigo:inic_codigo,
-                    sugr_codigo:sugr_codigo,
-                    soco_codigo:soco_codigo
+                    _token: '{{ csrf_token() }}',
+                    inic_codigo: inic_codigo,
+                    sugr_codigo: sugr_codigo,
+                    soco_codigo: soco_codigo
                 },
-                success: function(resEliminar){
+                success: function(resEliminar) {
                     respuesta = JSON.parse(resEliminar);
                     listarExterno();
                 },
-                error:function(error){
+                error: function(error) {
                     console.log(error);
                 }
             })
         }
 
         function listarInterno() {
+            console.log($('#idIniciativa').text())
 
             $.ajax({
                 type: 'GET',
@@ -715,6 +874,7 @@
 
                 success: function(resConsultar) {
                     respuesta = JSON.parse(resConsultar);
+                    console.log(respuesta);
                     $('#body-tabla-internos').empty();
 
                     datosInternos = respuesta.resultado;
@@ -731,10 +891,11 @@
                         // }
                         // <td>${registro.pain_total}</td>
                         fila = `<tr>
-                                    <td>${registro.sede_nombre}</td>
                                     <td>${registro.escu_nombre}</td>
+                                    <td>${registro.care_nombre}</td>
                                     <td>${registro.pain_estudiantes}</td>
                                     <td>${registro.pain_docentes}</td>
+                                    <td>${registro.pain_funcionarios}</td>
                                 </tr>`
                         $('#body-tabla-internos').append(fila)
                     })

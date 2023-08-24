@@ -15,24 +15,73 @@
                                         data-toggle="dropdown">Iniciativa</button>
                                     <div class="dropdown-menu dropright">
 
-                                        <a href="" class="dropdown-item has-icon"><i
+                                        <a href="{{route('admin.cobertura.index', $iniciativa[0]->inic_codigo)}}" class="dropdown-item has-icon"><i
                                                 class="fas fa-users"></i>Ingresar cobertura</a>
-                                        <a href="" class="dropdown-item has-icon"><i class="fas fa-flag"></i>Ingresar
+                                        {{-- <a href="" class="dropdown-item has-icon"><i class="fas fa-flag"></i>Ingresar
                                             resultados</a>
                                         <a href="" class="dropdown-item has-icon"><i
-                                                class="fas fa-file-signature"></i>Ingresar evaluación</a>
+                                                class="fas fa-file-signature"></i>Ingresar evaluación</a> --}}
                                     </div>
                                 </div>
 
                                 <div class="dropdown d-inline">
+
                                     <button class="btn btn-primary dropdown-toggle" id="dropdownMenuButton2"
                                         data-toggle="dropdown">Estados</button>
                                     <div class="dropdown-menu dropright">
+                                        <form method="POST"
+                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa[0]->inic_codigo]) }}">
+                                            @csrf
+                                            <input type="hidden" name="state" value="3">
+                                            <a href="javascript:void(0);" onclick="this.closest('form').submit();"
+                                                class="dropdown-item has-icon" style="display: flex; align-items: center;">
+                                                <i class="fas fa-check" style="margin-right: 8px;"></i> Aprobar iniciativa
+                                            </a>
+                                        </form>
 
-                                        <a href="" class="dropdown-item has-icon"><i class="fas fa-check"></i>Aprobar
-                                            iniciativa</a>
-                                        <a href="" class="dropdown-item has-icon"><i
-                                                class="fas fa-times"></i>Rechazar Iniciativa</a>
+                                        <form method="POST"
+                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa[0]->inic_codigo]) }}">
+                                            @csrf
+                                            <input type="hidden" name="state" value="2">
+                                            <a href="javascript:void(0);" onclick="this.closest('form').submit();"
+                                                class="dropdown-item has-icon" style="display: flex; align-items: center;">
+                                                <i class="fas fa-cog" style="margin-right: 8px;"></i> En ejecución
+                                            </a>
+                                        </form>
+
+                                        <form method="POST"
+                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa[0]->inic_codigo]) }}">
+                                            @csrf
+                                            <input type="hidden" name="state" value="4">
+                                            <a href="javascript:void(0);" onclick="this.closest('form').submit();"
+                                                class="dropdown-item has-icon" style="display: flex; align-items: center;">
+                                                <i class="fas fa-info-circle" style="margin-right: 8px;"></i> Falta
+                                                información
+                                            </a>
+                                        </form>
+
+                                        <form method="POST"
+                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa[0]->inic_codigo]) }}">
+                                            @csrf
+                                            <input type="hidden" name="state" value="5">
+                                            <a href="javascript:void(0);" onclick="this.closest('form').submit();"
+                                                class="dropdown-item has-icon" style="display: flex; align-items: center;">
+                                                <i class="fas fa-lock" style="margin-right: 8px;"></i> Cerrar iniciativa
+                                            </a>
+                                        </form>
+
+                                        <form method="POST"
+                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa[0]->inic_codigo]) }}">
+                                            @csrf
+                                            <input type="hidden" name="state" value="6">
+                                            <a href="javascript:void(0);" onclick="this.closest('form').submit();"
+                                                class="dropdown-item has-icon" style="display: flex; align-items: center;">
+                                                <i class="fas fa-times" style="margin-right: 8px;"></i> Finalizar Iniciativa
+                                            </a>
+                                        </form>
+
+
+
                                     </div>
                                 </div>
 
@@ -86,37 +135,26 @@
 
                                             <tr>
                                                 <td>
-                                                    <strong>Pertinencia</strong>
+                                                    <strong>Descripción</strong>
                                                 </td>
                                                 <td>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-bordered table-sm small">
-                                                            <thead>
-                                                                <th>Local</th>
-                                                                <th>Diciplinar</th>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr style="background-color: inherit;">
-                                                                    <td>{{ $iniciativa[0]->inic_pertinencia_local }}
-                                                                    </td>
-
-                                                                    <td>{{ $iniciativa[0]->inic_pertinencia_territorial }}
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
+                                                    {{ $iniciativa[0]->inic_descripcion }}
                                                 </td>
                                             </tr>
 
                                             <tr>
-                                                <td><strong>Mecanismo</strong></td>
-                                                <td>{{ $iniciativa[0]->meca_nombre }}</td>
+                                                <td><strong>Programas</strong></td>
+                                                <td>{{ $iniciativa[0]->prog_nombre }}</td>
                                             </tr>
 
                                             <tr>
                                                 <td><strong>Tipo de actividad</strong></td>
-                                                <td>{{ $iniciativa[0]->tiac_nombre }}</td>
+                                                <td>
+                                                    @foreach ($iniciativa as $key => $ini)
+                                                        {{ $key + 1 }}. {{ $ini->tiac_nombre }}<br>
+                                                    @endforeach
+                                                </td>
+
                                             </tr>
 
                                             <tr>
@@ -127,7 +165,7 @@
                                                 <td><strong>Ubicaciones</strong></td>
                                                 <td>
                                                     <div class="table-responsive">
-                                                        <table class="table table-bordered table-sm small">
+                                                        <table class="table table-bordered table-sm">
                                                             <thead>
                                                                 <th>Región</th>
                                                                 <th>Comunas</th>
@@ -157,9 +195,9 @@
                                                 </td>
                                             </tr> --}}
 
-                                            <tr>
+                                            {{-- <tr> --}}
                                                 {{-- Todo: incluir el caso en el que no existan grupos implicados --}}
-                                                <td><strong>Grupos y temáticas <br> relacionadas</strong></td>
+                                                {{-- <td><strong>Grupos y temáticas <br> relacionadas</strong></td>
                                                 <td>
                                                     <div class="table-responsive">
                                                         <table class="table table-bordered table-sm small">
@@ -185,14 +223,14 @@
                                                             </tbody>
                                                         </table>
                                                     </div>
-                                                </td>
-                                            </tr>
+                                                </td> --}}
+                                            {{-- </tr> --}}
 
                                             <tr>
                                                 <td><strong>Participantes externos</strong></td>
                                                 <td>
                                                     <div class="table-responsive">
-                                                        <table class="table table-bordered table-sm small">
+                                                        <table class="table table-bordered table-sm ">
                                                             <thead>
                                                                 <th>Grupos</th>
                                                                 <th>Subgrupos</th>
@@ -219,10 +257,10 @@
                                                 <td><strong>Participantes internos</strong></td>
                                                 <td>
                                                     <div class="table-responsive">
-                                                        <table class="table table-bordered table-sm small">
+                                                        <table class="table table-bordered table-sm">
                                                             <thead>
-                                                                <th>Sedes</th>
-                                                                <th>Esculas</th>
+                                                                <th>Escuelas</th>
+                                                                <th>Carreras</th>
                                                                 <th>Docentes</th>
                                                                 <th>Docentes final</th>
                                                                 <th>Estudiantes</th>
@@ -232,8 +270,8 @@
                                                             <tbody>
                                                                 @foreach ($internos as $interno)
                                                                     <tr>
-                                                                        <td>{{ $interno->sede_nombre }}</td>
                                                                         <td>{{ $interno->escu_nombre }}</td>
+                                                                        <td>{{ $interno->care_nombre }}</td>
                                                                         <td>
                                                                             @if ($interno->pain_docentes != null)
                                                                                 {{ $interno->pain_docentes }}

@@ -6,6 +6,7 @@ use App\Http\Controllers\SuperadminController;
 use App\Http\Controllers\ParametrosController;
 use App\Http\Controllers\IniciativasController;
 use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\BitacoraController;
 
 use App\Http\Controllers\Auth\ForgotPasswordController;
 
@@ -65,7 +66,9 @@ Route::middleware('verificar.superadmin')->group(function () {
 
 Route::middleware('verificar.admin')->group(function () {
 
-    Route::get('admin/home', function () {return view('admin.home');})->name('admin.home');
+    Route::get('admin/home', function () {
+        return view('admin.home');
+    })->name('admin.home');
     // TODO: inicio rutas para gestionar parametros
 
     //Ambito de COntribucion
@@ -116,6 +119,7 @@ Route::middleware('verificar.admin')->group(function () {
     Route::delete('admin/eliminar-socios/', [ParametrosController::class, 'eliminarSocios'])->name('admin.eliminar.socios');
     Route::put('socios/{escu_codigo}/actualizar', [ParametrosController::class, 'actualizarSocios'])->name('admin.actualizar.socios');
     Route::post('admin/crear-socios/', [ParametrosController::class, 'crearSocios'])->name('admin.crear.socios');
+    Route::post('admin/socios/listar-subgrupos', [ParametrosController::class, 'subgruposBygrupos']);
 
     //Mecanismos
     Route::get('admin/mecanismos/listar', [ParametrosController::class, 'listarMecanismos'])->name('admin.listar.mecanismos');
@@ -125,71 +129,147 @@ Route::middleware('verificar.admin')->group(function () {
 
     //Grupos Interes
     Route::get('admin/grupos/listar', [ParametrosController::class, 'listarGrupos'])
-    ->name('admin.listar.grupos_int');
+        ->name('admin.listar.grupos_int');
     Route::post('admin/grupos/crear', [ParametrosController::class, 'crearGrupo'])
-    ->name('admin.crear.grupos_int');
+        ->name('admin.crear.grupos_int');
     Route::delete('admin/grupos/eliminar', [ParametrosController::class, 'eliminarGrupo'])
-    ->name('admin.eliminar.grupo');
+        ->name('admin.eliminar.grupo');
     Route::put('admin/grupos/actualizar/{grin_codigo}', [ParametrosController::class, 'actualizarGrupos'])
-    ->name('admin.actualizar.grupos');
+        ->name('admin.actualizar.grupos');
 
-   //Tipos de actividad
-    Route::get('/admin/listar/tipoact', [ParametrosController::class,'listarTipoact'])
-    ->name('admin.listar.tipoact');
-    Route::post('/admin/crear/tipoact', [ParametrosController::class,'crearTipoact'])
-    ->name('admin.crear.tipoact');
-    Route::put('/admin/actualizar/tipoact/{tiac_codigo}', [ParametrosController::class,'actualizarTipoact'])
-    ->name('admin.actualizar.tipoact');
-    Route::delete('/admin/eliminar/tipoact', [ParametrosController::class,'eliminarTipoact'])
-    ->name('admin.eliminar.tipoact');
+    // SubGrupoInteres
+    Route::get('admin/listar-subgrupos', [ParametrosController::class, 'listarSubGrupoInteres'])->name('admin.listar.subgrupos');
+    Route::delete('admin/eliminar-subgrupos/', [ParametrosController::class, 'eliminarSubGrupoInteres'])->name('admin.eliminar.subgrupos');
+    Route::put('admin/editar-subgrupos/{sugr_codigo}', [ParametrosController::class, 'actualizarSubGrupoInteres'])->name('admin.actualizar.subgrupos');
+    Route::post('admin/crear-subgrupos/', [ParametrosController::class, 'crearSubGrupoInteres'])->name('admin.crear.subgrupos');
+
+    //Tipos de actividad
+    Route::get('/admin/listar/tipoact', [ParametrosController::class, 'listarTipoact'])
+        ->name('admin.listar.tipoact');
+    Route::post('/admin/crear/tipoact', [ParametrosController::class, 'crearTipoact'])
+        ->name('admin.crear.tipoact');
+    Route::put('/admin/actualizar/tipoact/{tiac_codigo}', [ParametrosController::class, 'actualizarTipoact'])
+        ->name('admin.actualizar.tipoact');
+    Route::delete('/admin/eliminar/tipoact', [ParametrosController::class, 'eliminarTipoact'])
+        ->name('admin.eliminar.tipoact');
 
     //Tematicas
     Route::get('/admin/listar/tematica', [ParametrosController::class, 'listarTematica'])
-    ->name('admin.listar.tematica');
+        ->name('admin.listar.tematica');
     Route::post('/admin/crear/tematica', [ParametrosController::class, 'crearTematica'])
-    ->name('admin.crear.tematica');
+        ->name('admin.crear.tematica');
     Route::put('/admin/actualizar/tematica/{tema_codigo}', [ParametrosController::class, 'actualizarTematica'])
-    ->name('admin.actualizar.tematica');
+        ->name('admin.actualizar.tematica');
     Route::delete('/admin/eliminar/tematica', [ParametrosController::class, 'eliminarTematica'])
-    ->name('admin.eliminar.tematica');
+        ->name('admin.eliminar.tematica');
+
+    // Unidades
+    Route::get('admin/listar-unidades', [ParametrosController::class, 'listarUnidades'])->name('admin.listar.unidades');
+    Route::delete('admin/eliminar-unidades/', [ParametrosController::class, 'eliminarUnidades'])->name('admin.eliminar.unidades');
+    Route::put('admin/editar-unidades/{unid_codigo}', [ParametrosController::class, 'actualizarUnidades'])->name('admin.actualizar.unidades');
+    Route::post('admin/crear-unidades/', [ParametrosController::class, 'crearUnidades'])->name('admin.crear.unidades');
+
+    // SubUnidades
+    Route::get('admin/listar-subunidades', [ParametrosController::class, 'listarSubUnidades'])->name('admin.listar.subunidades');
+    Route::delete('admin/eliminar-subunidades/', [ParametrosController::class, 'eliminarSubUnidades'])->name('admin.eliminar.subunidades');
+    Route::put('admin/editar-subunidades/{suni_codigo}', [ParametrosController::class, 'actualizarSubUnidades'])->name('admin.actualizar.subunidades');
+    Route::post('admin/crear-subunidades/', [ParametrosController::class, 'crearSubUnidades'])->name('admin.crear.subunidades');
+
+    // Tipo Iniciativa
+    Route::get('admin/listar-tipoiniciativa', [ParametrosController::class, 'listarTipoIniciativa'])->name('admin.listar.tipoiniciativa');
+    Route::delete('admin/eliminar-tipoiniciativa/', [ParametrosController::class, 'eliminarTipoIniciativa'])->name('admin.eliminar.tipoiniciativa');
+    Route::put('admin/editar-tipoiniciativa/{tmec_codigo}', [ParametrosController::class, 'actualizarTipoIniciativa'])->name('admin.actualizar.tipoiniciativa');
+    Route::post('admin/crear-tipoiniciativa/', [ParametrosController::class, 'crearTipoIniciativa'])->name('admin.crear.tipoiniciativa');
+
+    // actividad
+    Route::get('admin/listar-actividad', [BitacoraController::class, 'listarActividad'])->name('admin.listar.actividades');
+    Route::delete('admin/eliminar-actividad/', [BitacoraController::class, 'eliminarActividad'])->name('admin.eliminar.actividades');
+    Route::put('admin/editar-actividad/{nombreprefijo_codigo}', [BitacoraController::class, 'actualizarActividad'])->name('admin.actualizar.actividades');
+    Route::post('admin/crear-actividad/', [BitacoraController::class, 'crearActividad'])->name('admin.crear.actividades');
+
+    // RecursosHumanos
+    Route::get('admin/listar-rrhh', [ParametrosController::class, 'listarRecursosHumanos'])->name('admin.listar.rrhh');
+    Route::delete('admin/eliminar-rrhh/', [ParametrosController::class, 'eliminarRecursosHumanos'])->name('admin.eliminar.rrhh');
+    Route::put('admin/editar-rrhh/{trrhh_codigo}', [ParametrosController::class, 'actualizarRecursosHumanos'])->name('admin.actualizar.rrhh');
+    Route::post('admin/crear-rrhh/', [ParametrosController::class, 'crearRecursosHumanos'])->name('admin.crear.rrhh');
+
+    // TipoInfraestructuras
+    Route::get('admin/listar-tipoinfra', [ParametrosController::class, 'listarTipoInfraestructuras'])->name('admin.listar.tipoinfra');
+    Route::delete('admin/eliminar-tipoinfra/', [ParametrosController::class, 'eliminarTipoInfraestructuras'])->name('admin.eliminar.tipoinfra');
+    Route::put('admin/editar-tipoinfra/{tinf_codigo}', [ParametrosController::class, 'actualizarTipoInfraestructuras'])->name('admin.actualizar.tipoinfra');
+    Route::post('admin/crear-tipoinfra/', [ParametrosController::class, 'crearTipoInfraestructuras'])->name('admin.crear.tipoinfra');
+
+
 
     // fin rutas para gestionar parametros
 
 
     //TODO: Inicio de rutas para iniciativas
-    Route::get('admin/iniciativas/listar',[IniciativasController::class,'listarIniciativas'])->name('admin.iniciativa.listar');
-    Route::get('admin/iniciativas/{inic_codigo}/detalles',[IniciativasController::class,'mostrarDetalles'])->name('admin.iniciativas.detalles');
-    Route::get('admin/iniciativas/crear/paso1',[IniciativasController::class,'crearPaso1'])->name('admin.inicitiativas.crear.primero');
-    Route::get('admin/iniciativas/{inic_codigo}/editar/paso1',[IniciativasController::class,'editarPaso1'])->name('admin.editar.paso1');
-    Route::put('admin/iniciativas/{inic_codigo}/paso1',[IniciativasController::class,'actualizarPaso1'])->name('admin.actualizar.paso1');
+    Route::get('admin/iniciativas/listar', [IniciativasController::class, 'listarIniciativas'])->name('admin.iniciativa.listar');
+    Route::get('admin/iniciativas/{inic_codigo}/detalles', [IniciativasController::class, 'mostrarDetalles'])->name('admin.iniciativas.detalles');
+    Route::get('admin/iniciativas/{inic_codigo}/listar/resultado',[IniciativasController::class,'listadoResultados'])->name('admin.resultados.listado');
+    Route::post('admin/iniciativas/{inic_codigo}/resultados', [IniciativasController::class, 'actualizarResultados'])->name('admin.resultados.actualizar');
+    Route::get('admin/iniciativas/crear/paso1', [IniciativasController::class, 'crearPaso1'])->name('admin.inicitiativas.crear.primero');
+    Route::get('admin/iniciativas/{inic_codigo}/editar/paso1', [IniciativasController::class, 'editarPaso1'])->name('admin.editar.paso1');
+    Route::put('admin/iniciativas/{inic_codigo}/paso1', [IniciativasController::class, 'actualizarPaso1'])->name('admin.actualizar.paso1');
     // Route::get('admin/iniciativas/crear/paso1',[IniciativasController::class,'crearPaso1'])->name('admin.inicitiativas.crear.primero');
-    Route::post('admin/iniciativas/crear/paso1',[IniciativasController::class,'verificarPaso1'])->name('admin.paso1.verificar');
-    Route::post('admin/iniciativas/crear/{inic_codigo}/paso2',[IniciativasController::class,'verificarPaso2'])->name('admin.paso2.verificar');
-    Route::get('admin/iniciativas/{inic_codigo}/paso2',[IniciativasController::class,'editarPaso2'])->name('admin.editar.paso2');
-    Route::post('admin/iniciativas/crear/socio',[IniciativasController::class,'guardarSocioComunitario'])->name('admin.iniciativas.crear.socio');
-    Route::get('admin/crear/iniciativa/listar-internos',[IniciativasController::class,'listarInternos']);
-    Route::get('admin/crear/iniciativa/listar-externos',[IniciativasController::class,'listarExternos']);
-    Route::post('admin/actualizar/participantes-internos',[IniciativasController::class,'actualizarInternos']);
-    Route::post('admin/iniciativas/agregar/participantes-externos',[IniciativasController::class,'agregarExternos']);
+    Route::post('admin/iniciativas/crear/paso1', [IniciativasController::class, 'verificarPaso1'])->name('admin.paso1.verificar');
+    Route::post('admin/iniciativas/crear/{inic_codigo}/paso2', [IniciativasController::class, 'verificarPaso2'])->name('admin.paso2.verificar');
+    Route::get('admin/iniciativas/{inic_codigo}/paso2', [IniciativasController::class, 'editarPaso2'])->name('admin.editar.paso2');
+    Route::post('admin/iniciativa/guardar-resultado', [IniciativasController::class, 'guardarResultado'])->name('admin.resultado.guardar');
+    Route::get('admin/iniciativa/listar-resultados', [IniciativasController::class, 'listarResultados'])->name('admin.resultados.listar');
+    Route::post('admin/iniciativa/eliminar-resultado', [IniciativasController::class, 'eliminarResultado'])->name('admin.resultado.eliminar');
+    // TODO: PASO 3
+    Route::get('admin/iniciativa/{inic_codigo}/editar/paso3', [IniciativasController::class, 'editarPaso3'])->name('admin.editar.paso3');
+    Route::post('admin/crear-iniciativa/guardar-dinero', [IniciativasController::class, 'guardarDinero'])->name('admin.dinero.guardar');
+    Route::get('admin/crear-iniciativa/consultar-dinero', [IniciativasController::class, 'consultarDinero'])->name('admin.dinero.consultar');
+    Route::get('admin/crear-iniciativa/buscar-tipoinfra', [IniciativasController::class, 'buscarTipoInfra'])->name('admin.tipoinfra.buscar');
+    Route::get('admin/crear-iniciativa/listar-tipoinfra', [IniciativasController::class, 'listarTipoInfra'])->name('admin.tipoinfra.listar');
+    Route::post('admin/crear-iniciativa/guardar-infraestructura', [IniciativasController::class, 'guardarInfraestructura'])->name('admin.infra.guardar');
+    Route::get('admin/crear-iniciativa/listar-infraestructura', [IniciativasController::class, 'listarInfraestructura'])->name('admin.infra.listar');
+    Route::post('admin/crear-iniciativa/eliminar-infraestructura', [IniciativasController::class, 'eliminarInfraestructura'])->name('admin.infra.eliminar');
+    Route::get('admin/crear-iniciativa/consultar-infraestructura', [IniciativasController::class, 'consultarInfraestructura'])->name('admin.infra.consultar');
+    Route::get('admin/crear-iniciativa/listar-tiporrhh', [IniciativasController::class, 'listarTipoRrhh'])->name('admin.tiporrhh.listar');
+    Route::get('admin/crear-iniciativa/recursos', [IniciativasController::class, 'listarRecursos'])->name('admin.recursos.listar');
+    Route::get('admin/crear-iniciativa/listar-rrhh', [IniciativasController::class, 'listarRrhh'])->name('admin.rrhh.listar');
+    Route::get('admin/crear-iniciativa/buscar-tiporrhh', [IniciativasController::class, 'buscarTipoRrhh'])->name('admin.tiporrhh.buscar');
+    Route::post('admin/crear-iniciativa/guardar-rrhh', [IniciativasController::class, 'guardarRrhh'])->name('admin.rrhh.guardar');
+    Route::post('admin/crear-iniciativa/eliminar-rrhh', [IniciativasController::class, 'eliminarRRHH']);
+    Route::get('admin/crear-iniciativa/consultar-rrhh', [IniciativasController::class, 'consultarRrhh'])->name('admin.rrhh.consultar');
+
+
+
+    Route::post('admin/iniciativas/crear/socio', [IniciativasController::class, 'guardarSocioComunitario'])->name('admin.iniciativas.crear.socio');
+    Route::get('admin/crear/iniciativa/listar-internos', [IniciativasController::class, 'listarInternos']);
+    Route::get('admin/crear/iniciativa/listar-externos', [IniciativasController::class, 'listarExternos']);
+    Route::post('admin/actualizar/participantes-internos', [IniciativasController::class, 'actualizarInternos']);
+    Route::post('admin/iniciativas/agregar/participantes-externos', [IniciativasController::class, 'agregarExternos']);
+
+    //todo: Update state iniciativa
+    Route::post('/admin/iniciativas/update-state', [IniciativasController::class, 'updateState'])->name('admin.iniciativas.updateState');
+    //todo: Add result iniciativa
+    Route::get('/admin/iniciativa/{inic_codigo}/cobertura', [IniciativasController::class, 'completarCobertura'])->name('admin.cobertura.index');
+    Route::post('admin/iniciativa/{inic_codigo}/cobertura', [IniciativasController::class, 'actualizarCobertura'])->name('admin.cobertura.update');
 
     //todo:evidencias de iniciativas
 
-    Route::get('admin/iniciativas/{inic_codigo}/listar-evidencias',[IniciativasController::class,'listarEvidencia'])->name('admin.evidencias.listar');
-    Route::post('admin/iniciativas/{inic_codigo}/guardar-evidencias',[IniciativasController::class,'guardarEvidencia'])->name('admin.evidencia.guardar');
+    Route::get('admin/iniciativas/{inic_codigo}/listar-evidencias', [IniciativasController::class, 'listarEvidencia'])->name('admin.evidencias.listar');
+    Route::post('admin/iniciativas/{inic_codigo}/guardar-evidencias', [IniciativasController::class, 'guardarEvidencia'])->name('admin.evidencia.guardar');
     Route::put('admin/iniciativa/evidencia/{inev_codigo}', [IniciativasController::class, 'actualizarEvidencia'])->name('admin.evidencia.actualizar');
-    Route::post('admin/iniciativas/{inic_codigo}/descargar-evidencia',[IniciativasController::class,'descargarEvidencia'])->name('admin.evidencia.descargar');
+    Route::post('admin/iniciativas/{inic_codigo}/descargar-evidencia', [IniciativasController::class, 'descargarEvidencia'])->name('admin.evidencia.descargar');
     Route::delete('admin/iniciativa/evidencia/{inev_codigo}', [IniciativasController::class, 'eliminarEvidencia'])->name('admin.evidencia.eliminar');
+    // Route::get('admin/inicicativas/{inic_codigo}/cobertura',[IniciativasController::class,'ingresarCobertura'])->name('admin.cobertura.listar');
 
     //todo:fin evidencias de iniciativas
 
     Route::delete('admin/iniciativas/eliminar', [IniciativasController::class, 'eliminarIniciativas'])->name('admin.iniciativa.eliminar');
     // Route::post('admin/iniciativas/obtener-escuelas',[IniciativasController::class,'escuelasBySede']);
-    Route::post('admin/iniciativas/obtener-escuelas/paso2',[IniciativasController::class,'escuelasBySedesPaso2']);
-    Route::post('admin/iniciativas/obtener-actividades',[IniciativasController::class,'actividadesByMecanismos']);
-    Route::post('admin/iniciativas/obtener-socio/paso2',[IniciativasController::class,'sociosBySubgrupos']);
-    Route::post('admin/iniciativas/obtener-pais',[IniciativasController::class,'paisByTerritorio']);
-    Route::post('admin/iniciativas/obtener-comunas',[IniciativasController::class,'comunasByRegiones']);
-    Route::post('admin/inicitiativa/eliminar-externo',[IniciativasController::class,'eliminarExterno']);
+    Route::post('admin/iniciativas/obtener-escuelas/paso2', [IniciativasController::class, 'escuelasBySedesPaso2']);
+    Route::post('admin/iniciativas/obtener-actividades', [IniciativasController::class, 'actividadesByMecanismos']);
+    Route::post('admin/iniciativas/obtener-socio/paso2', [IniciativasController::class, 'sociosBySubgrupos']);
+    Route::post('admin/iniciativas/obtener-pais', [IniciativasController::class, 'paisByTerritorio']);
+    Route::post('admin/iniciativas/obtener-comunas', [IniciativasController::class, 'comunasByRegiones']);
+    Route::post('admin/inicitiativa/eliminar-externo', [IniciativasController::class, 'eliminarExterno']);
 
 
     //fin de rutas para iniciativas
@@ -205,7 +285,9 @@ Route::middleware('verificar.admin')->group(function () {
     //fin de rutas para administrar usuarios
 
     // TODO: inicio rutas ODS
-    Route::get('admin/ods', function () {return view('admin.ods.listar');})->name('admin.listar.ods');
+    Route::get('admin/ods', function () {
+        return view('admin.ods.listar');
+    })->name('admin.listar.ods');
 
     //fin de rutas para ODS
 });

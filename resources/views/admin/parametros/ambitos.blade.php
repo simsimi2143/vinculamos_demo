@@ -8,18 +8,16 @@
                     <div class="row">
                         <div class="col-3"></div>
                         <div class="col-6">
-                            @if (
-                                $errors->has('nombre')
-                                )
-                            <div class="alert alert-warning alert-dismissible show fade mb-4 text-center">
-                                <div class="alert-body">
-                                    <button class="close" data-dismiss="alert"><span>&times;</span></button>
-                                    @if ($errors->has('nombre'))
-                                        <strong>{{ $errors->first('nombre') }}</strong><br>
-                                    @endif
+                            @if ($errors->has('nombre'))
+                                <div class="alert alert-warning alert-dismissible show fade mb-4 text-center">
+                                    <div class="alert-body">
+                                        <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                        @if ($errors->has('nombre'))
+                                            <strong>{{ $errors->first('nombre') }}</strong><br>
+                                        @endif
 
+                                    </div>
                                 </div>
-                            </div>
                             @endif
                             @if (Session::has('exitoAmbito'))
                                 <div class="alert alert-success alert-dismissible show fade mb-4 text-center">
@@ -35,10 +33,10 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h4>Listado de impactos</h4>
+                            <h4>Listado de Contribuciones</h4>
                             <div class="card-header-action">
                                 <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#modalCrearAmbito"><i class="fas fa-plus"></i> Nuevo impacto</button>
+                                    data-target="#modalCrearAmbito"><i class="fas fa-plus"></i> Nueva contribución</button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -125,7 +123,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalEditarAmbito">Editar impacto</h5>
+                        <h5 class="modal-title" id="modalEditarAmbito">Editar contribución</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -136,7 +134,7 @@
                             @csrf
 
                             <div class="form-group">
-                                <label>Nombre del impacto</label>
+                                <label>Nombre de la contribución</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
@@ -145,6 +143,26 @@
                                     </div>
                                     <input type="text" class="form-control" id="nombre" name="nombre"
                                         value="{{ $ambi->amb_nombre }}" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Tipo de contribución</label>
+                                <div class="input-group">
+                                    <select class="form-control @error('descripcion') is-invalid @enderror" id="descripcion"
+                                        name="descripcion">
+                                        <option value="" selected disable d>Seleccione...</option>
+                                        <option value="Contribución Interna"
+                                            {{ 'Contribución Interna' == $ambi->amb_descripcion ? 'selected' : '' }}>Contribución
+                                            Interna</option>
+                                        <option value="Contribución Externa"
+                                            {{ 'Contribución Externa' == $ambi->amb_descripcion ? 'selected' : '' }}>Contribución
+                                            Externa</option>
+                                    </select>
+                                    @error('descripcion')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
                             {{-- <div class="form-group">
@@ -182,7 +200,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="formModal">Nuevo impacto</h5>
+                    <h5 class="modal-title" id="formModal">Nueva contribución</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -191,15 +209,15 @@
                     <form action="{{ route('admin.crear.ambitos') }} " method="POST">
                         @csrf
                         <div class="form-group">
-                            <label>Nombre del impacto</label>
+                            <label>Nombre de la contribución</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
                                         <i class="fas fa-pen-nib"></i>
                                     </div>
                                 </div>
-                                <input type="text" class="form-control" id="nombre" name="nombre"
-                                    placeholder="" autocomplete="off">
+                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder=""
+                                    autocomplete="off">
                                 @if ($errors->has('nombre'))
                                     <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
                                         style="width:100%">
@@ -209,6 +227,21 @@
                                         </div>
                                     </div>
                                 @endif
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo de contribución</label>
+                            <div class="input-group">
+                                <select class="form-control @error('descripcion') is-invalid @enderror" id="descripcion"
+                                    name="descripcion">
+                                    <option value="Contribución Interna" selected> Contribución Interna</option>
+                                    <option value="Contribución Externa">Contribución Externa</option>
+                                </select>
+                                @error('descripcion')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
                         {{-- <div class="form-group">
@@ -249,14 +282,15 @@
                                     </div>
                                 @endif
                             </div> --}}
-                        </div>
+
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary waves-effect">Guardar</button>
                         </div>
-                    </form>
                 </div>
+                </form>
             </div>
         </div>
+    </div>
     </div>
 
     <div class="modal fade" id="modalEliminaAmbito" tabindex="-1" role="dialog" aria-labelledby="modalEliminar"
@@ -267,14 +301,14 @@
                     @method('DELETE')
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalEliminar">Eliminar impacto</h5>
+                        <h5 class="modal-title" id="modalEliminar">Eliminar Contribución</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body text-center">
                         <i class="fas fa-ban text-danger" style="font-size: 50px; color"></i>
-                        <h6 class="mt-2">El impacto dejará de existir dentro del sistema. <br> ¿Desea continuar de todos
+                        <h6 class="mt-2">La Contribución dejará de existir dentro del sistema. <br> ¿Desea continuar de todos
                             modos?</h6>
                         <input type="hidden" id="amb_codigo" name="amb_codigo" value="">
                     </div>
@@ -297,7 +331,7 @@
             $('#modalEditarAmbito-' + amb_codigo).modal('show');
         }
     </script>
-{{--
+    {{--
     <link rel="stylesheet" href="{{ asset('/bundles/datatables/datatables.min.css') }}">
     <link rel="stylesheet"
         href="{{ asset('/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css') }}">
