@@ -114,27 +114,11 @@
                     <form action="{{ route('admin.evidencia.guardar', $iniciativas->inic_codigo) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
-
                         <div class="form-group">
-                            <label>Mecanismo</label>
+                            <label>Nombre</label>
                             <div class="input-group">
-                                <select class="form-control" id="inev_nombre" name="inev_nombre">
-                                    <option value="Apoyo a PYMES">Apoyo a PYMES</option>
-                                    <option value="Aprendizaje más servicio">Aprendizaje más servicio</option>
-                                    <option value="Innovación y emprendimiento">Innovación y emprendimiento</option>
-                                    <option value="Fomento a la empleabilidad">Fomento a la empleabilidad</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Tipo</label>
-                            <div class="input-group">
-                                <select class="form-control" id="inev_tipo" name="inev_tipo">
-                                    <option value="Carta de acuerdo">Carta de acuerdo</option>
-                                    <option value="Lista de participantes">Lista de participantes</option>
-                                    <option value="Fotografías">Fotografías</option>
-                                    <option value="Informe de cierre">Informe de cierre</option>
-                                </select>
+                                <input type="text" class="form-control" id="inev_nombre" name="inev_nombre"
+                                    placeholder="" autocomplete="off">
                             </div>
                         </div>
 
