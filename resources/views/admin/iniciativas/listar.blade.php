@@ -1,3 +1,21 @@
+@if (Session::has('admin'))
+    @php
+        $role = 'admin';
+    @endphp
+@elseif (Session::has('digitador'))
+    @php
+        $role = 'digitador';
+    @endphp
+@elseif (Session::has('observador'))
+    @php
+        $role = 'observador';
+    @endphp
+@elseif (Session::has('supervisor'))
+    @php
+        $role = 'supervisor';
+    @endphp
+@endif
+
 @extends('admin.panel')
 
 @section('contenido')
@@ -35,12 +53,64 @@
                             <h4>Listado de Iniciativas</h4>
                         </div>
                         <div class="card-body">
+                            <form action="{{ route($role . '.iniciativa.listar') }}" method="GET">
+                                <div class="row align-items-end">
+                                    <div class="col-12 col-sm-4 col-md-4 col-lg-4 mb-2 mb-sm-0">
+                                        <div class="form-group">
+                                            <label>Filtrar por Mecanismo</label>
+                                            <select class="form-control select2" id="mecanismo" name="mecanismo" onchange="filtrarTablaxMecanismo()">
+                                              <option value="" selected>TODOS</option>
+                                                @forelse ($mecanismos as $mecanismo)
+                                                    <option value="{{ $mecanismo->meca_nombre }}" {{ Request::get('mecanismo') == $mecanismo->meca_nombre ? 'selected' : '' }}>{{ $mecanismo->meca_nombre }}</option>
+                                                @empty
+                                                    <option value="-1">No existen registros</option>
+                                                @endforelse
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 col-md-4 col-lg-4">
+                                        <div class="form-group">
+                                            <label>Filtrar por Estado</label>
+                                            <select class="form-control select2" id="filtro1" name="filtro1" onchange="filtrarTablaxMecanismo()">
+                                                <option value="" selected>TODOS</option>
+                                                <option value="1">En revisión</option>
+                                                <option value="2">En ejecución</option>
+                                                <option value="3">Aceptada</option>
+                                                <option value="4">Falta info</option>
+                                                <option value="5">Cerrada</option>
+                                                <option value="6">Finalizada</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-4 col-md-4 col-lg-4 mb-2 mb-sm-0">
+                                        <div class="form-group">
+                                            <label>Filtrar por Año</label>
+                                            <select class="form-control select2" id="ano" name="ano" onchange="filtrarTablaxMecanismo()">
+                                               <option value="" selected>TODOS</option>
+                                                @forelse ($anhos as $ann)
+                                                    <option value="{{ $ann->inic_anho }}" {{ Request::get('mecanismo') == $ann->inic_anho ? 'selected' : '' }}>{{ $ann->inic_anho }}</option>
+                                                @empty
+                                                    <option value="-1">No existen registros</option>
+                                                @endforelse
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                                        <div class="mb-4">
+                                            <a href="{{ route($role . '.iniciativa.listar') }}" type="button" class="btn btn-primary mr-1 waves-effect"><i class="fas fa-broom"></i> Limpiar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </form>
                             <div class="table-responsive">
                                 <table class="table table-striped" id="table-1">
                                     <thead>
                                         <tr>
 
                                             <th>Nombre</th>
+                                            <th>Mecanismo</th>
+                                            <th>Año</th>
                                             <th>Escuelas</th>
                                             <th>Carreras</th>
                                             <th>Estado</th>
@@ -48,10 +118,12 @@
                                             <th style="width: 250px">Acciones</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="tabla-iniciativas">
                                         @foreach ($iniciativas as $iniciativa)
-                                            <tr>
+                                            <tr data-meca="{{ $iniciativa->meca_nombre }}" data-ano="{{ $iniciativa->inic_anho }}" data-filtro1="{{ $iniciativa->inic_estado }}">
                                                 <td>{{ $iniciativa->inic_nombre }}</td>
+                                                <td>{{ $iniciativa->meca_nombre }}</td>
+                                                <td>{{ $iniciativa->inic_anho }}</td>
                                                 <td>
                                                     @php
                                                         $escuelasArray = explode(',', $iniciativa->escuelas);
@@ -99,8 +171,10 @@
                                                             id="dropdownMenuButton2" data-toggle="dropdown"title="Opciones">
                                                             <i class="fas fa-cog"></i> </button>
                                                         <div class="dropdown-menu dropright">
-
-                                                            <a href="{{ route('admin.editar.paso1', $iniciativa->inic_codigo) }}"
+                                                            {{-- <a href="{{ route($role . '.evaluar.iniciativa', $iniciativa->inic_codigo) }}"
+                                                                class="dropdown-item has-icon"><i
+                                                                    class="fas fa-user-edit"></i>Evaluar Iniciativa</a> --}}
+                                                            <a href="{{ route($role . '.editar.paso1', $iniciativa->inic_codigo) }}"
                                                                 class="dropdown-item has-icon"><i
                                                                     class="fas fa-edit"></i>Editar Iniciativa</a>
                                                             <a href="javascript:void(0)" class="dropdown-item has-icon"
@@ -111,22 +185,22 @@
                                                         </div>
                                                     </div>
 
-                                                    <a href="{{ route('admin.iniciativas.detalles', $iniciativa->inic_codigo) }}"
+                                                    <a href="{{ route($role . '.iniciativas.detalles', $iniciativa->inic_codigo) }}"
                                                         class="btn btn-icon btn-warning" data-toggle="tooltip"
                                                         data-placement="top" title="Ver detalles"><i
                                                             class="fas fa-eye"></i></a>
 
 
-                                                    <a href="{{ route('admin.evidencias.listar', $iniciativa->inic_codigo) }}"
+                                                    <a href="{{ route($role . '.evidencias.listar', $iniciativa->inic_codigo) }}"
                                                         class="btn btn-icon btn-warning" data-toggle="tooltip"
                                                         data-placement="top" title="Adjuntar evidencia"><i
                                                             class="fas fa-paperclip"></i></a>
 
-                                                    <a href="{{ route('admin.cobertura.index', $iniciativa->inic_codigo) }}"
+                                                    <a href="{{ route($role . '.cobertura.index', $iniciativa->inic_codigo) }}"
                                                         class="btn btn-icon btn-success" data-toggle="tooltip"
                                                         data-placement="top" title="Ingresar cobertura"><i
                                                             class="fas fa-users"></i></a>
-                                                    <a href="{{ route('admin.resultados.listado', $iniciativa->inic_codigo) }}"
+                                                    <a href="{{ route($role . '.resultados.listado', $iniciativa->inic_codigo) }}"
                                                         class="btn btn-icon btn-success" data-toggle="tooltip"
                                                         data-placement="top" title="Ingresar resultado"><i
                                                             class="fas fa-flag"></i></a>
@@ -156,7 +230,7 @@
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <form action="{{ route('admin.iniciativa.eliminar') }} " method="POST">
+                <form action="{{ route($role . '.iniciativa.eliminar') }} " method="POST">
                     @method('DELETE')
                     @csrf
                     <div class="modal-header">
@@ -181,9 +255,56 @@
         </div>
     </div>
     <script>
+        window.onload = function () {
+        // Inicializar tabla
+        filtrarTabla();
+
+        // Agregar listeners para cada filtro
+        const mecanismoSelect = document.getElementById('mecanismo');
+        mecanismoSelect.addEventListener('change', filtrarTabla);
+
+        const estadoSelect = document.getElementById('estado');
+        estadoSelect.addEventListener('change', filtrarTabla);
+        };
+
         function eliminarIniciativa(inic_codigo) {
             $('#inic_codigo').val(inic_codigo);
             $('#modalEliminaIniciativa').modal('show');
         }
+
+
+        function filtrarTablaxMecanismo() {
+            const selectElement = document.querySelector('select[name="table-1_length"]');
+            selectElement.selectedIndex = 3;
+            const changeEvent = new Event('change', { bubbles: true });
+            selectElement.dispatchEvent(changeEvent);
+            const mecaSeleccionado = document.getElementById('mecanismo').value;
+            const anoSeleccionado = document.getElementById('ano').value;
+            const filtro1Seleccionado = document.getElementById('filtro1').value;
+            const filasTabla = document.querySelectorAll('#tabla-iniciativas tr');
+
+
+            filasTabla.forEach(function (fila) {
+                const mecaFila = fila.getAttribute('data-meca');
+                const anoFila = fila.getAttribute('data-ano');
+                const filtro1Fila = fila.getAttribute('data-filtro1');
+
+                const filtroMeca = mecaSeleccionado === '' || mecaSeleccionado === mecaFila;
+                const filtroEstado = anoSeleccionado === '' || anoSeleccionado === anoFila;
+                const filtroEstado1 = filtro1Seleccionado === '' || filtro1Seleccionado === filtro1Fila;
+
+                if (filtroMeca && filtroEstado && filtroEstado1) {
+                    fila.style.display = ''; // Mostrar la fila
+                } else {
+                    fila.style.display = 'none'; // Ocultar la fila
+                }
+                if (mecaSeleccionado === '' && anoSeleccionado === '' && filtro1Seleccionado === '' ) {
+                    selectElement.selectedIndex = 0;
+                    selectElement.dispatchEvent(changeEvent);
+                    fila.style.display = 'table-row';
+                }
+            });
+            }
+
     </script>
 @endsection

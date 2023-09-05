@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CostosInfraestructura;
 use App\Models\CostosRrhh;
+use App\Models\Entidades;
 use App\Models\Grupos;
 use App\Models\IniciativasComunas;
 use App\Models\IniciativasEvidencias;
@@ -47,7 +48,7 @@ class IniciativasController extends Controller
 {
     public function listarIniciativas()
     {
-        $iniciativa = Iniciativas::join('mecanismos', 'mecanismos.meca_codigo', 'iniciativas.meca_codigo')
+        $iniciativas = Iniciativas::join('mecanismos', 'mecanismos.meca_codigo', 'iniciativas.meca_codigo')
             ->join('participantes_internos', 'participantes_internos.inic_codigo', 'iniciativas.inic_codigo')
             ->join('carreras', 'carreras.care_codigo', 'participantes_internos.care_codigo')
             ->join('escuelas', 'escuelas.escu_codigo', 'participantes_internos.escu_codigo')
@@ -55,18 +56,20 @@ class IniciativasController extends Controller
                 'iniciativas.inic_codigo',
                 'iniciativas.inic_nombre',
                 'iniciativas.inic_estado',
+                'iniciativas.inic_anho',
                 'mecanismos.meca_nombre',
                 DB::raw('GROUP_CONCAT(DISTINCT escuelas.escu_nombre SEPARATOR ", ") as escuelas'),
                 DB::raw('GROUP_CONCAT(DISTINCT carreras.care_nombre SEPARATOR ", ") as carreras'),
                 DB::raw('DATE_FORMAT(iniciativas.inic_creado, "%d/%m/%Y %H:%i:%s") as inic_creado')
             )
-            ->groupBy('iniciativas.inic_codigo', 'iniciativas.inic_nombre', 'iniciativas.inic_estado', 'mecanismos.meca_nombre', 'inic_creado') // Agregamos inic_creado al GROUP BY
+            ->groupBy('iniciativas.inic_codigo', 'iniciativas.inic_nombre', 'iniciativas.inic_estado', 'iniciativas.inic_anho','mecanismos.meca_nombre', 'inic_creado') // Agregamos inic_creado al GROUP BY
             ->orderBy('inic_creado', 'desc') // Ordenar por fecha de creación formateada en orden descendente
             ->get();
 
+            $mecanismos = Mecanismos::select('meca_codigo', 'meca_nombre')->orderBy('meca_nombre', 'asc')->get();
+            $anhos = Iniciativas::select('inic_anho')->distinct('inic_anho')->orderBy('inic_anho', 'asc')->get();
 
-
-        return view('admin.iniciativas.listar', ["iniciativas" => $iniciativa]);
+        return view('admin.iniciativas.listar', compact('iniciativas','mecanismos','anhos'));
     }
 
 
@@ -96,16 +99,42 @@ class IniciativasController extends Controller
             ->join('escuelas', 'carreras.escu_codigo', '=', 'escuelas.escu_codigo')
             ->where('participantes_internos.inic_codigo', $inic_codigo)
             ->get();
+        $participantes = Iniciativas::join('iniciativas_participantes', 'iniciativas_participantes.inic_codigo', 'iniciativas.inic_codigo')
+            ->join('sub_grupos_interes', 'sub_grupos_interes.sugr_codigo', 'iniciativas_participantes.sugr_codigo')
+            ->join('socios_comunitarios', 'socios_comunitarios.soco_codigo', 'iniciativas_participantes.soco_codigo')
+            ->select(
+                'sub_grupos_interes.sugr_nombre',
+                'sub_grupos_interes.sugr_codigo',
+                'socios_comunitarios.soco_codigo',
+                'socios_comunitarios.soco_nombre_socio',
+                'iniciativas.inic_codigo',
+                'iniciativas.inic_nombre',
+                'iniciativas_participantes.inpr_codigo',
+                'iniciativas_participantes.inpr_total',
+                'iniciativas_participantes.inpr_total_final',
+            )
+            ->where('iniciativas.inic_codigo', $inic_codigo)
+            ->get();
 
         return view('admin.iniciativas.coberturas', [
             'iniciativa' => $inicObtener,
-            'resultados' => $resuObtener
+            'resultados' => $resuObtener,
+            'participantes' => $participantes
         ]);
     }
 
 
     public function actualizarCobertura(Request $request, $inic_codigo)
     {
+        if (Session::has('admin')) {
+            $rolePrefix = 'admin';
+        } elseif (Session::has('digitador')) {
+            $rolePrefix = 'digitador';
+        } elseif (Session::has('observador')) {
+            $rolePrefix = 'observador';
+        } elseif (Session::has('supervisor')) {
+            $rolePrefix = 'supervisor';
+        }
         $docentes_final = $request->input('docentes_final');
         $estudiantes_final = $request->input('estudiantes_final');
         $funcionarios_final = $request->input('funcionarios_final');
@@ -125,11 +154,32 @@ class IniciativasController extends Controller
                 $resultado->save();
             }
         }
-
-        return redirect()->route('admin.cobertura.index', $inic_codigo)
-            ->with('success', 'Resultados actualizados correctamente.');
+        $ThisRuta = $rolePrefix . '.cobertura.index';
+        return redirect()->route($ThisRuta, $inic_codigo)
+            ->with('exitoInterno', 'Participacion interna actualizada correctamente.');
     }
 
+    public function actualizarCoberturaEx(Request $request, $inic_codigo)
+    {
+        $participantes_final = $request->input('participantes');
+        // dd($participantes_final);
+
+        foreach ($participantes_final as $inpr_codigo => $participantes_final_value) {
+            // Obtener el resultado correspondiente según el $inpr_codigo
+            $resultado = IniciativasParticipantes::where('inpr_codigo', $inpr_codigo)
+                ->where('inic_codigo', $inic_codigo)
+                ->first();
+
+            if ($resultado) {
+                // Actualizar los valores en la base de datos
+                $resultado->inpr_total_final = $participantes_final_value;
+                // dd($resultado->inpr_total_final = $participantes_final_value);
+                $resultado->save();
+            }
+        }
+
+        return redirect()->back()->with('exitoExterno', 'Participantes externos actualizados correctamente.');
+    }
 
     public function updateState(Request $request)
     {
@@ -161,10 +211,10 @@ class IniciativasController extends Controller
                 'iniciativas.inic_estado',
                 'mecanismos.meca_nombre',
                 'tipo_actividades.tiac_nombre',
-                'convenios.conv_nombre'
+                'convenios.conv_nombre',
             )
             ->where('iniciativas.inic_codigo', $inic_codigo)
-            ->get();
+            ->first();
 
 
         $participantes = ParticipantesInternos::join('carreras', 'carreras.care_codigo', 'participantes_internos.care_codigo')
@@ -206,6 +256,25 @@ class IniciativasController extends Controller
             ->join('grupos_interes', 'grupos_interes.grin_codigo', 'sub_grupos_interes.grin_codigo')
             ->where('iniciativas_participantes.inic_codigo', $inic_codigo)->get();
 
+        $entidadesRecursos = Entidades::select('enti_codigo', 'enti_nombre')->get();
+        $costosDinero = CostosDinero::select(DB::raw('IFNULL(SUM(codi_valorizacion), 0) AS codi_valorizacion'))->where('inic_codigo', $inic_codigo)->first();
+        $costosInfraestructura = CostosInfraestructura::select(DB::raw('IFNULL(SUM(coin_valorizacion), 0) AS coin_valorizacion'))->where('inic_codigo', $inic_codigo)->first();
+        $costosRrhh = CostosRrhh::select(DB::raw('IFNULL(SUM(corh_valorizacion), 0) AS corh_valorizacion'))->where('inic_codigo', $inic_codigo)->first();
+
+        $codiListar = CostosDinero::select('enti_codigo', DB::raw('IFNULL(SUM(codi_valorizacion), 0) AS suma_dinero'))->where('inic_codigo', $inic_codigo)->groupBy('enti_codigo')->get();
+        $coinListar = CostosInfraestructura::select('enti_codigo', 'costos_infraestructura.tinf_codigo', 'tinf_nombre', DB::raw('IFNULL(SUM(coin_valorizacion), 0) AS suma_infraestructura'))
+            ->join('tipo_infraestructura', 'tipo_infraestructura.tinf_codigo', '=', 'costos_infraestructura.tinf_codigo')
+            ->where('inic_codigo', $inic_codigo)
+            ->groupBy('enti_codigo', 'costos_infraestructura.tinf_codigo', 'tinf_nombre')
+            ->get();
+
+        $corhListar = CostosRrhh::select('enti_codigo', 'costos_rrhh.trrhh_codigo', 'trrhh_nombre', DB::raw('IFNULL(SUM(corh_valorizacion), 0) AS suma_rrhh'))
+            ->join('tipo_rrhh', 'tipo_rrhh.trrhh_codigo', '=', 'costos_rrhh.trrhh_codigo')
+            ->where('inic_codigo', $inic_codigo)
+            ->groupBy('enti_codigo', 'costos_rrhh.trrhh_codigo', 'trrhh_nombre')
+            ->get();
+
+        // return $costosDinero;
 
         return view('admin.iniciativas.mostrar', [
             'iniciativa' => $iniciativa,
@@ -213,15 +282,34 @@ class IniciativasController extends Controller
             'grupos' => $grupos,
             'tematicas' => $tematicas,
             'externos' => $participantes_externos,
-            'internos' => $participantes
+            'internos' => $participantes,
+            'dinero' => $costosDinero,
+            'infraestructura' => $costosInfraestructura,
+            'rrhh' => $costosRrhh,
+            'recursoDinero' => $codiListar,
+            'recursoInfraestructura' => $coinListar,
+            'recursoRrhh' => $corhListar,
+            'entidades' => $entidadesRecursos,
         ]);
     }
 
     public function listarEvidencia($inic_codigo)
     {
+        if (Session::has('admin')) {
+            $rolePrefix = 'admin';
+        } elseif (Session::has('digitador')) {
+            $rolePrefix = 'digitador';
+        } elseif (Session::has('observador')) {
+            $rolePrefix = 'observador';
+        } elseif (Session::has('supervisor')) {
+            $rolePrefix = 'supervisor';
+        }
         $inicVerificar = Iniciativas::where('inic_codigo', $inic_codigo)->first();
-        if (!$inicVerificar)
-            return redirect()->route('admin.iniciativa.listar')->with('errorIniciativa', 'La iniciativa no se encuentra registrada en el sistema.');
+        // dd();
+        if (empty($inicVerificar)) {
+            $ThisRuta = "$rolePrefix.iniciativa.listar";
+            return redirect()->route($ThisRuta)->with('errorIniciativa', 'La iniciativa no se encuentra registrada en el sistema.');
+        }
 
         $inevListar = IniciativasEvidencias::where(['inic_codigo' => $inic_codigo])->get();
         return view('admin.iniciativas.evidencias', [
@@ -252,12 +340,24 @@ class IniciativasController extends Controller
         return redirect()->back()->with('exitoExterno', 'Resultados actualizados correctamente.');
     }
 
+
     public function guardarEvidencia(Request $request, $inic_codigo)
     {
-
+        if (Session::has('admin')) {
+            $rolePrefix = 'admin';
+        } elseif (Session::has('digitador')) {
+            $rolePrefix = 'digitador';
+        } elseif (Session::has('observador')) {
+            $rolePrefix = 'observador';
+        } elseif (Session::has('supervisor')) {
+            $rolePrefix = 'supervisor';
+        }
         $inicVerificar = Iniciativas::where('inic_codigo', $inic_codigo)->first();
-        if (!$inicVerificar)
-            return redirect()->route('admin.iniciativa.listar')->with('errorIniciativa', 'La iniciativa no se encuentra registrada en el sistema.');
+
+        if (empty($inicVerificar)) {
+            $ThisRuta = "$rolePrefix.iniciativa.listar";
+            return redirect()->route($ThisRuta)->with('errorIniciativa', 'La iniciativa no se encuentra registrada en el sistema.');
+        }
 
         $validarEntradas = Validator::make(
             $request->all(),
@@ -276,18 +376,21 @@ class IniciativasController extends Controller
                 'inev_archivo.max' => 'El archivo excede el tamaño máximo permitido (10 MB).'
             ]
         );
-        if ($validarEntradas->fails())
-            return redirect()->route('admin.evidencias.listar', $inic_codigo)->with('errorValidacion', $validarEntradas->errors()->first());
+        if (empty($inicVerificar)) {
+            $ThisRuta = "$rolePrefix.evidencias.listar";
+            return redirect()->route($ThisRuta)->with('errorEvidencias', 'La Evidencia ntuvo un error al registrarse, prueba más tarde');
+        }
 
         $inevGuardar = IniciativasEvidencias::insertGetId([
             'inic_codigo' => $inic_codigo,
             'inev_nombre' => $request->inev_nombre,
+            // 'inev_tipo' => $request->inev_tipo,
             // Todo: nuevo campo a la BD
             'inev_descripcion' => $request->inev_descripcion,
             'inev_creado' => Carbon::now()->format('Y-m-d H:i:s'),
             'inev_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
-            'inev_rol_mod' => Session::get('admin')->rous_codigo,
-            'inev_nickname_mod' => Session::get('admin')->usua_nickname
+            'inev_rol_mod' => Session::get($rolePrefix)->rous_codigo,
+            'inev_nickname_mod' => Session::get($rolePrefix)->usua_nickname,
         ]);
         if (!$inevGuardar)
             redirect()->back()->with('errorEvidencia', 'Ocurrió un error al registrar la evidencia, intente más tarde.');
@@ -307,17 +410,28 @@ class IniciativasController extends Controller
             'inev_mime' => $archivo->getClientMimeType(),
             'inev_nombre_origen' => $archivo->getClientOriginalName(),
             'inev_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
-            'inev_rol_mod' => Session::get('admin')->rous_codigo,
-            'inev_nickname_mod' => Session::get('admin')->usua_nickname
+            'inev_rol_mod' => Session::get($rolePrefix)->rous_codigo,
+            'inev_nickname_mod' => Session::get($rolePrefix)->usua_nickname,
         ]);
         if (!$inevActualizar)
             return redirect()->back()->with('errorEvidencia', 'Ocurrió un error al registrar la evidencia, intente más tarde.');
-        return redirect()->route('admin.evidencias.listar', $inic_codigo)->with('exitoEvidencia', 'La evidencia fue registrada correctamente.');
+
+        $ThisRuta = $rolePrefix . '.evidencias.listar';
+        return redirect()->route($ThisRuta, $inic_codigo)->with('exitoEvidencia', 'La evidencia fue registrada correctamente.');
 
     }
 
     public function actualizarEvidencia(Request $request, $inev_codigo)
     {
+        if (Session::has('admin')) {
+            $rolePrefix = 'admin';
+        } elseif (Session::has('digitador')) {
+            $rolePrefix = 'digitador';
+        } elseif (Session::has('observador')) {
+            $rolePrefix = 'observador';
+        } elseif (Session::has('supervisor')) {
+            $rolePrefix = 'supervisor';
+        }
         try {
             $evidencia = IniciativasEvidencias::where('inev_codigo', $inev_codigo)->first();
             if (!$evidencia)
@@ -336,20 +450,24 @@ class IniciativasController extends Controller
                     // 'inev_descripcion_edit.max' => 'La descripción de la evidencia excede el máximo de caracteres permitidos (500).'
                 ]
             );
-            if ($validarEntradas->fails())
-                return redirect()->route('admin.evidencias.listar', $evidencia->inic_codigo)->with('errorValidacion', $validarEntradas->errors()->first());
+
+            if ($validarEntradas->fails()){
+            $ThisRuta = "$rolePrefix.evidencias.listar";
+                return redirect()->route($ThisRuta, $evidencia->inic_codigo)->with('errorValidacion', $validarEntradas->errors()->first());
+            }
 
             $inevActualizar = IniciativasEvidencias::where('inev_codigo', $inev_codigo)->update([
                 'inev_nombre' => $request->inev_nombre_edit,
                 'inev_descripcion' => $request->inev_descripcion_edit,
-                'inev_tipo' => $request->inev_tipo_edit,
+                // 'inev_tipo' => $request->inev_tipo_edit,
                 'inev_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
-                'inev_rol_mod' => Session::get('admin')->rous_codigo,
-                'inev_nickname_mod' => Session::get('admin')->usua_nickname
+                'inev_rol_mod' => Session::get($rolePrefix)->rous_codigo,
+                'inev_nickname_mod' => Session::get($rolePrefix)->usua_nickname,
             ]);
             if (!$inevActualizar)
                 return redirect()->back()->with('errorEvidencia', 'Ocurrió un error al actualizar la evidencia, intente más tarde.');
-            return redirect()->route('admin.evidencias.listar', $evidencia->inic_codigo)->with('exitoEvidencia', 'La evidencia fue actualizada correctamente.');
+            $ThisRuta = $rolePrefix . '.evidencias.listar';
+            return redirect()->route($ThisRuta, $evidencia->inic_codigo)->with('exitoEvidencia', 'La evidencia fue actualizada correctamente.');
         } catch (\Throwable $th) {
             return redirect()->back()->with('errorEvidencia', 'Ocurrió un problema al actualizar la evidencia, intente más tarde.');
         }
@@ -377,6 +495,15 @@ class IniciativasController extends Controller
 
     public function eliminarEvidencia($inev_codigo)
     {
+        if (Session::has('admin')) {
+            $rolePrefix = 'admin';
+        } elseif (Session::has('digitador')) {
+            $rolePrefix = 'digitador';
+        } elseif (Session::has('observador')) {
+            $rolePrefix = 'observador';
+        } elseif (Session::has('supervisor')) {
+            $rolePrefix = 'supervisor';
+        }
         try {
             $evidencia = IniciativasEvidencias::where('inev_codigo', $inev_codigo)->first();
             if (!$evidencia)
@@ -387,11 +514,13 @@ class IniciativasController extends Controller
             $inevEliminar = IniciativasEvidencias::where('inev_codigo', $inev_codigo)->delete();
             if (!$inevEliminar)
                 return redirect()->back()->with('errorEvidencia', 'Ocurrió un error al eliminar la evidencia, intente más tarde.');
-            return redirect()->route('admin.evidencias.listar', $evidencia->inic_codigo)->with('exitoEvidencia', 'La evidencia fue eliminada correctamente.');
+            $ThisRuta = $rolePrefix . '.evidencias.listar';
+            return redirect()->route($ThisRuta, $evidencia->inic_codigo)->with('exitoEvidencia', 'La evidencia fue eliminada correctamente.');
         } catch (\Throwable $th) {
             return redirect()->back()->with('errorEvidencia', 'Ocurrió un problema al eliminar la evidencia, intente más tarde.');
         }
     }
+
 
     public function crearPaso1()
     {
@@ -425,7 +554,15 @@ class IniciativasController extends Controller
 
     public function verificarPaso1(Request $request)
     {
-
+        if (Session::has('admin')) {
+            $rolePrefix = 'admin';
+        } elseif (Session::has('digitador')) {
+            $rolePrefix = 'digitador';
+        } elseif (Session::has('observador')) {
+            $rolePrefix = 'observador';
+        } elseif (Session::has('supervisor')) {
+            $rolePrefix = 'supervisor';
+        }
         $request->validate([
             'nombre' => 'required|max:255',
             'anho' => 'required',
@@ -465,8 +602,8 @@ class IniciativasController extends Controller
             'inic_visible' => 1,
             'inic_creado' => Carbon::now()->format('Y-m-d H:i:s'),
             'inic_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
-            'inic_nickname_mod' => Session::get('admin')->usua_nickname,
-            'inic_rol_mod' => Session::get('admin')->rous_codigo,
+            'inic_nickname_mod' => Session::get($rolePrefix)->usua_nickname,
+            'inic_rol_mod' => Session::get($rolePrefix)->rous_codigo,
         ]);
 
         if (!$inicCrear)
@@ -481,8 +618,8 @@ class IniciativasController extends Controller
             'pais_codigo' => $request->pais,
             'pain_creado' => Carbon::now()->format('Y-m-d H:i:s'),
             'pain_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
-            'pais_nickname_mod' => Session::get('admin')->usua_nickname,
-            'pain_rol_mod' => Session::get('admin')->rous_codigo,
+            'pais_nickname_mod' => Session::get($rolePrefix)->usua_nickname,
+            'pain_rol_mod' => Session::get($rolePrefix)->rous_codigo,
         ]);
 
         $regi = [];
@@ -496,8 +633,8 @@ class IniciativasController extends Controller
                     'regi_codigo' => $region,
                     'rein_creado' => Carbon::now()->format('Y-m-d H:i:s'),
                     'rein_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
-                    'rein_nickname_rol' => Session::get('admin')->usua_nickname,
-                    'rein_rol_mod' => Session::get('admin')->rous_codigo,
+                    'rein_nickname_rol' => Session::get($rolePrefix)->usua_nickname,
+                    'rein_rol_mod' => Session::get($rolePrefix)->rous_codigo,
                 ]
             );
         }
@@ -518,8 +655,8 @@ class IniciativasController extends Controller
                 'comu_codigo' => $comuna,
                 'coin_creado' => Carbon::now()->format('Y-m-d H:i:s'),
                 'coin_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
-                'coin_nickname_mod' => Session::get('admin')->usua_nickname,
-                'coin_rol_mod' => Session::get('admin')->rous_codigo,
+                'coin_nickname_mod' => Session::get($rolePrefix)->usua_nickname,
+                'coin_rol_mod' => Session::get($rolePrefix)->rous_codigo,
             ]);
         }
 
@@ -557,8 +694,8 @@ class IniciativasController extends Controller
             ParticipantesInternos::where('inic_codigo', $inic_codigo)->delete();
             return redirect()->back()->with('errorPaso1', 'Ocurrió un error durante el registro de las unidades, intente más tarde.')->withInput();
         }
-
-        return redirect()->route('admin.editar.paso2', $inic_codigo)->with('exitoPaso1', 'Los datos de la iniciativa se registraron correctamente');
+        $ThisRuta = $rolePrefix . '.editar.paso2';
+        return redirect()->route($ThisRuta, $inic_codigo)->with('exitoPaso1', 'Los datos de la iniciativa se registraron correctamente');
     }
 
     public function editarPaso1($inic_codigo)
@@ -622,6 +759,16 @@ class IniciativasController extends Controller
 
     public function actualizarPaso1(Request $request, $inic_codigo)
     {
+        if (Session::has('admin')) {
+            $rolePrefix = 'admin';
+        } elseif (Session::has('digitador')) {
+            $rolePrefix = 'digitador';
+        } elseif (Session::has('observador')) {
+            $rolePrefix = 'observador';
+        } elseif (Session::has('supervisor')) {
+            $rolePrefix = 'supervisor';
+        }
+
         $request->validate([
             'nombre' => 'required|max:255',
             'anho' => 'required',
@@ -661,8 +808,8 @@ class IniciativasController extends Controller
             'inic_visible' => 1,
             'inic_creado' => Carbon::now()->format('Y-m-d H:i:s'),
             'inic_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
-            'inic_nickname_mod' => Session::get('admin')->usua_nickname,
-            'inic_rol_mod' => Session::get('admin')->rous_codigo,
+            'inic_nickname_mod' => Session::get($rolePrefix)->usua_nickname,
+            'inic_rol_mod' => Session::get($rolePrefix)->rous_codigo,
         ]);
 
         if (!$inicActualizar)
@@ -708,8 +855,8 @@ class IniciativasController extends Controller
             'pais_codigo' => $request->pais,
             'pain_creado' => Carbon::now()->format('Y-m-d H:i:s'),
             'pain_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
-            'pais_nickname_mod' => Session::get('admin')->usua_nickname,
-            'pain_rol_mod' => Session::get('admin')->rous_codigo,
+            'pais_nickname_mod' => Session::get($rolePrefix)->usua_nickname,
+            'pain_rol_mod' => Session::get($rolePrefix)->rous_codigo,
         ]);
 
         $regi = [];
@@ -723,8 +870,8 @@ class IniciativasController extends Controller
                     'regi_codigo' => $region,
                     'rein_creado' => Carbon::now()->format('Y-m-d H:i:s'),
                     'rein_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
-                    'rein_nickname_rol' => Session::get('admin')->usua_nickname,
-                    'rein_rol_mod' => Session::get('admin')->rous_codigo,
+                    'rein_nickname_rol' => Session::get($rolePrefix)->usua_nickname,
+                    'rein_rol_mod' => Session::get($rolePrefix)->rous_codigo,
                 ]
             );
         }
@@ -745,8 +892,8 @@ class IniciativasController extends Controller
                 'comu_codigo' => $comuna,
                 'coin_creado' => Carbon::now()->format('Y-m-d H:i:s'),
                 'coin_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
-                'coin_nickname_mod' => Session::get('admin')->usua_nickname,
-                'coin_rol_mod' => Session::get('admin')->rous_codigo,
+                'coin_nickname_mod' => Session::get($rolePrefix)->usua_nickname,
+                'coin_rol_mod' => Session::get($rolePrefix)->rous_codigo,
             ]);
         }
 
@@ -757,8 +904,8 @@ class IniciativasController extends Controller
             return redirect()->back()->with('comuError', 'Ocurrió un error durante el registro de las comunas, intente más tarde.')->withInput();
         }
 
-
-        return redirect()->route('admin.editar.paso2', $inic_codigo)->with('exitoPaso1', 'Los datos de la iniciativa se actualizaron correctamente');
+        $ThisRuta = $rolePrefix . '.editar.paso2';
+        return redirect()->route($ThisRuta, $inic_codigo)->with('exitoPaso1', 'Los datos de la iniciativa se actualizaron correctamente');
 
     }
 
@@ -820,6 +967,16 @@ class IniciativasController extends Controller
 
     public function verificarPaso2(Request $request, $inic_codigo)
     {
+        if (Session::has('admin')) {
+            $rolePrefix = 'admin';
+        } elseif (Session::has('digitador')) {
+            $rolePrefix = 'digitador';
+        } elseif (Session::has('observador')) {
+            $rolePrefix = 'observador';
+        } elseif (Session::has('supervisor')) {
+            $rolePrefix = 'supervisor';
+        }
+
         $ingr = [];
         $inte = [];
         $grupos = $request->input('grupos', []);
@@ -833,8 +990,8 @@ class IniciativasController extends Controller
                 'inic_codigo' => $inic_codigo,
                 'grup_codigo' => $grupo,
                 'ingr_creado' => Carbon::now()->format('Y-m-d H:i:s'),
-                'ingr_nickname_mod' => Session::get('admin')->usua_nickname,
-                'ingr_rol_mod' => Session::get('admin')->rous_codigo,
+                'ingr_nickname_mod' => Session::get($rolePrefix)->usua_nickname,
+                'ingr_rol_mod' => Session::get($rolePrefix)->rous_codigo,
             ]);
         }
 
@@ -843,8 +1000,8 @@ class IniciativasController extends Controller
                 'inic_codigo' => $inic_codigo,
                 'tema_codigo' => $tematica,
                 'inte_creado' => Carbon::now()->format('Y-m-d H:i:s'),
-                'inte_nickname_mod' => Session::get('admin')->usua_nickname,
-                'inte_rol_mod' => Session::get('admin')->rous_codigo,
+                'inte_nickname_mod' => Session::get($rolePrefix)->usua_nickname,
+                'inte_rol_mod' => Session::get($rolePrefix)->rous_codigo,
             ]);
         }
 
@@ -872,10 +1029,21 @@ class IniciativasController extends Controller
 
     public function eliminarIniciativas(Request $request)
     {
+        if (Session::has('admin')) {
+            $rolePrefix = 'admin';
+        } elseif (Session::has('digitador')) {
+            $rolePrefix = 'digitador';
+        } elseif (Session::has('observador')) {
+            $rolePrefix = 'observador';
+        } elseif (Session::has('supervisor')) {
+            $rolePrefix = 'supervisor';
+        }
+        $ThisRuta = $rolePrefix . '.iniciativa.listar';
+
         $iniciativa = Iniciativas::where('inic_codigo', $request->inic_codigo)->first();
 
         if (!$iniciativa) {
-            return redirect()->route('admin.iniciativa.listar')->with('errorIniciativa', 'La iniciativa no se encuentra registrada en el sistema.');
+            return redirect()->route($ThisRuta)->with('errorIniciativa', 'La iniciativa no se encuentra registrada en el sistema.');
         }
 
         IniciativasComunas::where('inic_codigo', $request->inic_codigo)->delete();
@@ -887,12 +1055,22 @@ class IniciativasController extends Controller
         ParticipantesInternos::where('inic_codigo', $request->inic_codigo)->delete();
         Iniciativas::where('inic_codigo', $request->inic_codigo)->delete();
 
-        return redirect()->route('admin.iniciativa.listar')->with('exitoIniciativa', 'La iniciativa fue eliminada correctamente.');
+        return redirect()->route($ThisRuta)->with('exitoIniciativa', 'La iniciativa fue eliminada correctamente.');
     }
 
 
     public function guardarSocioComunitario(Request $request)
     {
+        if (Session::has('admin')) {
+            $rolePrefix = 'admin';
+        } elseif (Session::has('digitador')) {
+            $rolePrefix = 'digitador';
+        } elseif (Session::has('observador')) {
+            $rolePrefix = 'observador';
+        } elseif (Session::has('supervisor')) {
+            $rolePrefix = 'supervisor';
+        }
+
         $validacion = $request->validate([
             'nombre' => 'required',
             'nombrec' => 'required',
@@ -933,8 +1111,8 @@ class IniciativasController extends Controller
                 'sede_codigo' => $sede,
                 'soco_codigo' => $soco_codigo,
                 'seso_creado' => Carbon::now()->format('Y-m-d H:i:s'),
-                'seso_nickname_mod' => Session::get('admin')->usua_nickname,
-                'seso_rol_mod' => Session::get('admin')->rous_codigo,
+                'seso_nickname_mod' => Session::get($rolePrefix)->usua_nickname,
+                'seso_rol_mod' => Session::get($rolePrefix)->rous_codigo,
             ]);
         }
 
@@ -958,6 +1136,16 @@ class IniciativasController extends Controller
 
     public function agregarExternos(Request $request)
     {
+        if (Session::has('admin')) {
+            $rolePrefix = 'admin';
+        } elseif (Session::has('digitador')) {
+            $rolePrefix = 'digitador';
+        } elseif (Session::has('observador')) {
+            $rolePrefix = 'observador';
+        } elseif (Session::has('supervisor')) {
+            $rolePrefix = 'supervisor';
+        }
+
         $validar = IniciativasParticipantes::where(
             [
                 "inic_codigo" => $request->inic_codigo,
@@ -973,8 +1161,8 @@ class IniciativasController extends Controller
                 'inpr_total' => $request->inpr_total,
                 'inpr_creado' => Carbon::now()->format('Y-m-d H:i:s'),
                 'inpr_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
-                'inpr_nickname_mod' => Session::get('admin')->usua_nickname,
-                'inpr_rol_mod' => Session::get('admin')->rous_codigo,
+                'inpr_nickname_mod' => Session::get($rolePrefix)->usua_nickname,
+                'inpr_rol_mod' => Session::get($rolePrefix)->rous_codigo,
             ]);
 
         } else {
@@ -989,8 +1177,8 @@ class IniciativasController extends Controller
                 ->update([
                     'inpr_total' => $request->inpr_total,
                     'inpr_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
-                    'inpr_nickname_mod' => Session::get('admin')->usua_nickname,
-                    'inpr_rol_mod' => Session::get('admin')->rous_codigo,
+                    'inpr_nickname_mod' => Session::get($rolePrefix)->usua_nickname,
+                    'inpr_rol_mod' => Session::get($rolePrefix)->rous_codigo,
                 ]);
 
         }
@@ -1142,6 +1330,16 @@ class IniciativasController extends Controller
 
     public function guardarDinero(Request $request)
     {
+        if (Session::has('admin')) {
+            $rolePrefix = 'admin';
+        } elseif (Session::has('digitador')) {
+            $rolePrefix = 'digitador';
+        } elseif (Session::has('observador')) {
+            $rolePrefix = 'observador';
+        } elseif (Session::has('supervisor')) {
+            $rolePrefix = 'supervisor';
+        }
+
         $validacion = Validator::make(
             $request->all(),
             [
@@ -1170,8 +1368,8 @@ class IniciativasController extends Controller
                 'codi_creado' => Carbon::now()->format('Y-m-d H:i:s'),
                 'codi_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
                 'codi_vigente' => 'S',
-                'codi_nickname_mod' => Session::get('admin')->usua_nickname,
-                'codi_rol_mod' => Session::get('admin')->rous_codigo
+                'codi_nickname_mod' => Session::get($rolePrefix)->usua_nickname,
+                'codi_rol_mod' => Session::get($rolePrefix)->rous_codigo,
             ]);
         } else {
             $codiGuardar = CostosDinero::where(
@@ -1182,8 +1380,8 @@ class IniciativasController extends Controller
             )->update([
                         'codi_valorizacion' => $request->valorizacion,
                         'codi_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
-                        'codi_nickname_mod' => Session::get('admin')->usua_nickname,
-                        'codi_rol_mod' => Session::get('admin')->rous_codigo
+                        'codi_nickname_mod' => Session::get($rolePrefix)->usua_nickname,
+                        'codi_rol_mod' => Session::get($rolePrefix)->rous_codigo,
                     ]);
         }
 
@@ -1213,6 +1411,16 @@ class IniciativasController extends Controller
 
     public function guardarResultado(Request $request)
     {
+        if (Session::has('admin')) {
+            $rolePrefix = 'admin';
+        } elseif (Session::has('digitador')) {
+            $rolePrefix = 'digitador';
+        } elseif (Session::has('observador')) {
+            $rolePrefix = 'observador';
+        } elseif (Session::has('supervisor')) {
+            $rolePrefix = 'supervisor';
+        }
+
         $validacion = Validator::make(
             $request->all(),
             [
@@ -1239,8 +1447,8 @@ class IniciativasController extends Controller
             'resu_creado' => Carbon::now()->format('Y-m-d H:i:s'),
             'resu_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
             'resu_visible' => 1,
-            'resu_nickname_mod' => Session::get('admin')->usua_nickname,
-            'resu_rol_mod' => Session::get('admin')->rous_codigo
+            'resu_nickname_mod' => Session::get($rolePrefix)->usua_nickname,
+            'resu_rol_mod' => Session::get($rolePrefix)->rous_codigo,
         ]);
         if (!$resuGuardar)
             return json_encode(['estado' => false, 'resultado' => 'Ocurrió un error al guardar el resultado esperado, intente más tarde.']);
@@ -1302,6 +1510,16 @@ class IniciativasController extends Controller
 
     public function guardarInfraestructura(Request $request)
     {
+        if (Session::has('admin')) {
+            $rolePrefix = 'admin';
+        } elseif (Session::has('digitador')) {
+            $rolePrefix = 'digitador';
+        } elseif (Session::has('observador')) {
+            $rolePrefix = 'observador';
+        } elseif (Session::has('supervisor')) {
+            $rolePrefix = 'supervisor';
+        }
+
         $validacion = Validator::make(
             $request->all(),
             [
@@ -1340,12 +1558,12 @@ class IniciativasController extends Controller
             'tinf_codigo' => $request->tipoinfra,
             'coin_horas' => $request->horas,
             'coin_cantidad' => $request->cantidad,
-            'coin_valorizacion' => $request->horas * $tiinConsultar->tinf_valor*$request->cantidad,
+            'coin_valorizacion' => $request->horas * $tiinConsultar->tinf_valor * $request->cantidad,
             'coin_creado' => Carbon::now()->format('Y-m-d H:i:s'),
             'coin_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
             'coin_vigente' => 'S',
-            'coin_nickname_mod' => Session::get('admin')->usua_nickname,
-            'coin_rol_mod' => Session::get('admin')->rous_codigo
+            'coin_nickname_mod' => Session::get($rolePrefix)->usua_nickname,
+            'coin_rol_mod' => Session::get($rolePrefix)->rous_codigo,
         ]);
         if (!$coinGuardar)
             return json_encode(['estado' => false, 'resultado' => 'Ocurrió un error al guardar la infraestructura, intente más tarde.']);
@@ -1363,7 +1581,7 @@ class IniciativasController extends Controller
             return json_encode(['estado' => false, 'resultado' => $validacion->errors()->first()]);
 
         $coinListar = DB::table('costos_infraestructura')
-            ->select('inic_codigo', 'enti_codigo', 'costos_infraestructura.tinf_codigo', 'tinf_nombre', 'coin_horas','coin_cantidad', 'coin_valorizacion')
+            ->select('inic_codigo', 'enti_codigo', 'costos_infraestructura.tinf_codigo', 'tinf_nombre', 'coin_horas', 'coin_cantidad', 'coin_valorizacion')
             ->join('tipo_infraestructura', 'tipo_infraestructura.tinf_codigo', '=', 'costos_infraestructura.tinf_codigo')
             ->where('inic_codigo', $request->iniciativa)
             ->orderBy('coin_creado', 'asc')
@@ -1446,7 +1664,7 @@ class IniciativasController extends Controller
             return json_encode(['estado' => false, 'resultado' => $validacion->errors()->first()]);
 
         $corhListar = DB::table('costos_rrhh')
-            ->select('inic_codigo', 'enti_codigo', 'costos_rrhh.trrhh_codigo', 'trrhh_nombre', 'corh_horas','corh_cantidad', 'corh_valorizacion')
+            ->select('inic_codigo', 'enti_codigo', 'costos_rrhh.trrhh_codigo', 'trrhh_nombre', 'corh_horas', 'corh_cantidad', 'corh_valorizacion')
             ->join('tipo_rrhh', 'tipo_rrhh.trrhh_codigo', '=', 'costos_rrhh.trrhh_codigo')
             ->where('inic_codigo', $request->iniciativa)
             ->orderBy('corh_creado', 'asc')
@@ -1458,6 +1676,15 @@ class IniciativasController extends Controller
 
     public function guardarRrhh(Request $request)
     {
+        if (Session::has('admin')) {
+            $rolePrefix = 'admin';
+        } elseif (Session::has('digitador')) {
+            $rolePrefix = 'digitador';
+        } elseif (Session::has('observador')) {
+            $rolePrefix = 'observador';
+        } elseif (Session::has('supervisor')) {
+            $rolePrefix = 'supervisor';
+        }
         $validacion = Validator::make(
             $request->all(),
             [
@@ -1501,8 +1728,8 @@ class IniciativasController extends Controller
             'corh_creado' => Carbon::now()->format('Y-m-d H:i:s'),
             'corh_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
             'corh_vigente' => 1,
-            'corh_nickname_mod' => Session::get('admin')->usua_nickname,
-            'corh_rol_mod' => Session::get('admin')->rous_codigo
+            'corh_nickname_mod' => Session::get($rolePrefix)->usua_nickname,
+            'corh_rol_mod' => Session::get($rolePrefix)->rous_codigo,
         ]);
         if (!$corhGuardar)
             return json_encode(['estado' => false, 'resultado' => 'Ocurrió un error al guardar el recurso humano, intente más tarde.']);
@@ -1539,5 +1766,10 @@ class IniciativasController extends Controller
 
         $corhListar = CostosRrhh::select('enti_codigo', DB::raw('COALESCE(SUM(corh_valorizacion), 0) AS suma_rrhh'))->where('inic_codigo', $request->iniciativa)->groupBy('enti_codigo')->get();
         return json_encode(['estado' => true, 'resultado' => $corhListar]);
+    }
+
+    public function evaluarIniciativa($inic_codigo)
+    {
+        return view('admin.iniciativas.evaluacion', compact('inic_codigo'));
     }
 }

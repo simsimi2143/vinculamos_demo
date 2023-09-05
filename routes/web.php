@@ -66,9 +66,7 @@ Route::middleware('verificar.superadmin')->group(function () {
 
 Route::middleware('verificar.admin')->group(function () {
 
-    Route::get('admin/home', function () {
-        return view('admin.home');
-    })->name('admin.home');
+
     // TODO: inicio rutas para gestionar parametros
 
     //Ambito de COntribucion
@@ -199,10 +197,13 @@ Route::middleware('verificar.admin')->group(function () {
     Route::put('admin/editar-tipoinfra/{tinf_codigo}', [ParametrosController::class, 'actualizarTipoInfraestructuras'])->name('admin.actualizar.tipoinfra');
     Route::post('admin/crear-tipoinfra/', [ParametrosController::class, 'crearTipoInfraestructuras'])->name('admin.crear.tipoinfra');
 
-
+    // TipoUnidades
+    Route::get('admin/listar-tipounidad', [ParametrosController::class, 'listarTipoUnidades'])->name('admin.listar.tipounidad');
+    Route::delete('admin/eliminar-tipounidad/', [ParametrosController::class, 'eliminarTipoUnidades'])->name('admin.eliminar.tipounidad');
+    Route::put('admin/editar-tipounidad/{tuni_codigo}', [ParametrosController::class, 'actualizarTipoUnidades'])->name('admin.actualizar.tipounidad');
+    Route::post('admin/crear-tipounidad/', [ParametrosController::class, 'crearTipoUnidades'])->name('admin.crear.tipounidad');
 
     // fin rutas para gestionar parametros
-
 
     //TODO: Inicio de rutas para iniciativas
     Route::get('admin/iniciativas/listar', [IniciativasController::class, 'listarIniciativas'])->name('admin.iniciativa.listar');
@@ -234,22 +235,23 @@ Route::middleware('verificar.admin')->group(function () {
     Route::get('admin/crear-iniciativa/listar-rrhh', [IniciativasController::class, 'listarRrhh'])->name('admin.rrhh.listar');
     Route::get('admin/crear-iniciativa/buscar-tiporrhh', [IniciativasController::class, 'buscarTipoRrhh'])->name('admin.tiporrhh.buscar');
     Route::post('admin/crear-iniciativa/guardar-rrhh', [IniciativasController::class, 'guardarRrhh'])->name('admin.rrhh.guardar');
-    Route::post('admin/crear-iniciativa/eliminar-rrhh', [IniciativasController::class, 'eliminarRRHH']);
+    /* Route::post('admin/crear-iniciativa/eliminar-rrhh', [IniciativasController::class, 'eliminarRRHH']); */
     Route::get('admin/crear-iniciativa/consultar-rrhh', [IniciativasController::class, 'consultarRrhh'])->name('admin.rrhh.consultar');
 
 
 
     Route::post('admin/iniciativas/crear/socio', [IniciativasController::class, 'guardarSocioComunitario'])->name('admin.iniciativas.crear.socio');
-    Route::get('admin/crear/iniciativa/listar-internos', [IniciativasController::class, 'listarInternos']);
+    /* Route::get('admin/crear/iniciativa/listar-internos', [IniciativasController::class, 'listarInternos']);
     Route::get('admin/crear/iniciativa/listar-externos', [IniciativasController::class, 'listarExternos']);
     Route::post('admin/actualizar/participantes-internos', [IniciativasController::class, 'actualizarInternos']);
-    Route::post('admin/iniciativas/agregar/participantes-externos', [IniciativasController::class, 'agregarExternos']);
+    Route::post('admin/iniciativas/agregar/participantes-externos', [IniciativasController::class, 'agregarExternos']); */
 
     //todo: Update state iniciativa
     Route::post('/admin/iniciativas/update-state', [IniciativasController::class, 'updateState'])->name('admin.iniciativas.updateState');
     //todo: Add result iniciativa
-    Route::get('/admin/iniciativa/{inic_codigo}/cobertura', [IniciativasController::class, 'completarCobertura'])->name('admin.cobertura.index');
-    Route::post('admin/iniciativa/{inic_codigo}/cobertura', [IniciativasController::class, 'actualizarCobertura'])->name('admin.cobertura.update');
+    Route::get('admin/iniciativa/{inic_codigo}/cobertura', [IniciativasController::class, 'completarCobertura'])->name('admin.cobertura.index');
+    Route::post('admin/iniciativa/{inic_codigo}/cobertura-interna', [IniciativasController::class, 'actualizarCobertura'])->name('admin.cobertura.interna.update');
+    Route::post('admin/iniciativa/{inic_codigo}/cobertura-externa', [IniciativasController::class, 'actualizarCoberturaEx'])->name('admin.cobertura.externa.update');
 
     //todo:evidencias de iniciativas
 
@@ -264,12 +266,15 @@ Route::middleware('verificar.admin')->group(function () {
 
     Route::delete('admin/iniciativas/eliminar', [IniciativasController::class, 'eliminarIniciativas'])->name('admin.iniciativa.eliminar');
     // Route::post('admin/iniciativas/obtener-escuelas',[IniciativasController::class,'escuelasBySede']);
-    Route::post('admin/iniciativas/obtener-escuelas/paso2', [IniciativasController::class, 'escuelasBySedesPaso2']);
+    /* Route::post('admin/iniciativas/obtener-escuelas/paso2', [IniciativasController::class, 'escuelasBySedesPaso2']);
     Route::post('admin/iniciativas/obtener-actividades', [IniciativasController::class, 'actividadesByMecanismos']);
     Route::post('admin/iniciativas/obtener-socio/paso2', [IniciativasController::class, 'sociosBySubgrupos']);
     Route::post('admin/iniciativas/obtener-pais', [IniciativasController::class, 'paisByTerritorio']);
     Route::post('admin/iniciativas/obtener-comunas', [IniciativasController::class, 'comunasByRegiones']);
-    Route::post('admin/inicitiativa/eliminar-externo', [IniciativasController::class, 'eliminarExterno']);
+    Route::post('admin/inicitiativa/eliminar-externo', [IniciativasController::class, 'eliminarExterno']); */
+
+    //TODO: Evaluacion de evidenciavinculam_demo_v2
+    Route::get('admin/iniciativas/{inic_codigo}/evaluar', [IniciativasController::class, 'evaluarIniciativa'])->name('admin.evaluar.iniciativa');
 
 
     //fin de rutas para iniciativas
@@ -290,4 +295,156 @@ Route::middleware('verificar.admin')->group(function () {
     })->name('admin.listar.ods');
 
     //fin de rutas para ODS
+});
+
+// TODO: Rutas compartida entre ROLES
+Route::get('admin/home', function () {return view('admin.home');})->name('admin.home');
+Route::post('admin/crear-iniciativa/eliminar-rrhh', [IniciativasController::class, 'eliminarRRHH']);
+Route::get('admin/crear/iniciativa/listar-internos', [IniciativasController::class, 'listarInternos']);
+Route::get('admin/crear/iniciativa/listar-externos', [IniciativasController::class, 'listarExternos']);
+Route::post('admin/actualizar/participantes-internos', [IniciativasController::class, 'actualizarInternos']);
+Route::post('admin/iniciativas/agregar/participantes-externos', [IniciativasController::class, 'agregarExternos']);
+Route::post('admin/iniciativas/obtener-escuelas/paso2', [IniciativasController::class, 'escuelasBySedesPaso2']);
+Route::post('admin/iniciativas/obtener-actividades', [IniciativasController::class, 'actividadesByMecanismos']);
+Route::post('admin/iniciativas/obtener-socio/paso2', [IniciativasController::class, 'sociosBySubgrupos']);
+Route::post('admin/iniciativas/obtener-pais', [IniciativasController::class, 'paisByTerritorio']);
+Route::post('admin/iniciativas/obtener-comunas', [IniciativasController::class, 'comunasByRegiones']);
+Route::post('admin/inicitiativa/eliminar-externo', [IniciativasController::class, 'eliminarExterno']);
+
+Route::middleware('verificar.digitador')->group(function () {
+    //TODO: Rutas de digitador
+    Route::get('digitador/iniciativas/listar', [IniciativasController::class, 'listarIniciativas'])->name('digitador.iniciativa.listar');
+    Route::get('digitador/iniciativas/{inic_codigo}/detalles', [IniciativasController::class, 'mostrarDetalles'])->name('digitador.iniciativas.detalles');
+    Route::get('digitador/iniciativas/{inic_codigo}/listar/resultado',[IniciativasController::class,'listadoResultados'])->name('digitador.resultados.listado');
+    Route::post('digitador/iniciativas/{inic_codigo}/resultados', [IniciativasController::class, 'actualizarResultados'])->name('digitador.resultados.actualizar');
+    Route::get('digitador/iniciativas/crear/paso1', [IniciativasController::class, 'crearPaso1'])->name('digitador.inicitiativas.crear.primero');
+    Route::get('digitador/iniciativas/{inic_codigo}/editar/paso1', [IniciativasController::class, 'editarPaso1'])->name('digitador.editar.paso1');
+    Route::put('digitador/iniciativas/{inic_codigo}/paso1', [IniciativasController::class, 'actualizarPaso1'])->name('digitador.actualizar.paso1');
+
+    Route::post('digitador/iniciativas/crear/paso1', [IniciativasController::class, 'verificarPaso1'])->name('digitador.paso1.verificar');
+    Route::post('digitador/iniciativas/crear/{inic_codigo}/paso2', [IniciativasController::class, 'verificarPaso2'])->name('digitador.paso2.verificar');
+    Route::get('digitador/iniciativas/{inic_codigo}/paso2', [IniciativasController::class, 'editarPaso2'])->name('digitador.editar.paso2');
+    Route::post('digitador/iniciativa/guardar-resultado', [IniciativasController::class, 'guardarResultado'])->name('digitador.resultado.guardar');
+    Route::get('digitador/iniciativa/listar-resultados', [IniciativasController::class, 'listarResultados'])->name('digitador.resultados.listar');
+    Route::post('digitador/iniciativa/eliminar-resultado', [IniciativasController::class, 'eliminarResultado'])->name('digitador.resultado.eliminar');
+
+    // TODO: PASO 3
+    Route::get('digitador/iniciativa/{inic_codigo}/editar/paso3', [IniciativasController::class, 'editarPaso3'])->name('digitador.editar.paso3');
+    Route::post('digitador/crear-iniciativa/guardar-dinero', [IniciativasController::class, 'guardarDinero'])->name('digitador.dinero.guardar');
+    Route::get('digitador/crear-iniciativa/consultar-dinero', [IniciativasController::class, 'consultarDinero'])->name('digitador.dinero.consultar');
+    Route::get('digitador/crear-iniciativa/buscar-tipoinfra', [IniciativasController::class, 'buscarTipoInfra'])->name('digitador.tipoinfra.buscar');
+    Route::get('digitador/crear-iniciativa/listar-tipoinfra', [IniciativasController::class, 'listarTipoInfra'])->name('digitador.tipoinfra.listar');
+    Route::post('digitador/crear-iniciativa/guardar-infraestructura', [IniciativasController::class, 'guardarInfraestructura'])->name('digitador.infra.guardar');
+    Route::get('digitador/crear-iniciativa/listar-infraestructura', [IniciativasController::class, 'listarInfraestructura'])->name('digitador.infra.listar');
+    Route::post('digitador/crear-iniciativa/eliminar-infraestructura', [IniciativasController::class, 'eliminarInfraestructura'])->name('digitador.infra.eliminar');
+    Route::get('digitador/crear-iniciativa/consultar-infraestructura', [IniciativasController::class, 'consultarInfraestructura'])->name('digitador.infra.consultar');
+    Route::get('digitador/crear-iniciativa/listar-tiporrhh', [IniciativasController::class, 'listarTipoRrhh'])->name('digitador.tiporrhh.listar');
+    Route::get('digitador/crear-iniciativa/recursos', [IniciativasController::class, 'listarRecursos'])->name('digitador.recursos.listar');
+    Route::get('digitador/crear-iniciativa/listar-rrhh', [IniciativasController::class, 'listarRrhh'])->name('digitador.rrhh.listar');
+    Route::get('digitador/crear-iniciativa/buscar-tiporrhh', [IniciativasController::class, 'buscarTipoRrhh'])->name('digitador.tiporrhh.buscar');
+    Route::post('digitador/crear-iniciativa/guardar-rrhh', [IniciativasController::class, 'guardarRrhh'])->name('digitador.rrhh.guardar');
+    Route::get('digitador/crear-iniciativa/consultar-rrhh', [IniciativasController::class, 'consultarRrhh'])->name('digitador.rrhh.consultar');
+    Route::post('digitador/iniciativas/crear/socio', [IniciativasController::class, 'guardarSocioComunitario'])->name('digitador.iniciativas.crear.socio');
+    Route::post('/digitador/iniciativas/update-state', [IniciativasController::class, 'updateState'])->name('digitador.iniciativas.updateState');
+    Route::get('digitador/iniciativa/{inic_codigo}/cobertura', [IniciativasController::class, 'completarCobertura'])->name('digitador.cobertura.index');
+    Route::post('digitador/iniciativa/{inic_codigo}/cobertura-interna', [IniciativasController::class, 'actualizarCobertura'])->name('digitador.cobertura.interna.update');
+    Route::post('digitador/iniciativa/{inic_codigo}/cobertura-externa', [IniciativasController::class, 'actualizarCoberturaEx'])->name('digitador.cobertura.externa.update');
+    Route::get('digitador/iniciativas/{inic_codigo}/listar-evidencias', [IniciativasController::class, 'listarEvidencia'])->name('digitador.evidencias.listar');
+    Route::post('digitador/iniciativas/{inic_codigo}/guardar-evidencias', [IniciativasController::class, 'guardarEvidencia'])->name('digitador.evidencia.guardar');
+    Route::put('digitador/iniciativa/evidencia/{inev_codigo}', [IniciativasController::class, 'actualizarEvidencia'])->name('digitador.evidencia.actualizar');
+    Route::post('digitador/iniciativas/{inic_codigo}/descargar-evidencia', [IniciativasController::class, 'descargarEvidencia'])->name('digitador.evidencia.descargar');
+    Route::delete('digitador/iniciativa/evidencia/{inev_codigo}', [IniciativasController::class, 'eliminarEvidencia'])->name('digitador.evidencia.eliminar');
+    Route::delete('digitador/iniciativas/eliminar', [IniciativasController::class, 'eliminarIniciativas'])->name('digitador.iniciativa.eliminar');
+});
+
+Route::middleware('verificar.observador')->group(function () {
+    //TODO: Rutas de observador
+    Route::get('observador/iniciativas/listar', [IniciativasController::class, 'listarIniciativas'])->name('observador.iniciativa.listar');
+    Route::get('observador/iniciativas/{inic_codigo}/detalles', [IniciativasController::class, 'mostrarDetalles'])->name('observador.iniciativas.detalles');
+    Route::get('observador/iniciativas/{inic_codigo}/listar/resultado',[IniciativasController::class,'listadoResultados'])->name('observador.resultados.listado');
+    Route::post('observador/iniciativas/{inic_codigo}/resultados', [IniciativasController::class, 'actualizarResultados'])->name('observador.resultados.actualizar');
+    Route::get('observador/iniciativas/crear/paso1', [IniciativasController::class, 'crearPaso1'])->name('observador.inicitiativas.crear.primero');
+    Route::get('observador/iniciativas/{inic_codigo}/editar/paso1', [IniciativasController::class, 'editarPaso1'])->name('observador.editar.paso1');
+    Route::put('observador/iniciativas/{inic_codigo}/paso1', [IniciativasController::class, 'actualizarPaso1'])->name('observador.actualizar.paso1');
+
+    Route::post('observador/iniciativas/crear/paso1', [IniciativasController::class, 'verificarPaso1'])->name('observador.paso1.verificar');
+    Route::post('observador/iniciativas/crear/{inic_codigo}/paso2', [IniciativasController::class, 'verificarPaso2'])->name('observador.paso2.verificar');
+    Route::get('observador/iniciativas/{inic_codigo}/paso2', [IniciativasController::class, 'editarPaso2'])->name('observador.editar.paso2');
+    Route::post('observador/iniciativa/guardar-resultado', [IniciativasController::class, 'guardarResultado'])->name('observador.resultado.guardar');
+    Route::get('observador/iniciativa/listar-resultados', [IniciativasController::class, 'listarResultados'])->name('observador.resultados.listar');
+    Route::post('observador/iniciativa/eliminar-resultado', [IniciativasController::class, 'eliminarResultado'])->name('observador.resultado.eliminar');
+
+    // TODO: PASO 3
+    Route::get('observador/iniciativa/{inic_codigo}/editar/paso3', [IniciativasController::class, 'editarPaso3'])->name('observador.editar.paso3');
+    Route::post('observador/crear-iniciativa/guardar-dinero', [IniciativasController::class, 'guardarDinero'])->name('observador.dinero.guardar');
+    Route::get('observador/crear-iniciativa/consultar-dinero', [IniciativasController::class, 'consultarDinero'])->name('observador.dinero.consultar');
+    Route::get('observador/crear-iniciativa/buscar-tipoinfra', [IniciativasController::class, 'buscarTipoInfra'])->name('observador.tipoinfra.buscar');
+    Route::get('observador/crear-iniciativa/listar-tipoinfra', [IniciativasController::class, 'listarTipoInfra'])->name('observador.tipoinfra.listar');
+    Route::post('observador/crear-iniciativa/guardar-infraestructura', [IniciativasController::class, 'guardarInfraestructura'])->name('observador.infra.guardar');
+    Route::get('observador/crear-iniciativa/listar-infraestructura', [IniciativasController::class, 'listarInfraestructura'])->name('observador.infra.listar');
+    Route::post('observador/crear-iniciativa/eliminar-infraestructura', [IniciativasController::class, 'eliminarInfraestructura'])->name('observador.infra.eliminar');
+    Route::get('observador/crear-iniciativa/consultar-infraestructura', [IniciativasController::class, 'consultarInfraestructura'])->name('observador.infra.consultar');
+    Route::get('observador/crear-iniciativa/listar-tiporrhh', [IniciativasController::class, 'listarTipoRrhh'])->name('observador.tiporrhh.listar');
+    Route::get('observador/crear-iniciativa/recursos', [IniciativasController::class, 'listarRecursos'])->name('observador.recursos.listar');
+    Route::get('observador/crear-iniciativa/listar-rrhh', [IniciativasController::class, 'listarRrhh'])->name('observador.rrhh.listar');
+    Route::get('observador/crear-iniciativa/buscar-tiporrhh', [IniciativasController::class, 'buscarTipoRrhh'])->name('observador.tiporrhh.buscar');
+    Route::post('observador/crear-iniciativa/guardar-rrhh', [IniciativasController::class, 'guardarRrhh'])->name('observador.rrhh.guardar');
+    Route::get('observador/crear-iniciativa/consultar-rrhh', [IniciativasController::class, 'consultarRrhh'])->name('observador.rrhh.consultar');
+    Route::post('observador/iniciativas/crear/socio', [IniciativasController::class, 'guardarSocioComunitario'])->name('observador.iniciativas.crear.socio');
+    Route::post('/observador/iniciativas/update-state', [IniciativasController::class, 'updateState'])->name('observador.iniciativas.updateState');
+    Route::get('observador/iniciativa/{inic_codigo}/cobertura', [IniciativasController::class, 'completarCobertura'])->name('observador.cobertura.index');
+    Route::post('observador/iniciativa/{inic_codigo}/cobertura-interna', [IniciativasController::class, 'actualizarCobertura'])->name('observador.cobertura.interna.update');
+    Route::post('observador/iniciativa/{inic_codigo}/cobertura-externa', [IniciativasController::class, 'actualizarCoberturaEx'])->name('observador.cobertura.externa.update');
+    Route::get('observador/iniciativas/{inic_codigo}/listar-evidencias', [IniciativasController::class, 'listarEvidencia'])->name('observador.evidencias.listar');
+    Route::post('observador/iniciativas/{inic_codigo}/guardar-evidencias', [IniciativasController::class, 'guardarEvidencia'])->name('observador.evidencia.guardar');
+    Route::put('observador/iniciativa/evidencia/{inev_codigo}', [IniciativasController::class, 'actualizarEvidencia'])->name('observador.evidencia.actualizar');
+    Route::post('observador/iniciativas/{inic_codigo}/descargar-evidencia', [IniciativasController::class, 'descargarEvidencia'])->name('observador.evidencia.descargar');
+    Route::delete('observador/iniciativa/evidencia/{inev_codigo}', [IniciativasController::class, 'eliminarEvidencia'])->name('observador.evidencia.eliminar');
+    Route::delete('observador/iniciativas/eliminar', [IniciativasController::class, 'eliminarIniciativas'])->name('observador.iniciativa.eliminar');
+});
+
+Route::middleware('verificar.supervisor')->group(function () {
+    //TODO: Rutas de supervisor
+    Route::get('supervisor/iniciativas/listar', [IniciativasController::class, 'listarIniciativas'])->name('supervisor.iniciativa.listar');
+    Route::get('supervisor/iniciativas/{inic_codigo}/detalles', [IniciativasController::class, 'mostrarDetalles'])->name('supervisor.iniciativas.detalles');
+    Route::get('supervisor/iniciativas/{inic_codigo}/listar/resultado',[IniciativasController::class,'listadoResultados'])->name('supervisor.resultados.listado');
+    Route::post('supervisor/iniciativas/{inic_codigo}/resultados', [IniciativasController::class, 'actualizarResultados'])->name('supervisor.resultados.actualizar');
+    Route::get('supervisor/iniciativas/crear/paso1', [IniciativasController::class, 'crearPaso1'])->name('supervisor.inicitiativas.crear.primero');
+    Route::get('supervisor/iniciativas/{inic_codigo}/editar/paso1', [IniciativasController::class, 'editarPaso1'])->name('supervisor.editar.paso1');
+    Route::put('supervisor/iniciativas/{inic_codigo}/paso1', [IniciativasController::class, 'actualizarPaso1'])->name('supervisor.actualizar.paso1');
+
+    Route::post('supervisor/iniciativas/crear/paso1', [IniciativasController::class, 'verificarPaso1'])->name('supervisor.paso1.verificar');
+    Route::post('supervisor/iniciativas/crear/{inic_codigo}/paso2', [IniciativasController::class, 'verificarPaso2'])->name('supervisor.paso2.verificar');
+    Route::get('supervisor/iniciativas/{inic_codigo}/paso2', [IniciativasController::class, 'editarPaso2'])->name('supervisor.editar.paso2');
+    Route::post('supervisor/iniciativa/guardar-resultado', [IniciativasController::class, 'guardarResultado'])->name('supervisor.resultado.guardar');
+    Route::get('supervisor/iniciativa/listar-resultados', [IniciativasController::class, 'listarResultados'])->name('supervisor.resultados.listar');
+    Route::post('supervisor/iniciativa/eliminar-resultado', [IniciativasController::class, 'eliminarResultado'])->name('supervisor.resultado.eliminar');
+
+    // TODO: PASO 3
+    Route::get('supervisor/iniciativa/{inic_codigo}/editar/paso3', [IniciativasController::class, 'editarPaso3'])->name('supervisor.editar.paso3');
+    Route::post('supervisor/crear-iniciativa/guardar-dinero', [IniciativasController::class, 'guardarDinero'])->name('supervisor.dinero.guardar');
+    Route::get('supervisor/crear-iniciativa/consultar-dinero', [IniciativasController::class, 'consultarDinero'])->name('supervisor.dinero.consultar');
+    Route::get('supervisor/crear-iniciativa/buscar-tipoinfra', [IniciativasController::class, 'buscarTipoInfra'])->name('supervisor.tipoinfra.buscar');
+    Route::get('supervisor/crear-iniciativa/listar-tipoinfra', [IniciativasController::class, 'listarTipoInfra'])->name('supervisor.tipoinfra.listar');
+    Route::post('supervisor/crear-iniciativa/guardar-infraestructura', [IniciativasController::class, 'guardarInfraestructura'])->name('supervisor.infra.guardar');
+    Route::get('supervisor/crear-iniciativa/listar-infraestructura', [IniciativasController::class, 'listarInfraestructura'])->name('supervisor.infra.listar');
+    Route::post('supervisor/crear-iniciativa/eliminar-infraestructura', [IniciativasController::class, 'eliminarInfraestructura'])->name('supervisor.infra.eliminar');
+    Route::get('supervisor/crear-iniciativa/consultar-infraestructura', [IniciativasController::class, 'consultarInfraestructura'])->name('supervisor.infra.consultar');
+    Route::get('supervisor/crear-iniciativa/listar-tiporrhh', [IniciativasController::class, 'listarTipoRrhh'])->name('supervisor.tiporrhh.listar');
+    Route::get('supervisor/crear-iniciativa/recursos', [IniciativasController::class, 'listarRecursos'])->name('supervisor.recursos.listar');
+    Route::get('supervisor/crear-iniciativa/listar-rrhh', [IniciativasController::class, 'listarRrhh'])->name('supervisor.rrhh.listar');
+    Route::get('supervisor/crear-iniciativa/buscar-tiporrhh', [IniciativasController::class, 'buscarTipoRrhh'])->name('supervisor.tiporrhh.buscar');
+    Route::post('supervisor/crear-iniciativa/guardar-rrhh', [IniciativasController::class, 'guardarRrhh'])->name('supervisor.rrhh.guardar');
+    Route::get('supervisor/crear-iniciativa/consultar-rrhh', [IniciativasController::class, 'consultarRrhh'])->name('supervisor.rrhh.consultar');
+    Route::post('supervisor/iniciativas/crear/socio', [IniciativasController::class, 'guardarSocioComunitario'])->name('supervisor.iniciativas.crear.socio');
+    Route::post('/supervisor/iniciativas/update-state', [IniciativasController::class, 'updateState'])->name('supervisor.iniciativas.updateState');
+    Route::get('supervisor/iniciativa/{inic_codigo}/cobertura', [IniciativasController::class, 'completarCobertura'])->name('supervisor.cobertura.index');
+    Route::post('supervisor/iniciativa/{inic_codigo}/cobertura-interna', [IniciativasController::class, 'actualizarCobertura'])->name('supervisor.cobertura.interna.update');
+    Route::post('supervisor/iniciativa/{inic_codigo}/cobertura-externa', [IniciativasController::class, 'actualizarCoberturaEx'])->name('supervisor.cobertura.externa.update');
+    Route::get('supervisor/iniciativas/{inic_codigo}/listar-evidencias', [IniciativasController::class, 'listarEvidencia'])->name('supervisor.evidencias.listar');
+    Route::post('supervisor/iniciativas/{inic_codigo}/guardar-evidencias', [IniciativasController::class, 'guardarEvidencia'])->name('supervisor.evidencia.guardar');
+    Route::put('supervisor/iniciativa/evidencia/{inev_codigo}', [IniciativasController::class, 'actualizarEvidencia'])->name('supervisor.evidencia.actualizar');
+    Route::post('supervisor/iniciativas/{inic_codigo}/descargar-evidencia', [IniciativasController::class, 'descargarEvidencia'])->name('supervisor.evidencia.descargar');
+    Route::delete('supervisor/iniciativa/evidencia/{inev_codigo}', [IniciativasController::class, 'eliminarEvidencia'])->name('supervisor.evidencia.eliminar');
+    Route::delete('supervisor/iniciativas/eliminar', [IniciativasController::class, 'eliminarIniciativas'])->name('supervisor.iniciativa.eliminar');
 });

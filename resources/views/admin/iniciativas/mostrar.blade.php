@@ -1,4 +1,23 @@
+@if (Session::has('admin'))
+    @php
+        $role = 'admin';
+    @endphp
+@elseif (Session::has('digitador'))
+    @php
+        $role = 'digitador';
+    @endphp
+@elseif (Session::has('observador'))
+    @php
+        $role = 'observador';
+    @endphp
+@elseif (Session::has('supervisor'))
+    @php
+        $role = 'supervisor';
+    @endphp
+@endif
+
 @extends('admin.panel')
+
 @section('contenido')
     <section class="section">
         <div class="section-body">
@@ -15,8 +34,9 @@
                                         data-toggle="dropdown">Iniciativa</button>
                                     <div class="dropdown-menu dropright">
 
-                                        <a href="{{route('admin.cobertura.index', $iniciativa[0]->inic_codigo)}}" class="dropdown-item has-icon"><i
-                                                class="fas fa-users"></i>Ingresar cobertura</a>
+                                        <a href="{{ route($role . '.cobertura.index', $iniciativa->inic_codigo) }}"
+                                            class="dropdown-item has-icon"><i class="fas fa-users"></i>Ingresar
+                                            cobertura</a>
                                         {{-- <a href="" class="dropdown-item has-icon"><i class="fas fa-flag"></i>Ingresar
                                             resultados</a>
                                         <a href="" class="dropdown-item has-icon"><i
@@ -30,7 +50,7 @@
                                         data-toggle="dropdown">Estados</button>
                                     <div class="dropdown-menu dropright">
                                         <form method="POST"
-                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa[0]->inic_codigo]) }}">
+                                            action="{{ route($role . '.iniciativas.updateState', ['inic_codigo' => $iniciativa->inic_codigo]) }}">
                                             @csrf
                                             <input type="hidden" name="state" value="3">
                                             <a href="javascript:void(0);" onclick="this.closest('form').submit();"
@@ -40,7 +60,7 @@
                                         </form>
 
                                         <form method="POST"
-                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa[0]->inic_codigo]) }}">
+                                            action="{{ route($role . '.iniciativas.updateState', ['inic_codigo' => $iniciativa->inic_codigo]) }}">
                                             @csrf
                                             <input type="hidden" name="state" value="2">
                                             <a href="javascript:void(0);" onclick="this.closest('form').submit();"
@@ -50,7 +70,7 @@
                                         </form>
 
                                         <form method="POST"
-                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa[0]->inic_codigo]) }}">
+                                            action="{{ route($role . '.iniciativas.updateState', ['inic_codigo' => $iniciativa->inic_codigo]) }}">
                                             @csrf
                                             <input type="hidden" name="state" value="4">
                                             <a href="javascript:void(0);" onclick="this.closest('form').submit();"
@@ -61,7 +81,7 @@
                                         </form>
 
                                         <form method="POST"
-                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa[0]->inic_codigo]) }}">
+                                            action="{{ route($role . '.iniciativas.updateState', ['inic_codigo' => $iniciativa->inic_codigo]) }}">
                                             @csrf
                                             <input type="hidden" name="state" value="5">
                                             <a href="javascript:void(0);" onclick="this.closest('form').submit();"
@@ -71,7 +91,7 @@
                                         </form>
 
                                         <form method="POST"
-                                            action="{{ route('admin.iniciativas.updateState', ['inic_codigo' => $iniciativa[0]->inic_codigo]) }}">
+                                            action="{{ route($role . '.iniciativas.updateState', ['inic_codigo' => $iniciativa->inic_codigo]) }}">
                                             @csrf
                                             <input type="hidden" name="state" value="6">
                                             <a href="javascript:void(0);" onclick="this.closest('form').submit();"
@@ -85,17 +105,17 @@
                                     </div>
                                 </div>
 
-                                <a href="{{ route('admin.iniciativa.listar') }}" data-toggle="tooltip" data-placemet="top"
+                                <a href="{{ route($role . '.iniciativa.listar') }}" data-toggle="tooltip" data-placemet="top"
                                     type="button" class="btn btn-primary" title="Ir a iniciativas">
                                     <i class="fas fa-backward"></i>
                                 </a>
-
+{{-- 
                                 <a href="" type="button" data-toggle="tooltip" class="btn btn-primary"
                                     data-placemet="top" title="Adjuntar evidencia">
                                     <i class="fas fa-paperclip"></i>
-                                </a>
+                                </a> --}}
 
-                                <a href="{{ route('admin.editar.paso1', $iniciativa[0]->inic_codigo) }}" type="button"
+                                <a href="{{ route($role . '.editar.paso1', $iniciativa->inic_codigo) }}" type="button"
                                     data-toggle="tooltip" class="btn btn-warning" data-placemet="top"
                                     title="Editar iniciativa">
                                     <i class="fas fa-edit"></i>
@@ -120,7 +140,7 @@
                                                     <strong>Nombre de la iniciativa</strong>
                                                 </td>
                                                 <td>
-                                                    {{ $iniciativa[0]->inic_nombre }}
+                                                    {{ $iniciativa->inic_nombre }}
                                                 </td>
                                             </tr>
 
@@ -129,7 +149,7 @@
                                                     <strong>Año</strong>
                                                 </td>
                                                 <td>
-                                                    {{ $iniciativa[0]->inic_anho }}
+                                                    {{ $iniciativa->inic_anho }}
                                                 </td>
                                             </tr>
 
@@ -138,28 +158,26 @@
                                                     <strong>Descripción</strong>
                                                 </td>
                                                 <td>
-                                                    {{ $iniciativa[0]->inic_descripcion }}
+                                                    {{ $iniciativa->inic_descripcion }}
                                                 </td>
                                             </tr>
 
                                             <tr>
                                                 <td><strong>Programas</strong></td>
-                                                <td>{{ $iniciativa[0]->prog_nombre }}</td>
+                                                <td>{{ $iniciativa->meca_nombre }}</td>
                                             </tr>
 
                                             <tr>
                                                 <td><strong>Tipo de actividad</strong></td>
                                                 <td>
-                                                    @foreach ($iniciativa as $key => $ini)
-                                                        {{ $key + 1 }}. {{ $ini->tiac_nombre }}<br>
-                                                    @endforeach
+                                                    {{$iniciativa->tiac_nombre}}
                                                 </td>
 
                                             </tr>
 
                                             <tr>
                                                 <td><strong>Convenio</strong></td>
-                                                <td>{{ $iniciativa[0]->conv_nombre }}</td>
+                                                <td>{{ $iniciativa->conv_nombre }}</td>
                                             </tr>
                                             <tr>
                                                 <td><strong>Ubicaciones</strong></td>
@@ -196,8 +214,8 @@
                                             </tr> --}}
 
                                             {{-- <tr> --}}
-                                                {{-- Todo: incluir el caso en el que no existan grupos implicados --}}
-                                                {{-- <td><strong>Grupos y temáticas <br> relacionadas</strong></td>
+                                            {{-- Todo: incluir el caso en el que no existan grupos implicados --}}
+                                            {{-- <td><strong>Grupos y temáticas <br> relacionadas</strong></td>
                                                 <td>
                                                     <div class="table-responsive">
                                                         <table class="table table-bordered table-sm small">
@@ -236,6 +254,7 @@
                                                                 <th>Subgrupos</th>
                                                                 <th>Nombre del socio</th>
                                                                 <th>Beneficiarios</th>
+                                                                <th>Beneficiarios final</th>
                                                             </thead>
 
                                                             <tbody>
@@ -245,6 +264,7 @@
                                                                         <td>{{ $externo->sugr_nombre }}</td>
                                                                         <td>{{ $externo->soco_nombre_socio }}</td>
                                                                         <td>{{ $externo->inpr_total }}</td>
+                                                                        <td>{{ $externo->inpr_total_final }}</td>
                                                                     </tr>
                                                                 @endforeach
                                                             </tbody>
@@ -309,6 +329,98 @@
                                                     </div>
                                                 </td>
                                             </tr>
+
+                                            <tr>
+                                                <td><strong>Total de recursos invertidos</strong></td>
+                                                <td>
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered table-sm">
+                                                            <thead>
+                                                                <th></th>
+                                                                <th>Dinero</th>
+                                                                <th>Infraestructura</th>
+                                                                <th>Recursos humanos</th>
+                                                            </thead>
+
+                                                            <tbody>
+                                                                @php
+                                                                    $totalDinero = 0;
+                                                                    $totalInfraestructura = 0;
+                                                                    $totalRrhh = 0;
+                                                                @endphp
+                                                                @foreach ($entidades as $entidad)
+                                                                    @php
+                                                                        $entidadDinero = 0;
+                                                                        $entidadInfraestructura = 0;
+                                                                        $entidadRrhh = 0;
+                                                                    @endphp
+
+                                                                    <tr>
+                                                                        <td>{{ $entidad->enti_nombre }}</td>
+                                                                        <td>
+                                                                            @if (sizeof($recursoDinero) == 0)
+                                                                                $0
+                                                                            @else
+                                                                                @foreach ($recursoDinero as $dinero)
+                                                                                    @if ($entidad->enti_codigo == $dinero->enti_codigo)
+                                                                                        @php
+                                                                                            $entidadDinero = $dinero->suma_dinero;
+                                                                                        @endphp
+                                                                                        ${{ number_format($dinero->suma_dinero, 0, ',', '.') }}
+                                                                                    @endif
+                                                                                @endforeach
+                                                                            @endif
+                                                                        </td>
+                                                                        <td>
+                                                                            @if (sizeof($recursoInfraestructura) == 0)
+                                                                                $0
+                                                                            @else
+                                                                                @foreach ($recursoInfraestructura as $infraestructura)
+                                                                                    @if ($entidad->enti_codigo == $infraestructura->enti_codigo)
+                                                                                        @php
+                                                                                            $entidadInfraestructura = $infraestructura->suma_infraestructura;
+                                                                                        @endphp
+                                                                                        ${{ number_format($infraestructura->suma_infraestructura, 0, ',', '.') }}
+                                                                                    @endif
+                                                                                @endforeach
+                                                                            @endif
+                                                                        </td>
+                                                                        <td>
+                                                                            @if (sizeof($recursoRrhh) == 0)
+                                                                                $0
+                                                                            @else
+                                                                                @foreach ($recursoRrhh as $rrhh)
+                                                                                    @if ($entidad->enti_codigo == $rrhh->enti_codigo)
+                                                                                        @php
+                                                                                            $entidadRrhh = $rrhh->suma_rrhh;
+                                                                                        @endphp
+                                                                                        ${{ number_format($rrhh->suma_rrhh, 0, ',', '.') }}
+                                                                                    @endif
+                                                                                @endforeach
+                                                                            @endif
+                                                                        </td>
+                                                                    </tr>
+                                                                    @php
+                                                                        $totalDinero += $entidadDinero;
+                                                                        $totalInfraestructura += $entidadInfraestructura;
+                                                                        $totalRrhh += $entidadRrhh;
+                                                                    @endphp
+                                                                @endforeach
+                                                                <tr>
+                                                                    <td>Total General</td>
+                                                                    <td>${{ number_format($totalDinero, 0, ',', '.') }}</td>
+                                                                    <td>${{ number_format($totalInfraestructura, 0, ',', '.') }}
+                                                                    </td>
+                                                                    <td>${{ number_format($totalRrhh, 0, ',', '.') }}</td>
+                                                                </tr>
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+
 
                                         </tbody>
                                     </table>

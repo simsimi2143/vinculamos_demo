@@ -1,3 +1,20 @@
+@if (Session::has('admin'))
+    @php
+        $role = 'admin';
+    @endphp
+@elseif (Session::has('digitador'))
+    @php
+        $role = 'digitador';
+    @endphp
+@elseif (Session::has('observador'))
+    @php
+        $role = 'observador';
+    @endphp
+@elseif (Session::has('supervisor'))
+    @php
+        $role = 'supervisor';
+    @endphp
+@endif
 @extends('admin.panel')
 @section('contenido')
     <section class="section">
@@ -7,42 +24,19 @@
                     <div class="row">
                         <div class="col-3"></div>
                         <div class="col-6">
-                            @if (Session::has('errorEvidencia'))
-                                <div class="alert alert-danger alert-dismissible show fade mb-4 text-center">
-                                    <div class="alert-body">
-                                        <strong>{{ Session::get('errorEvidencia') }}</strong>
-                                        <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                            @foreach (['errorEvidencia', 'exitoEvidencia', 'errorValidacion', 'errorTipo'] as $sessionKey)
+                                @if (Session::has($sessionKey))
+                                    <div
+                                        class="alert {{ in_array($sessionKey, ['errorEvidencia', 'errorTipo']) ? 'alert-danger' : (in_array($sessionKey, ['exitoEvidencia', 'errorValidacion']) ? 'alert-success' : 'alert-warning') }} alert-dismissible show fade mb-4 text-center">
+                                        <div class="alert-body">
+                                            <strong>{{ Session::get($sessionKey) }}</strong>
+                                            <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                        </div>
                                     </div>
-                                </div>
-                            @endif
-
-                            @if (Session::has('exitoEvidencia'))
-                                <div class="alert alert-success alert-dismissible show fade mb-4 text-center">
-                                    <div class="alert-body">
-                                        <strong>{{ Session::get('exitoEvidencia') }}</strong>
-                                        <button class="close" data-dismiss="alert"><span>&times;</span></button>
-                                    </div>
-                                </div>
-                            @endif
-
-                            @if (Session::has('errorValidacion'))
-                                <div class="alert alert-warning alert-dismissible show fade mb-4 text-center">
-                                    <div class="alert-body">
-                                        <strong>{{ Session::get('errorValidacion') }}</strong>
-                                        <button class="close" data-dismiss="alert"><span>&times;</span></button>
-                                    </div>
-                                </div>
-                            @endif
-
-                            @if (Session::has('errorTipo'))
-                                <div class="alert alert-danger alert-dismissible show fade mb-4 text-center">
-                                    <div class="alert-body">
-                                        <strong>{{ Session::get('errorTipo') }}</strong>
-                                        <button class="close" data-dismiss="alert"><span>&times;</span></button>
-                                    </div>
-                                </div>
-                            @endif
+                                @endif
+                            @endforeach
                         </div>
+
                         <div class="col-3"></div>
                     </div>
 
@@ -60,7 +54,7 @@
                                     <thead>
                                         <tr>
                                             <th>Nombre</th>
-                                            <th>Tipo</th>
+                                            {{-- <th>Tipo</th> --}}
                                             <th>Archivo original</th>
                                             <th>Modificado por</th>
                                             <th>Acción</th>
@@ -71,21 +65,32 @@
                                             <tr>
 
                                                 <td>{{ $evidencia->inev_nombre }}</td>
-                                                <td>{{ $evidencia->inev_tipo }}</td>
+                                                {{-- <td>{{ $evidencia->inev_tipo }}</td> --}}
                                                 <td>{{ $evidencia->inev_nombre_origen }}</td>
                                                 <td>{{ $evidencia->inev_nickname_mod }}</td>
                                                 <td>
-                                                    <form action="{{ route('admin.evidencia.descargar', $evidencia->inev_codigo) }}" method="POST" style="display: inline-block">
+                                                    <form
+                                                        action="{{ route($role . '.evidencia.descargar', $evidencia->inev_codigo) }}"
+                                                        method="POST" style="display: inline-block">
                                                         @csrf
-                                                        <button type="submit" class="btn btn-icon btn-primary" data-toggle="tooltip" data-placement="top" title="Descargar"><i class="fas fa-download"></i></button>
+                                                        <button type="submit" class="btn btn-icon btn-primary"
+                                                            data-toggle="tooltip" data-placement="top" title="Descargar"><i
+                                                                class="fas fa-download"></i></button>
                                                     </form>
-                                                    <a href="javascript:void(0)" class="btn btn-icon btn-warning" onclick="editar({{ $evidencia->inev_codigo }}, '{{ $evidencia->inev_nombre }}', '{{ $evidencia->inev_descripcion }}')" data-toggle="tooltip" data-placement="top" data-placement="top" title="Editar">
+                                                    <a href="javascript:void(0)" class="btn btn-icon btn-warning"
+                                                        onclick="editar({{ $evidencia->inev_codigo }}, '{{ $evidencia->inev_nombre }}', '{{ $evidencia->inev_descripcion }}')"
+                                                        data-toggle="tooltip" data-placement="top" data-placement="top"
+                                                        title="Editar">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
-                                                    <form action="{{ route('admin.evidencia.eliminar', $evidencia->inev_codigo) }}" method="POST" style="display: inline-block">
+                                                    <form
+                                                        action="{{ route($role . '.evidencia.eliminar', $evidencia->inev_codigo) }}"
+                                                        method="POST" style="display: inline-block">
                                                         @method('DELETE')
                                                         @csrf
-                                                        <button type="submit" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash"></i></button>
+                                                        <button type="submit" class="btn btn-icon btn-danger"
+                                                            data-toggle="tooltip" data-placement="top" title="Eliminar"><i
+                                                                class="fas fa-trash"></i></button>
                                                     </form>
                                                 </td>
                                             </tr>
@@ -111,7 +116,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('admin.evidencia.guardar', $iniciativas->inic_codigo) }}" method="POST"
+                    <form action="{{ route($role . '.evidencia.guardar', $iniciativas->inic_codigo) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
@@ -121,6 +126,28 @@
                                     placeholder="" autocomplete="off">
                             </div>
                         </div>
+                        {{-- <div class="form-group">
+                            <label>Mecanismo</label>
+                            <div class="input-group">
+                                <select class="form-control" id="inev_nombre" name="inev_nombre">
+                                    <option value="Apoyo a PYMES">Apoyo a PYMES</option>
+                                    <option value="Aprendizaje más servicio">Aprendizaje más servicio</option>
+                                    <option value="Innovación y emprendimiento">Innovación y emprendimiento</option>
+                                    <option value="Fomento a la empleabilidad">Fomento a la empleabilidad</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo</label>
+                            <div class="input-group">
+                                <select class="form-control" id="inev_tipo" name="inev_tipo">
+                                    <option value="Carta de acuerdo">Carta de acuerdo</option>
+                                    <option value="Lista de participantes">Lista de participantes</option>
+                                    <option value="Fotografías">Fotografías</option>
+                                    <option value="Informe de cierre">Informe de cierre</option>
+                                </select>
+                            </div>
+                        </div> --}}
 
                         <div class="form-group">
                             <label>Archivo</label>
@@ -155,8 +182,14 @@
                     <form method="POST" id="form-editar-evidencia">
                         @method('PUT')
                         @csrf
-
                         <div class="form-group">
+                            <label>Nombre</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="inev_nombre_edit" name="inev_nombre_edit"
+                                    placeholder="" autocomplete="off">
+                            </div>
+                        </div>
+                        {{-- <div class="form-group">
                             <label>Tipo</label>
                             <div class="input-group">
                                 <select class="form-control" id="inev_nombre_edit" name="inev_nombre_edit">
@@ -177,7 +210,7 @@
                                     <option value="Informe de cierre">Informe de cierre</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary waves-effect"><i class="fas fa-undo-alt"></i> Actualizar</button>
                         </div>

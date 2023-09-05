@@ -1,53 +1,47 @@
+@if (Session::has('admin'))
+    @php
+        $role = 'admin';
+    @endphp
+@elseif (Session::has('digitador'))
+    @php
+        $role = 'digitador';
+    @endphp
+@elseif (Session::has('observador'))
+    @php
+        $role = 'observador';
+    @endphp
+@elseif (Session::has('supervisor'))
+    @php
+        $role = 'supervisor';
+    @endphp
+@endif
+
 @extends('admin.panel')
+
 @section('contenido')
     <section class="section">
         <div class="section-body">
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col-6">
-                    @if (Session::has('exitoPaso1'))
-                        <div class="alert alert-success alert-dismissible show fade mb-4 text-center">
-                            <div class="alert-body">
-                                <strong>{{ Session::get('exitoPaso1') }}</strong>
-                                <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                    @foreach([
+                        'exitoPaso1' => 'alert-success',
+                        'ExisteSocio' => 'alert-warning',
+                        'errorPaso2' => 'alert-danger',
+                        'socoError' => 'alert-danger',
+                        'socoExito' => 'alert-success'
+                    ] as $sessionKey => $alertClass)
+                        @if (Session::has($sessionKey))
+                            <div class="alert {{ $alertClass }} alert-dismissible show fade mb-4 text-center">
+                                <div class="alert-body">
+                                    <strong>{{ Session::get($sessionKey) }}</strong>
+                                    <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                </div>
                             </div>
-                        </div>
-                    @endif
-                    @if (Session::has('ExisteSocio'))
-                        <div class="alert alert-warning alert-dismissible show fade mb-4 text-center">
-                            <div class="alert-body">
-                                <strong>{{ Session::get('ExisteSocio') }}</strong>
-                                <button class="close" data-dismiss="alert"><span>&times;</span></button>
-                            </div>
-                        </div>
-                    @endif
-
-                    @if (Session::has('errorPaso2'))
-                        <div class="alert alert-danger alert-dismissible show fade mb-4 text-center">
-                            <div class="alert-body">
-                                <strong>{{ Session::get('errorPaso2') }}</strong>
-                                <button class="close" data-dismiss="alert"><span>&times;</span></button>
-                            </div>
-                        </div>
-                    @endif
-
-                    @if (Session::has('socoError'))
-                        <div class="alert alert-danger alert-dismissible show fade mb-4 text-center">
-                            <div class="alert-body">
-                                <strong>{{ Session::get('socoError') }}</strong>
-                                <button class="close" data-dismiss="alert"><span>&times;</span></button>
-                            </div>
-                        </div>
-                    @endif
-                    @if (Session::has('socoExito'))
-                        <div class="alert alert-success alert-dismissible show fade mb-4 text-center">
-                            <div class="alert-body">
-                                <strong>{{ Session::get('socoExito') }}</strong>
-                                <button class="close" data-dismiss="alert"><span>&times;</span></button>
-                            </div>
-                        </div>
-                    @endif
+                        @endif
+                    @endforeach
                 </div>
+                
             </div>
 
             <div class="row">
@@ -363,13 +357,13 @@
                                 <div class="col-12 col-md-12 col-log-12">
                                     <div class="text-right">
                                         <strong>
-                                            <a href="{{ route('admin.editar.paso1', $iniciativa->inic_codigo) }}"
+                                            <a href="{{ route($role . '.editar.paso1', $iniciativa->inic_codigo) }}"
                                                 type="button" class="btn mr-1 waves-effect"
                                                 style="background-color:#042344; color:white"><i
                                                     class="fas fa-chevron-left"></i>
                                                 Paso anterior</a>
                                         </strong>
-                                        <a href="{{ route('admin.editar.paso3', $iniciativa->inic_codigo) }}"
+                                        <a href="{{ route($role . '.editar.paso3', $iniciativa->inic_codigo) }}"
                                             type="button" class="btn btn-primary mr-1 waves-effect">
                                             Paso siguiente <i class="fas fa-chevron-right"></i></a>
                                     </div>
@@ -394,7 +388,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('admin.iniciativas.crear.socio') }} " method="POST">
+                    <form action="{{ route($role . '.iniciativas.crear.socio') }} " method="POST">
                         @csrf
 
                         <div class="form-group">

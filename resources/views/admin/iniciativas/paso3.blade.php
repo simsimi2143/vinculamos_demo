@@ -1,3 +1,21 @@
+@if (Session::has('admin'))
+    @php
+        $role = 'admin';
+    @endphp
+@elseif (Session::has('digitador'))
+    @php
+        $role = 'digitador';
+    @endphp
+@elseif (Session::has('observador'))
+    @php
+        $role = 'observador';
+    @endphp
+@elseif (Session::has('supervisor'))
+    @php
+        $role = 'supervisor';
+    @endphp
+@endif
+
 @extends('admin.panel')
 
 @section('contenido')
@@ -241,13 +259,13 @@
                                 <div class="row mt-4">
                                     <div class="col-12 col-md-12 col-lg-12">
                                         <div class="text-right">
-                                            <a href="{{ route('admin.editar.paso2', $iniciativa->inic_codigo) }}"
+                                            <a href="{{ route($role . '.editar.paso2', $iniciativa->inic_codigo) }}"
                                                 type="button" class="btn btn-primary mr-1 waves-effect"><i
                                                     class="fas fa-chevron-left"></i> Volver al paso anterior</a>
                                             <button type="button" class="btn btn-primary mr-1 waves-effect"
                                                 data-toggle="modal" data-target="#modalFinalizar"><i
                                                     class="fas fa-check"></i> Finalizar</button>
-                                            <a href="{{ route('admin.editar.paso3', $iniciativa->inic_codigo) }}"
+                                            <a href="{{ route($role . '.editar.paso3', $iniciativa->inic_codigo) }}"
                                                 type="button" class="btn btn-warning waves-effect">Recargar</a>
                                         </div>
                                     </div>
@@ -415,7 +433,7 @@
 
     <div class="modal fade" id="modalFinalizar" tabindex="-1" role="dialog" aria-labelledby="tituloModalFinalizar"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-ce8ujntered" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="tituloModalFinalizar">Registro de iniciativa</h5>
@@ -428,7 +446,7 @@
                     <h6 class="mt-2">Todos los datos de la iniciativa han sido ingresados con éxito.</h6>
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
-                    <a href="{{ route('admin.iniciativa.listar') }}" type="button" class="btn btn-primary">Continuar</a>
+                    <a href="{{ route($role . '.iniciativa.listar') }}" type="button" class="btn btn-primary">Continuar</a>
                 </div>
             </div>
         </div>

@@ -1,4 +1,23 @@
+@if (Session::has('admin'))
+    @php
+        $role = 'admin';
+    @endphp
+@elseif (Session::has('digitador'))
+    @php
+        $role = 'digitador';
+    @endphp
+@elseif (Session::has('observador'))
+    @php
+        $role = 'observador';
+    @endphp
+@elseif (Session::has('supervisor'))
+    @php
+        $role = 'supervisor';
+    @endphp
+@endif
+
 @extends('admin.panel')
+
 @section('contenido')
     <section class="section" style="font-size: 115%;">
         <div class="section-body">
@@ -25,12 +44,12 @@
                         </div>
                         <div class="card-body">
                             @if (isset($iniciativa) && $editar)
-                                <form action="{{ route('admin.actualizar.paso1', $iniciativa->inic_codigo) }}"
+                                <form action="{{ route($role . '.actualizar.paso1', $iniciativa->inic_codigo) }}"
                                     method="POST">
                                     @method('PUT')
                                     @csrf
                                 @else
-                                    <form action="{{ route('admin.paso1.verificar') }}" method="POST">
+                                    <form action="{{ route($role . '.paso1.verificar') }}" method="POST">
                                         @csrf
                             @endif
                             <div class="row">

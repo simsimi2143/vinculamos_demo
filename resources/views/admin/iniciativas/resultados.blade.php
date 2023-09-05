@@ -1,4 +1,23 @@
+@if (Session::has('admin'))
+    @php
+        $role = 'admin';
+    @endphp
+@elseif (Session::has('digitador'))
+    @php
+        $role = 'digitador';
+    @endphp
+@elseif (Session::has('observador'))
+    @php
+        $role = 'observador';
+    @endphp
+@elseif (Session::has('supervisor'))
+    @php
+        $role = 'supervisor';
+    @endphp
+@endif
+
 @extends('admin.panel')
+
 @section('contenido')
     <section class="section">
         <div class="section-body">
@@ -25,7 +44,7 @@
                         </div>
                         <div class="card-body">
                             {{-- <form action="" method="post"> --}}
-                            <form action="{{ route('admin.resultados.actualizar', $iniciativa->inic_codigo) }}"
+                            <form action="{{ route($role . '.resultados.actualizar', $iniciativa->inic_codigo) }}"
                                 method="post">
                                 @csrf
                                 <div class="row mt-3">
@@ -73,7 +92,7 @@
                                     <div class="col-12 col-md-12 col-lg-12 text-right">
                                         <input type="hidden" id="inic_codigo" name="inic_codigo"
                                             value="{{ $iniciativa->inic_codigo }}">
-                                        <a href="{{ route('admin.iniciativa.listar') }}"
+                                        <a href="{{ route($role . '.iniciativa.listar') }}"
                                             class="btn btn-primary mr-1 waves-effect" type="button">
                                             <i class="fas fa-angle-left"></i> Volver a listado
                                         </a>
