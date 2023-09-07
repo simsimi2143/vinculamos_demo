@@ -791,9 +791,11 @@ class ParametrosController extends Controller
     //TODO: Parametro Escuelas
     public function listarEscuelas()
     {
-        return view('admin.parametros.escuelas', [
-            'escuelas' => Escuelas::orderBy('escu_codigo', 'asc')->get()
-        ]);
+        $escuelas = Escuelas::orderBy('escu_codigo', 'asc')->get();
+        $sedesT = Sedes::orderBy('sede_codigo', 'asc')->get();
+        $SedeEscuelas = SedesEscuelas::all();
+
+        return view('admin.parametros.escuelas', compact('escuelas', 'sedesT', 'SedeEscuelas'));
     }
 
     public function eliminarEscuelas(Request $request)
@@ -803,12 +805,9 @@ class ParametrosController extends Controller
             return redirect()->route('admin.listar.escuelas')->with('errorEscuela', 'La escuela no se encuentra registrada en el sistema.');
         }
 
-        $verificar = Carreras::select('escu_codigo')->where('escu_codigo', $request->escu_codigo);
-        if ($verificar) {
-            return redirect()->route('admin.listar.escuelas')->with('errorEscuela', 'No es posible eliminar, la escuela está siendo utilizada en una carrera');
-        }
-
+        $Drop = SedesEscuelas::where('escu_codigo', $request->escu_codigo)->delete();
         $Drop = Escuelas::where('escu_codigo', $request->escu_codigo)->delete();
+
         if (!$Drop) {
             return redirect()->back()->with('errorEscuela', 'La escuela no se pudo eliminar, intente más tarde.');
         }
@@ -818,13 +817,15 @@ class ParametrosController extends Controller
 
     public function actualizarEscuelas(Request $request, $escu_codigo)
     {
-        // Obtener la escuela por su código
+        // Obtener la carrera por su código
         $escuela = Escuelas::where('escu_codigo', $escu_codigo)->first();
 
-        // Verificar si la escuela existe
+        // Verificar si la carrera existe
         if (!$escuela) {
             return redirect()->back()->with('errorEscuela', 'La escuela no se encuentra registrada en el sistema.');
         }
+
+        $Drop = SedesEscuelas::where('escu_codigo', $escu_codigo)->delete();
 
         // Validar los campos del formulario
         $validacion = $request->validate([
@@ -837,13 +838,33 @@ class ParametrosController extends Controller
             'escu_director.max' => 'El nombre del director excede el máximo de caracteres permitidos (255).',
         ]);
 
-        // Actualizar los campos de la escuela con los valores del formulario
+        // Actualizar los campos de la carrera con los valores del formulario
         $escuela->escu_nombre = $request->input('escu_nombre');
         $escuela->escu_descripcion = $request->input('descripcion');
         $escuela->escu_director = $request->input('escu_director');
 
-        // Guardar los cambios en la escuela
+        // Guardar los cambios en la carrera
         $escuela->save();
+
+        $seso = [];
+        $sedes = $request->input('sedesT', []);
+
+        foreach ($sedes as $sede) {
+            array_push($seso, [
+                'sede_codigo' => $sede,
+                'escu_codigo' => $escu_codigo,
+                'seec_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'seec_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'seec_nickname_mod' => Session::get('admin')->usua_nickname,
+                'seec_rol_mod' => Session::get('admin')->rous_codigo,
+            ]);
+        }
+
+        $sesoCrear = SedesEscuelas::insert($seso);
+        if (!$sesoCrear) {
+            SedesEscuelas::where('escu_codigo', $escu_codigo)->delete();
+            return redirect()->back()->with('socoError', 'Ocurrió un error durante el registro de las sedes, intente más tarde.')->withInput();
+        }
 
         return redirect()->back()->with('exitoEscuela', 'La escuela ha sido actualizada correctamente.');
     }
@@ -855,35 +876,70 @@ class ParametrosController extends Controller
             [
                 'nombre' => 'required|max:255',
                 'director' => 'required|max:100',
+                'sedesT' => 'required', // 'sedesT' es requerido si 'nacional' no está marcado
             ],
             [
                 'nombre.required' => 'El nombre es requerido.',
                 'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (255).',
                 'director.required' => 'El nombre del director es requerido.',
                 'director.max' => 'El nombre del director excede el máximo de caracteres permitidos (100).',
+                'sedesT.max' => 'La escuela debe estar en al menos en una sede.',
             ]
         );
         if (!$validacion)
             return redirect()->route('admin.listar.escuelas')->with('errorEscuela', 'Problemas al crear la escuela.');
 
-        $escuela = new Escuelas();
-        /* $escuela->escu_codigo = Escuelas::count() + 1; *///TODO: ERROR DE ESCUELA
-        $escuela->escu_nombre = $request->input('nombre');
-        $escuela->escu_descripcion = $request->input('descripcion');
-        $escuela->escu_director = $request->input('director');
-        /* $escuela->escu_intitucion = $request->input('institucion',1); */
+        #$escuela = new Escuelas();
+        #/* $escuela->escu_codigo = Escuelas::count() + 1; *///TODO: ERROR DE ESCUELA
+        #$escuela->escu_nombre = $request->input('nombre');
+        #$escuela->escu_descripcion = $request->input('descripcion');
+        #$escuela->escu_director = $request->input('director');
+        #/* $escuela->escu_intitucion = $request->input('institucion',1); */
+#
+        #$escuela->escu_visible = $request->input('care_visible', 1);
+        #//TODO: SI NO QUEREMOS MORIR, CAMBIAR ESTO
+        #$escuela->escu_creado = now();
+        #$escuela->escu_actualizado = now();
+#
+        #$escuela->escu_nikcname_mod = Session::get('admin')->usua_nickname;
+        #$escuela->escu_rol_mod = Session::get('admin')->rous_codigo;
+#
+        #$escuela->save();
 
-        $escuela->escu_visible = $request->input('care_visible', 1);
-        //TODO: SI NO QUEREMOS MORIR, CAMBIAR ESTO
-        $escuela->escu_creado = now();
-        $escuela->escu_actualizado = now();
+        $escuCrear = Escuelas::insertGetId([
+            'escu_nombre' => $request->nombre,
+            'escu_descripcion' => $request->descripcion,
+            'escu_director' => $request->director,
+            'escu_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+            'escu_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+            'escu_nickname_mod' => Session::get('admin')->usua_nickname,
+            'escu_rol_mod' => Session::get('admin')->rous_codigo,
+        ]);
 
-        $escuela->escu_nikcname_mod = Session::get('admin')->usua_nickname;
-        $escuela->escu_rol_mod = Session::get('admin')->rous_codigo;
 
-        $escuela->save();
+        $seso = [];
+        $sedes = $request->input('sedesT', []);
 
-        return redirect()->back()->with('exitoEscuela', 'Escuela creada existosamente');
+        foreach ($sedes as $sede) {
+            array_push($seso, [
+                'sede_codigo' => $sede,
+                'escu_codigo' => $escuCrear,
+                'seec_creado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'seec_actualizado' => Carbon::now()->format('Y-m-d H:i:s'),
+                'seec_nickname_mod' => Session::get('admin')->usua_nickname,
+                'seec_rol_mod' => Session::get('admin')->rous_codigo,
+            ]);
+        }
+
+        $sesoCrear = SedesEscuelas::insert($seso);
+        if (!$sesoCrear) {
+            SedesEscuelas::where('escu_codigo', $escu_codigo)->delete();
+            return redirect()->back()->with('errorEscuela', 'Ocurrió un error durante el registro de las sedes, intente más tarde.')->withInput();
+        }
+
+
+
+        return redirect()->back()->with('exitoEscuela', 'La escuela creada existosamente');
     }
 
     //TODO: Parametro Sociso COmunitarios

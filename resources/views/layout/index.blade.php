@@ -64,9 +64,9 @@
                 </div>
                 <ul class="navbar-nav navbar-right" style="margin-top: 0px;">
                     <div class="sidebar-brand">
-                        <a href="javascript:void(0)"> <img alt="image" src="{{ asset('/img/logo_texto.png') }}" {{-- Logo esquina superior derecha --}}
+                        <a href="javascript:void(0)"> <img alt="image" src="{{ asset('/img/logo_texto_sin_bajada.png') }}" {{-- Logo esquina superior derecha --}}
                                 class="header-logo" style="transform: scale(0.12);transform-origin: right;position: fixed;
-                                top: -225px;
+                                top: -110px;
                                 right: 25px;" />
                             <span class="logo-name" style="font-size: 15px;"></span>
                         </a>

@@ -13,7 +13,7 @@
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i
                         data-feather="book-open"></i><span>Iniciativas</span></a>
                 <ul class="dropdown-menu">
-                    <li><a style="font-size: 90%;" class="nav-link" href="{{route('admin.iniciativa.listar')}}">Registro de iniciativas</a></li>
+                    <li><a style="font-size: 90%;" class="nav-link" href="{{route('admin.iniciativa.listar')}}">Listado de iniciativas</a></li>
                     <li><a style="font-size: 90%;" class="nav-link" href="{{route('admin.inicitiativas.crear.primero')}}">Crear iniciativa</a></li>
                 </ul>
             </li>
@@ -25,11 +25,7 @@
                     {{-- <li><a style="font-size: 90%;" class="nav-link" href="{{route('admin.listar.donaciones')}}">Listar donación</a></li>
                     <li><a style="font-size: 90%;" class="nav-link" href="{{route('admin.ingresar.donaciones')}}">Ingresar donación</a></li> --}}
                 </ul>
-            <li class="dropdown">
-            <a href="javascript:void(0)" class="menu-toggle nav-link has-dropdown"><i data-feather="users"></i><span>Usuarios</span></a>
-            <ul class="dropdown-menu">
-                <li><a style="font-size: 90%;" class="nav-link" href="{{route("admin.listar.usuarios")}}">Listado de usuarios</a></li>
-            </ul>
+
             <li class="dropdown">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i
                         data-feather="command"></i><span>Parámetros</span></a>
@@ -69,13 +65,18 @@
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i
                         data-feather="arrow-left-circle"></i><span>Extracción de datos</span></a>
             </li>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="menu-toggle nav-link has-dropdown"><i data-feather="users"></i><span>Usuarios</span></a>
+                <ul class="dropdown-menu">
+                    <li><a style="font-size: 90%;" class="nav-link" href="{{route("admin.listar.usuarios")}}">Listado de usuarios</a></li>
+                </ul>
 
         @elseif (Session::has('digitador'))
             <li class="menu-header fas fa-cog">Digitador/a</li>
             <li class="dropdown">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="book-open"></i><span>Iniciativas</span></a>
                 <ul class="dropdown-menu">
-                    <li><a style="font-size: 90%;" class="nav-link" href="{{route('digitador.iniciativa.listar')}}">Registro de iniciativas</a></li>
+                    <li><a style="font-size: 90%;" class="nav-link" href="{{route('digitador.iniciativa.listar')}}">Listado de iniciativas</a></li>
                     <li><a style="font-size: 90%;" class="nav-link" href="{{route('digitador.inicitiativas.crear.primero')}}">Crear iniciativa</a></li>
                 </ul>
             </li>
@@ -84,7 +85,7 @@
         <li class="dropdown">
             <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="book-open"></i><span>Iniciativas</span></a>
             <ul class="dropdown-menu">
-                <li><a style="font-size: 90%;" class="nav-link" href="{{route('observador.iniciativa.listar')}}">Registro de iniciativas</a></li>
+                <li><a style="font-size: 90%;" class="nav-link" href="{{route('observador.iniciativa.listar')}}">Listado de iniciativas</a></li>
             </ul>
         </li>
         @elseif (Session::has('supervisor'))
@@ -92,7 +93,7 @@
         <li class="dropdown">
             <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="book-open"></i><span>Iniciativas</span></a>
             <ul class="dropdown-menu">
-                <li><a style="font-size: 90%;" class="nav-link" href="{{route('supervisor.iniciativa.listar')}}">Registro de iniciativas</a></li>
+                <li><a style="font-size: 90%;" class="nav-link" href="{{route('supervisor.iniciativa.listar')}}">Listado de iniciativas</a></li>
             </ul>
         </li>
         @endif

@@ -183,7 +183,7 @@
                                             </div>
                                             <input type="number" class="form-control" id="meta_estudiantes"
                                                 name="meta_estudiantes" value="{{ $care->care_meta_estudiantes }}"
-                                                autocomplete="off">
+                                                autocomplete="off" placeholder="NO APLICA">
                                         </div>
                                         @error('meta_estudiantes')
                                             <div class="text-danger">{{ $message }}</div>
@@ -200,7 +200,7 @@
                                                 </div>
                                             </div>
                                             <input type="number" class="form-control" id="meta_docentes"
-                                                name="meta_docentes" value="{{ $care->care_meta_docentes }}" autocomplete="off">
+                                                name="meta_docentes" value="{{ $care->care_meta_docentes }}" autocomplete="off" placeholder="NO APLICA">
                                         </div>
                                         @error('meta_docentes')
                                             <div class="text-danger">{{ $message }}</div>
@@ -220,7 +220,7 @@
                                             </div>
                                             <input type="number" class="form-control" id="meta_comunitarios"
                                                 name="meta_comunitarios" value="{{ $care->care_meta_soc_comunitarios }}"
-                                                autocomplete="off">
+                                                autocomplete="off" placeholder="NO APLICA">
                                         </div>
                                         @error('meta_comunitarios')
                                             <div class="text-danger">{{ $message }}</div>
@@ -237,7 +237,7 @@
                                                 </div>
                                             </div>
                                             <input type="number" class="form-control" id="meta_benicifiarios"
-                                                name="meta_benicifiarios" value="{{ $care->care_meta_benificiarios }}" autocomplete="off">
+                                                name="meta_benicifiarios" value="{{ $care->care_meta_benificiarios }}" autocomplete="off" placeholder="NO APLICA">
                                         </div>
                                         @error('meta_benicifiarios')
                                             <div class="text-danger">{{ $message }}</div>
@@ -257,7 +257,7 @@
                                             </div>
                                             <input type="number" class="form-control" id="meta_iniciativas"
                                                 name="meta_iniciativas" value="{{ $care->care_meta_Iniciativas }}"
-                                                autocomplete="off">
+                                                autocomplete="off" placeholder="NO APLICA">
                                         </div>
                                         @error('meta_iniciativas')
                                             <div class="text-danger">{{ $message }}</div>
@@ -408,7 +408,7 @@
                                         </div>
                                         <input type="number" class="form-control" id="meta_estudiantes"
                                             name="meta_estudiantes" value="{{ old('meta_estudiantes') }}"
-                                            autocomplete="off">
+                                            autocomplete="off" placeholder="APLICAR">
                                     </div>
                                     @error('meta_estudiantes')
                                         <div class="text-danger">{{ $message }}</div>
@@ -425,7 +425,7 @@
                                             </div>
                                         </div>
                                         <input type="number" class="form-control" id="meta_docentes"
-                                            name="meta_docentes" value="{{ old('meta_docentes') }}" autocomplete="off">
+                                            name="meta_docentes" value="{{ old('meta_docentes') }}" autocomplete="off" placeholder="APLICAR">
                                     </div>
                                     @error('meta_docentes')
                                         <div class="text-danger">{{ $message }}</div>
@@ -445,7 +445,7 @@
                                         </div>
                                         <input type="number" class="form-control" id="meta_comunitarios"
                                             name="meta_comunitarios" value="{{ old('meta_comunitarios') }}"
-                                            autocomplete="off">
+                                            autocomplete="off" placeholder="APLICAR">
                                     </div>
                                     @error('meta_comunitarios')
                                         <div class="text-danger">{{ $message }}</div>
@@ -462,7 +462,7 @@
                                             </div>
                                         </div>
                                         <input type="number" class="form-control" id="meta_benicifiarios"
-                                            name="meta_benicifiarios" value="{{ old('meta_benicifiarios') }}" autocomplete="off">
+                                            name="meta_benicifiarios" value="{{ old('meta_benicifiarios') }}" autocomplete="off" placeholder="APLICAR">
                                     </div>
                                     @error('meta_benicifiarios')
                                         <div class="text-danger">{{ $message }}</div>
@@ -482,7 +482,7 @@
                                         </div>
                                         <input type="number" class="form-control" id="meta_iniciativas"
                                             name="meta_iniciativas" value="{{ old('meta_iniciativas') }}"
-                                            autocomplete="off">
+                                            autocomplete="off" placeholder="APLICAR">
                                     </div>
                                     @error('meta_iniciativas')
                                         <div class="text-danger">{{ $message }}</div>

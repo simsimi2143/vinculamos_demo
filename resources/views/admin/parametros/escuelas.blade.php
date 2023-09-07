@@ -190,6 +190,25 @@
                                 @endif
                             </div>
                         </div> --}}
+                        <label>Sedes Asociadas</label>
+                        <div class="input-group">
+                            <select class="form-control select2" style="width: 100%" id="sedesT" name="sedesT[]"
+                                multiple>
+                                <option value="" disabled>Seleccione...</option>
+                                @foreach ($sedesT as $sede)
+                                    <option value="{{ $sede->sede_codigo }}">{{ $sede->sede_nombre }}</option>
+                                @endforeach
+                            </select>
+                            @if ($errors->has('sedesT'))
+                                <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
+                                    style="width:100%">
+                                    <div class="alert-body">
+                                        <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                        <strong>{{ $errors->first('sedesT') }}</strong>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary waves-effect">Guardar</button>
                         </div>
@@ -244,6 +263,37 @@
                                     </div>
                                     <input type="text" class="form-control" id="escu_director" name="escu_director"
                                         value="{{ $escu->escu_director }}" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-group" style="align-items: center;" id="sedesAsociadasContainer">
+                                <label>Sedes Asociadas</label>
+                                <div class="input-group">
+                                    <select class="form-control select2" style="width: 100%" id="sedesT" name="sedesT[]" multiple>
+                                        <option value="" disabled>Seleccione...</option>
+                                            @foreach ($sedesT as $sede)
+                                                @php
+                                                    $selected = false;
+                                                @endphp
+                                                @foreach ($SedeEscuelas as $sedees)
+                                                    @if ($sedees->sede_codigo === $sede->sede_codigo && $sedees->escu_codigo === $escu->escu_codigo)
+                                                        @php
+                                                            $selected = true;
+                                                        @endphp
+                                                    @endif
+                                                @endforeach
+
+                                        <option value="{{ $sede->sede_codigo }}" {{ $selected ? 'selected' : '' }}> {{ $sede->sede_nombre }}</option>
+                                            @endforeach
+                                    </select>
+                                    @if ($errors->has('sedesT'))
+                                        <div class="alert alert-warning alert-dismissible show fade mt-2 text-center"
+                                            style="width:100%">
+                                            <div class="alert-body">
+                                                <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                                                <strong>{{ $errors->first('sedesT') }}</strong>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                             <div class="text-center">
