@@ -66,8 +66,8 @@
                     <div class="sidebar-brand">
                         <a href="javascript:void(0)"> <img alt="image" src="{{ asset('/img/logo_texto.png') }}" {{-- Logo esquina superior derecha --}}
                                 class="header-logo" style="transform: scale(0.12);transform-origin: right;position: fixed;
-                                top: -24%;
-                                right: 10px;" />
+                                top: -225px;
+                                right: 25px;" />
                             <span class="logo-name" style="font-size: 15px;"></span>
                         </a>
                     </div>
