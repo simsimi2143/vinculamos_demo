@@ -59,18 +59,18 @@ RECUERDA AGREGAR A PANEL CON SU RESPECTIVA RUTA (href) Y ARREGLAR EL CONTROLLER
                                 </div>
                             </div>
                             @endif
-                            @if (Session::has('errorSubUnidad'))
+                            @if (Session::has('error'))
                                 <div class="alert alert-danger alert-dismissible show fade mb-4 text-center">
                                     <div class="alert-body">
-                                        <strong>{{ Session::get('errorSubUnidad') }}</strong>
+                                        <strong>{{ Session::get('error') }}</strong>
                                         <button class="close" data-dismiss="alert"><span>&times;</span></button>
                                     </div>
                                 </div>
                             @endif
-                            @if (Session::has('exitoSubUnidad'))
+                            @if (Session::has('exito'))
                                 <div class="alert alert-success alert-dismissible show fade mb-4 text-center">
                                     <div class="alert-body">
-                                        <strong>{{ Session::get('exitoSubUnidad') }}</strong>
+                                        <strong>{{ Session::get('exito') }}</strong>
                                         <button class="close" data-dismiss="alert"><span>&times;</span></button>
                                     </div>
                                 </div>

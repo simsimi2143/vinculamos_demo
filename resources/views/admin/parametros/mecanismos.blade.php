@@ -22,18 +22,18 @@
                                     </div>
                                 </div>
                             @endif
-                            @if (Session::has('errorMecanismo'))
+                            @if (Session::has('error'))
                                 <div class="alert alert-danger alert-dismissible show fade mb-4 text-center">
                                     <div class="alert-body">
-                                        <strong>{{ Session::get('errorMecanismo') }}</strong>
+                                        <strong>{{ Session::get('error') }}</strong>
                                         <button class="close" data-dismiss="alert"><span>&times;</span></button>
                                     </div>
                                 </div>
                             @endif
-                            @if (Session::has('exitoMecanismo'))
+                            @if (Session::has('exito'))
                                 <div class="alert alert-success alert-dismissible show fade mb-4 text-center">
                                     <div class="alert-body">
-                                        <strong>{{ Session::get('exitoMecanismo') }}</strong>
+                                        <strong>{{ Session::get('exito') }}</strong>
                                         <button class="close" data-dismiss="alert"><span>&times;</span></button>
                                     </div>
                                 </div>
@@ -194,7 +194,7 @@
                             <div class="form-group" style="align-items: center;" id="actiAsociadasContainer">
                                 <label>Tipo de Actividades Asociadas</label>
                                 <div class="input-group">
-                                    
+
                                     <select class="form-control select2" style="width: 100%" id="actividades"
                                         name="actividades[]" multiple>
                                         <option value="" disabled>Seleccione...</option>
@@ -208,7 +208,7 @@
                                             {{ $acti->tiac_nombre }}
                                         </option>
                                     @endforeach
-                                    
+
                                     </select>
 
 

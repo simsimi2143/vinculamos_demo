@@ -19,18 +19,18 @@
                                     </div>
                                 </div>
                             @endif
-                            @if (Session::has('errorTematica'))
+                            @if (Session::has('error'))
                                 <div class="alert alert-danger alert-dismissible show fade mb-4 text-center">
                                     <div class="alert-body">
-                                        <strong>{{ Session::get('errorTematica') }}</strong>
+                                        <strong>{{ Session::get('error') }}</strong>
                                         <button class="close" data-dismiss="alert"><span>&times;</span></button>
                                     </div>
                                 </div>
                             @endif
-                            @if (Session::has('exitoTematica'))
+                            @if (Session::has('exito'))
                                 <div class="alert alert-success alert-dismissible show fade mb-4 text-center">
                                     <div class="alert-body">
-                                        <strong>{{ Session::get('exitoTematica') }}</strong>
+                                        <strong>{{ Session::get('exito') }}</strong>
                                         <button class="close" data-dismiss="alert"><span>&times;</span></button>
                                     </div>
                                 </div>

@@ -21,18 +21,18 @@
                                 </div>
                             </div>
                             @endif
-                            @if (Session::has('errorTipo de iniciativa'))
+                            @if (Session::has('error'))
                                 <div class="alert alert-danger alert-dismissible show fade mb-4 text-center">
                                     <div class="alert-body">
-                                        <strong>{{ Session::get('errorTipo de iniciativa') }}</strong>
+                                        <strong>{{ Session::get('error') }}</strong>
                                         <button class="close" data-dismiss="alert"><span>&times;</span></button>
                                     </div>
                                 </div>
                             @endif
-                            @if (Session::has('exitoTipo de iniciativa'))
+                            @if (Session::has('exito'))
                                 <div class="alert alert-success alert-dismissible show fade mb-4 text-center">
                                     <div class="alert-body">
-                                        <strong>{{ Session::get('exitoTipo de iniciativa') }}</strong>
+                                        <strong>{{ Session::get('exito') }}</strong>
                                         <button class="close" data-dismiss="alert"><span>&times;</span></button>
                                     </div>
                                 </div>

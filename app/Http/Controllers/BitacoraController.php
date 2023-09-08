@@ -57,7 +57,7 @@ class BitacoraController extends Controller
         $nuevaActividad->acti_rol_mod = Session::get('admin')->rous_codigo;
         $nuevaActividad->save();
 
-        return redirect()->back()->with('exitoActividades', 'Actividad creada exitosamente');
+        return redirect()->back()->with('exito', 'Actividad creada exitosamente');
     }
 
     public function actualizarActividad(Request $request, $acti_codigo)
@@ -84,7 +84,7 @@ class BitacoraController extends Controller
 
         $actividad = Actividades::find($acti_codigo);
         if (!$actividad) {
-            return redirect()->back()->with('errorActividades', 'La actividad no existe');
+            return redirect()->back()->with('error', 'La actividad no existe');
         }
 
         $actividad->acti_nombre = $request->input('nombre');
@@ -98,7 +98,7 @@ class BitacoraController extends Controller
         $actividad->acti_rol_mod = Session::get('admin')->rous_codigo;
         $actividad->save();
 
-        return redirect()->back()->with('exitoActividades', 'Actividad actualizada exitosamente');
+        return redirect()->back()->with('exito', 'Actividad actualizada exitosamente');
     }
 
     public function eliminarActividad(Request $request)
@@ -107,12 +107,12 @@ class BitacoraController extends Controller
 
         $actividad = Actividades::find($acti_codigo);
         if (!$actividad) {
-            return redirect()->back()->with('errorActividades', 'La actividad no existe');
+            return redirect()->back()->with('error', 'La actividad no existe');
         }
 
         $actividad->delete();
 
-        return redirect()->back()->with('exitoActividades', 'Actividad eliminada exitosamente');
+        return redirect()->back()->with('exito', 'Actividad eliminada exitosamente');
     }
 
 
