@@ -11,6 +11,14 @@ use App\Models\Convenios;
 use App\Models\Escuelas;
 use App\Models\GruposInteres;
 use App\Models\Iniciativas;
+use App\Models\IniciativasComunas;
+use App\Models\IniciativasEvidencias;
+use App\Models\IniciativasGrupos;
+use App\Models\IniciativasPais;
+use App\Models\IniciativasParticipantes;
+use App\Models\IniciativasRegiones;
+use App\Models\IniciativasTematicas;
+use App\Models\ParticipantesInternos;
 use App\Models\Mecanismos;
 use App\Models\Pais;
 use App\Models\Regiones;
@@ -79,7 +87,7 @@ class ParametrosController extends Controller
         // Guardar el programa en la base de datos
         $ambito->save();
 
-        return redirect()->back()->with('exito', 'Impacto creado exitosamente');
+        return redirect()->back()->with('exito', 'La contribución fué creada exitosamente');
     }
 
     public function eliminarAmbitos(Request $request)
@@ -87,12 +95,15 @@ class ParametrosController extends Controller
         $ambito = Ambitos::where('amb_codigo', $request->amb_codigo)->first();
 
         if (!$ambito) {
-            return redirect()->route('admin.listar.ambitos')->with('errorAmbito', 'El impacto no se encuentra registrado en el sistema.');
+            return redirect()->route('admin.listar.ambitos')->with('error', 'La contribución no se encuentra registrada en el sistema.');
         }
-
+        $pre_drop = Programas::where('amb_codigo', $request->amb_codigo)->first();
+        if ($pre_drop) {
+            return redirect()->route('admin.listar.ambitos')->with('error', 'La contribución está siendo ocupada en un programa.');
+        }
         $ambito = Ambitos::where('amb_codigo', $request->amb_codigo)->delete();
 
-        return redirect()->route('admin.listar.ambitos')->with('exito', 'El impacto fue eliminado correctamente.');
+        return redirect()->route('admin.listar.ambitos')->with('exito', 'La contribución fue eliminada correctamente.');
     }
 
     public function actualizarAmbitos(Request $request, $amb_codigo)
@@ -109,9 +120,9 @@ class ParametrosController extends Controller
         }
 
         $ambito = Ambitos::find($amb_codigo);
-        //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
+        //return redirect()->route('admin.listar.ambitos')->with('error', $amb_codigo);
         if (!$ambito) {
-            return redirect()->route('admin.listar.ambitos')->with('errorAmbito', 'El impacto no se encuentra registrado en el sistema.')->withInput();
+            return redirect()->route('admin.listar.ambitos')->with('error', 'La contribución no se encuentra registrada en el sistema.')->withInput();
             ;
         }
 
@@ -124,7 +135,7 @@ class ParametrosController extends Controller
         // Guardar la actualización del programa en la base de datos
         $ambito->save();
 
-        return redirect()->back()->with('exito', 'Impacto actualizado exitosamente')->withInput();
+        return redirect()->back()->with('exito', 'La contribución fué actualizada exitosamente')->withInput();
         ;
     }
 
@@ -167,12 +178,17 @@ class ParametrosController extends Controller
         $ambito = AmbitosAccion::where('amac_codigo', $request->amac_codigo)->first();
 
         if (!$ambito) {
-            return redirect()->route('admin.listar.ambitosaccion')->with('errorAmbito', 'El ámbito de acción  no se encuentra registrado en el sistema.');
+            return redirect()->route('admin.listar.ambitosaccion')->with('error', 'El ámbito de acción no se encuentra registrado en el sistema.');
+        }
+
+        $pre_drop = Programas::where('amac_codigo', $request->amac_codigo)->first();
+        if ($pre_drop) {
+            return redirect()->route('admin.listar.ambitosaccion')->with('error', 'El ámbito de acción está siendo ocupado en un programa.');
         }
 
         $ambito = AmbitosAccion::where('amac_codigo', $request->amac_codigo)->delete();
 
-        return redirect()->route('admin.listar.ambitosaccion')->with('exito', 'El ámbito de acción  fue eliminado correctamente.');
+        return redirect()->route('admin.listar.ambitosaccion')->with('exito', 'El ámbito de acción fue eliminado correctamente.');
     }
 
     public function actualizarAmbitosAccion(Request $request, $amac_codigo)
@@ -189,9 +205,9 @@ class ParametrosController extends Controller
         }
 
         $ambito = AmbitosAccion::find($amac_codigo);
-        //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
+        //return redirect()->route('admin.listar.ambitos')->with('error', $amb_codigo);
         if (!$ambito) {
-            return redirect()->route('admin.listar.ambitosaccion')->with('errorAmbito', 'El ámbito de acción no se encuentra registrado en el sistema.')->withInput();
+            return redirect()->route('admin.listar.ambitosaccion')->with('error', 'El ámbito de acción no se encuentra registrado en el sistema.')->withInput();
             ;
         }
 
@@ -295,11 +311,12 @@ class ParametrosController extends Controller
         if (!$programa) {
             return redirect()->route('admin.listar.programas')->with('error', 'El programa no se encuentra registrado en el sistema.');
         }
-/*
-        $verificar = Iniciativas::select('inic_codigo')->where('prog_codigo', $request->prog_codigo);
-        if ($verificar) {
-            return redirect()->route('admin.listar.programas')->with('error', 'No es posible eliminar, el programa está siendo utilizado en una iniciativa');
-        } */
+
+        $pre_drop = Iniciativas::where('prog_codigo', $request->prog_codigo)->first();
+        if ($pre_drop) {
+            return redirect()->route('admin.listar.programas')->with('error', 'El programa está siendo ocupado en una iniciativa.');
+        }
+
         // Eliminar actividades relacionadas
         ProgramasActividades::where('prog_codigo', $request->prog_codigo)->delete();
         ProgramasContribuciones::where('prog_codigo', $request->prog_codigo)->delete();
@@ -404,12 +421,12 @@ class ParametrosController extends Controller
         } catch (\Exception $e) {
             echo "Archivo no encontrado: " . $e->getMessage();
         }
-/*
-        $verificar = Iniciativas::select('inic_codigo')->where('conv_codigo', $request->conv_codigo);
-        if ($verificar) {
-            return redirect()->route('admin.listar.convenios')->with('error', 'No es posible eliminar, el documento de colaboración está siendo utilizado en una iniciativa');
+
+        $pre_drop = Iniciativas::where('conv_codigo', $request->conv_codigo)->first();
+        if ($pre_drop) {
+            return redirect()->route('admin.listar.convenios')->with('error', 'El documento de colaboración está siendo ocupada en una iniciativa.');
         }
- */
+
         $Drop = Convenios::where('conv_codigo', $request->conv_codigo)->delete();
         if (!$Drop) {
             return redirect()->back()->with('error', 'El documento de colaboración no se pudo eliminar, intente más tarde.');
@@ -627,6 +644,11 @@ class ParametrosController extends Controller
             return redirect()->route('admin.listar.sedes')->with('error', 'La sede no se encuentra registrada en el sistema.');
         }
 
+        $pre_drop = ParticipantesInternos::where('sede_codigo', $request->sedecodigo)->first();
+        if ($pre_drop) {
+            return redirect()->route('admin.listar.sedes')->with('error', 'La sede está siendo ocupada en una iniciativa.');
+        }
+
         $sededrop = Sedes::where('sede_codigo', $request->sedecodigo)->delete();
         if (!$sededrop) {
             return redirect()->back()->with('error', 'Ocurrió un error en el sistema.');
@@ -694,6 +716,12 @@ class ParametrosController extends Controller
         if (!$verificarDrop) {
             return redirect()->route('admin.listar.carreras')->with('error', 'La carrera no se encuentra registrada en el sistema.');
         }
+
+        $pre_drop = ParticipantesInternos::where('care_codigo', $request->care_codigo)->first();
+        if ($pre_drop) {
+            return redirect()->route('admin.listar.carreras')->with('error', 'La carrera está siendo ocupada en una iniciativa.');
+        }
+
         $Drop = Carreras::where('care_codigo', $request->care_codigo)->delete();
         if (!$Drop) {
             return redirect()->back()->with('error', 'La carrera no se pudo eliminar, intente más tarde.');
@@ -798,6 +826,7 @@ class ParametrosController extends Controller
         return view('admin.parametros.escuelas', compact('escuelas', 'sedesT', 'SedeEscuelas'));
     }
 
+    // TODO: SI NO ES TWK -> CAMBIAR A ESCUELAS
     public function eliminarEscuelas(Request $request)
     {
         $verificarDrop = Escuelas::where('escu_codigo', $request->escu_codigo)->first();
@@ -807,14 +836,19 @@ class ParametrosController extends Controller
 
         $predrop = Carreras::where('escu_codigo', $request->escu_codigo)->first();
         if ($predrop) {
-            return redirect()->route('admin.listar.escuelas')->with('error', 'La escuela está siendo ocupada.');
+            return redirect()->route('admin.listar.escuelas')->with('error', 'La escuela está siendo ocupada en una carrera.');
+        }
+
+        $pre_drop = ParticipantesInternos::where('escu_codigo', $request->escu_codigo)->first();
+        if ($pre_drop) {
+            return redirect()->route('admin.listar.escuelas')->with('error', 'La escuela está siendo ocupada en una iniciativa.');
         }
 
         $Drop = SedesEscuelas::where('escu_codigo', $request->escu_codigo)->delete();
         $Drop = Escuelas::where('escu_codigo', $request->escu_codigo)->delete();
 
         if (!$Drop) {
-            return redirect()->back()->with('error', 'La carrera no se pudo eliminar, intente más tarde.');
+            return redirect()->back()->with('error', 'La escuela no se pudo eliminar, intente más tarde.');
         }
 
         return redirect()->route('admin.listar.escuelas')->with('exito', 'La escuela fue eliminada correctamente.');
@@ -944,7 +978,7 @@ class ParametrosController extends Controller
 
 
 
-        return redirect()->back()->with('exito', 'La escuela creada existosamente');
+        return redirect()->back()->with('exito', 'La escuela fué creada existosamente');
     }
 
     //TODO: Socios Comunitarios
@@ -969,12 +1003,18 @@ class ParametrosController extends Controller
     {
         $verificarDrop = SociosComunitarios::where('soco_codigo', $request->soco_codigo)->first();
         if (!$verificarDrop) {
-            return redirect()->route('admin.listar.socios')->with('errorSocio', 'El socio comunitario no se encuentra registrado en el sistema.');
+            return redirect()->route('admin.listar.socios')->with('error', 'El socio comunitario no se encuentra registrado en el sistema.');
         }
+
+        $pre_drop = IniciativasParticipantes::where('soco_codigo', $request->soco_codigo)->first();
+        if ($pre_drop) {
+            return redirect()->route('admin.listar.socios')->with('error', 'El socio comunitario está siendo ocupado en una iniciativa.');
+        }
+
         /* $Drop = SedesSocios::where('soco_codigo', $request->soco_codigo)->delete(); */
         $Drop = SociosComunitarios::where('soco_codigo', $request->soco_codigo)->delete();
         if (!$Drop) {
-            return redirect()->back()->with('errorSocio', 'El socio comunitario no se pudo eliminar, intente más tarde.');
+            return redirect()->back()->with('error', 'El socio comunitario no se pudo eliminar, intente más tarde.');
         }
         return redirect()->route('admin.listar.socios')->with('exito', 'El socio comunitario fue eliminado correctamente.');
     }
@@ -986,7 +1026,7 @@ class ParametrosController extends Controller
 
         // Verificar si la carrera existe
         if (!$socio) {
-            return redirect()->back()->with('errorSocio', 'El socio comunitario no se encuentra registrado en el sistema.');
+            return redirect()->back()->with('error', 'El socio comunitario no se encuentra registrado en el sistema.');
         }
 
         // Validar los campos del formulario
@@ -1022,7 +1062,7 @@ class ParametrosController extends Controller
 
         /* $Drop = SedesSocios::where('soco_codigo', $soco_codigo)->delete(); */
         /* if (!$Drop) {
-            return redirect()->back()->with('errorSocio', $soco_codigo);
+            return redirect()->back()->with('error', $soco_codigo);
         } */
         $socio = SociosComunitarios::where(['soco_codigo' => $soco_codigo])->update([
             'grin_codigo' => $request->input('grupo'),
@@ -1069,7 +1109,7 @@ class ParametrosController extends Controller
             ]
         );
         if (!$validacion)
-            return redirect()->route('admin.listar.socios')->with('errorSocio', 'Problemas al crear el socio comunitario.');
+            return redirect()->route('admin.listar.socios')->with('error', 'Problemas al crear el socio comunitario.');
 
         $MacaActi = SociosComunitarios::insertGetId([
             'soco_nombre_socio' => $request->nombre,
@@ -1155,12 +1195,12 @@ class ParametrosController extends Controller
             return redirect()->route('admin.listar.mecanismos')->with('error', 'El mecanismo no se encuentra registrado en el sistema.');
         }
 
+        $pre_drop = Iniciativas::where('meca_codigo', $request->meca_codigo)->first();
+        if ($pre_drop) {
+            return redirect()->route('admin.listar.mecanismos')->with('error', 'El mecanismo está siendo ocupado en una iniciativa.');
+        }
+
         $macanimos_actividades = MecanismosActividades::where('meca_codigo', $request->meca_codigo)->delete();
-/*
-        $verificar = Iniciativas::select('inic_codigo')->where('meca_codigo', $request->meca_codigo);
-        if ($verificar) {
-            return redirect()->route('admin.listar.mecanismos')->with('error', 'No es posible eliminar, el mecanismo está siendo utilizado en una iniciativa');
-        } */
 
         $inicMecanismo = Iniciativas::where('meca_codigo',$request->meca_codigo)->get();
         if(sizeof($inicMecanismo)>0) return redirect()->route('admin.listar.mecanismos')->with('error','El mecanismo no se puede eliminar porque se encuentra asociado a una iniciativa.');
@@ -1256,11 +1296,11 @@ class ParametrosController extends Controller
         }
         $predrop = SubGruposInteres::where('grin_codigo', $request->grin_codigo)->first();
         if ($predrop) {
-            return redirect()->route('admin.listar.grupos_int')->with('error', 'El grupo de interes está siendo ocupado.');
+            return redirect()->route('admin.listar.grupos_int')->with('error', 'El grupo de interes está siendo ocupado en un sub-grupo de interes.');
         }
         $predrop = SociosComunitarios::where('grin_codigo', $request->grin_codigo)->first();
         if ($predrop) {
-            return redirect()->route('admin.listar.grupos_int')->with('error', 'El grupo de interes está siendo ocupado.');
+            return redirect()->route('admin.listar.grupos_int')->with('error', 'El grupo de interes está siendo ocupado en un socio comunitario.');
         }
         $grupo->delete();
 
@@ -1344,12 +1384,17 @@ class ParametrosController extends Controller
         if (!$tipoact) {
             return redirect()->route('admin.listar.tipoact')->with('error', 'Tipo de actividad no encontrado.');
         }
-/*
-        $verificar = Iniciativas::select('inic_codigo')->where('tiac_codigo', $request->tiac_codigo);
-        if ($verificar) {
-            return redirect()->route('admin.listar.tipoact')->with('error', 'No es posible eliminar, el tipo de actividad está siendo utilizado en una iniciativa');
+
+        $predrop = Mecanismos::where('tiac_codigo', $request->tiac_codigo)->first();
+        if ($predrop) {
+            return redirect()->route('admin.listar.tipoact')->with('error', 'El Tipo de actividad está siendo ocupada en un mecanismo.');
         }
- */
+
+        $pre_drop = Iniciativas::where('tiac_codigo', $request->tiac_codigo)->first();
+        if ($pre_drop) {
+            return redirect()->route('admin.listar.tipoact')->with('error', 'El Tipo de actividad está siendo ocupada en una iniciativa.');
+        }
+
         $tipoact->delete();
 
         return redirect()->route('admin.listar.tipoact')->with('exito', 'El Tipo de actividad se eliminó correctamente.');
@@ -1475,6 +1520,16 @@ class ParametrosController extends Controller
             return redirect()->route('admin.listar.unidades')->with('error', 'La Unidad no se encuentra registrada en el sistema.');
         }
 
+        $predrop = SubUnidades::where('unid_codigo', $request->unid_codigo)->first();
+        if ($predrop) {
+            return redirect()->route('admin.listar.unidades')->with('error', 'La Unidad está siendo ocupada en una sub-unidad.');
+        }
+
+        /* $pre_drop = IniciativasUnidades::where('sugr_codigo', $request->sugr_codigo)->first();
+        if ($pre_drop) {
+            return redirect()->route('admin.listar.subgrupos')->with('error', 'El sub-grupo de interes está siendo ocupado en una iniciativa.');
+        }  */
+
         $eliminado = Unidades::where('unid_codigo', $request->unid_codigo)->delete();
         return redirect()->route('admin.listar.unidades')->with('exito', 'La Unidad fue eliminada correctamente.');
     }
@@ -1495,7 +1550,7 @@ class ParametrosController extends Controller
         }
 
         $editado = Unidades::find($unid_codigo);
-        //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
+        //return redirect()->route('admin.listar.ambitos')->with('error', $amb_codigo);
         if (!$editado) {
             return redirect()->route('admin.listar.unidades')->with('error', 'La Unidad no se encuentra registrada en el sistema.')->withInput();
         }
@@ -1593,7 +1648,7 @@ class ParametrosController extends Controller
         }
 
         $editado = SubUnidades::find($suni_codigo);
-        //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
+        //return redirect()->route('admin.listar.ambitos')->with('error', $amb_codigo);
         if (!$editado) {
             return redirect()->route('admin.listar.subunidades')->with('error', 'La SubUnidad no se encuentra registrada en el sistema.')->withInput();
         }
@@ -1676,7 +1731,7 @@ class ParametrosController extends Controller
         }
 
         $editado = TipoIniciativas::find($tmec_codigo);
-        //return redirect()->route('admin.listar.ambitos')->with('errorAmbito', $amb_codigo);
+        //return redirect()->route('admin.listar.ambitos')->with('error', $amb_codigo);
         if (!$editado) {
             return redirect()->route('admin.listar.tipoiniciativa')->with('error', 'El Tipo de iniciativa no se encuentra registrado en el sistema.')->withInput();
         }
@@ -1847,7 +1902,12 @@ class ParametrosController extends Controller
 
         $predrop = SociosComunitarios::where('sugr_codigo', $request->sugr_codigo)->first();
         if ($predrop) {
-            return redirect()->route('admin.listar.subgrupos')->with('error', 'El sub-grupo de interes está siendo ocupado.');
+            return redirect()->route('admin.listar.subgrupos')->with('error', 'El sub-grupo de interes está siendo ocupado en un socio comunitario.');
+        }
+
+        $pre_drop = IniciativasParticipantes::where('sugr_codigo', $request->sugr_codigo)->first();
+        if ($pre_drop) {
+            return redirect()->route('admin.listar.subgrupos')->with('error', 'El sub-grupo de interes está siendo ocupado en una iniciativa.');
         }
 
         $eliminado = SubGruposInteres::where('sugr_codigo', $request->sugr_codigo)->delete();
@@ -2102,6 +2162,11 @@ public function eliminarTipoUnidades(Request $request)
 {
     $eliminado = TipoUnidades::where('tuni_codigo', $request->tuni_codigo)->first();
     if (!$eliminado) {return redirect()->route('admin.listar.tipounidad')->with('error', 'El Tipo de Unidad no se encuentra registrado en el sistema.');}
+
+    $predrop = Unidades::where('tuni_codigo', $request->tuni_codigo)->first();
+    if ($predrop) {
+        return redirect()->route('admin.listar.tipounidad')->with('error', 'El Tipo de Unidad está siendo ocupado en una unidad.');
+    }
 
     $eliminado = TipoUnidades::where('tuni_codigo', $request->tuni_codigo)->delete();
     return redirect()->route('admin.listar.tipounidad')->with('exito', 'El Tipo de Unidad fue eliminado correctamente.');
