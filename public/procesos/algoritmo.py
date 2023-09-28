@@ -138,7 +138,7 @@ var_Coordinacion = ["coordinacion", "coordinador", "coordinar", "coordinadores",
 var_Corporacion = ["corporacion", "corporativo", "corporativa", "corporativos", "corporativas"]
 var_Corredor = ["corredor", "corredores"]
 var_Corriente = ["corriente", "corrientes"]
-var_Corrupcion = ["corrupcion", "soborno", "cohecho", "probidad", "mop-gate", "milicogate", "conflictos de intereses", "coimas", "desfalco", "pacogate", "caso, cascada", "caso penta", "conflicto de interes"]
+var_Corrupcion = ["corrupcion", "soborno", "cohecho", "probidad", "mop-gate", "milicogate", "conflictos de interéses", "coimas", "desfalco", "pacogate", "caso, cascada", "caso penta", "conflicto de interés"]
 var_Costa = ["costa", "costero", "costera", "playa", "playero", "playera", "playas"]
 var_Costo = ["costo", "coste", "costos", "costes"]
 var_CreceChile = ["crece chile"]
@@ -767,16 +767,16 @@ else:
 #   ("ALGORITMO META 2.2")
 # Meta_2_2 =    [var_Obesidad,
 #               var_Lactancia,
-#               var_Balanceado or var_Proceso 
-#               or var_Habitos or var_Saludable 
+#               var_Balanceado or var_Proceso
+#               or var_Habitos or var_Saludable
 #               or var_Recomendacion and var_Alimentos,
-#               var_Propiedad or var_Ingesta or 
-#               var_Situacion or var_Mal 
+#               var_Propiedad or var_Ingesta or
+#               var_Situacion or var_Mal
 #               or var_Necesidad or var_Consultoria or
-#               var_Estado or var_Educacion 
-#               or var_Estudiante or 
+#               var_Estado or var_Educacion
+#               or var_Estudiante or
 #               var_Recomendacion or var_Evaluacion or
-#               var_Intervencion or var_ Deficit and 
+#               var_Intervencion or var_ Deficit and
 #               (var_Nutricional or var_Alimentos) or
 #               var_Preparacion or var_Feria and var_Saludable,
 #               var_MalNutricion or (var_Efecto and Var_Positivo) and var_Consumo,
@@ -793,7 +793,7 @@ if  (any(var in entrada for var in var_Obesidad) or
     any(var in entrada for var in var_Estado) or any(var in entrada for var in var_Educacion) or
     any(var in entrada for var in var_Estudiante ) or
     any(var in entrada for var in var_Recomendacion) or any(var in entrada for var in var_Evaluacion) or
-    any(var in entrada for var in var_Intervencion) or any(var in entrada for var in var_Deficit)) and 
+    any(var in entrada for var in var_Intervencion) or any(var in entrada for var in var_Deficit)) and
     (any(var in entrada for var in var_Nutricional) or any(var in entrada for var in var_Alimentos))) or
     ((any(var in entrada for var in var_Preparacion) or any(var in entrada for var in var_Feria)) and
     any(var in entrada for var in var_Saludable)) or
@@ -1014,7 +1014,7 @@ else:
 #             var_Dental or var_Higiene or var_Evaluacion or var_Kinesiologico or var_Manejo
 #             or var_Psicologia or var_Neurologia and var_Clinica,
 #             var_Hospital or var_Medicamento or var_Paciente or var_Prevencion and (var_EnfermedadesNoTransmisibles or
-#             var_DesastreSanitario), 
+#             var_DesastreSanitario),
 #             var_Ciudar and var_Salud]
 
 if  ((any(var in entrada for var in var_Prevencion) and any(var in entrada for var in var_Suicidio)) or
@@ -1029,7 +1029,7 @@ if  ((any(var in entrada for var in var_Prevencion) and any(var in entrada for v
     ((any(var in entrada for var in var_RayoUV) or any(var in entrada for var in var_Medicina)) and
     any(var in entrada for var in var_Operativo)) or
     (any(var in entrada for var in var_Higiene) and any(var in entrada for var in var_Tecnica)) or
-    ((any(var in entrada for var in var_Evaluacion) or any(var in entrada for var in var_Saludable) or 
+    ((any(var in entrada for var in var_Evaluacion) or any(var in entrada for var in var_Saludable) or
     any(var in entrada for var in var_Ciudar)) and
     any(var in entrada for var in var_Anciano)) or
     (any(var in entrada for var in var_Banco) and any(var in entrada for var in var_Sangre)) or
@@ -1585,14 +1585,14 @@ else:
     Meta_5_4 = False
 
 #   ("ALGORITMO META 5.5")
-# Meta_5_5 =    [((var_Rol or var_Ley or var_Gerente or var_Mineria or var_Capacitar or var_Emprendimiento or var_Derecho 
+# Meta_5_5 =    [((var_Rol or var_Ley or var_Gerente or var_Mineria or var_Capacitar or var_Emprendimiento or var_Derecho
 #               or var_igualdad or var_Oportunidad or var_Economia) and (var_Mujer or var_Genero)) or
 #               var_Emprendedora]
 
 if  (((any(var in entrada for var in var_Rol) or any(var in entrada for var in var_Ley) or
-    any(var in entrada for var in var_Gerente) or any(var in entrada for var in var_Mineria) or any(var in entrada for var in var_Capacitar) or 
-    any(var in entrada for var in var_Emprendimiento) or any(var in entrada for var in var_Derecho) or any(var in entrada for var in var_Igualdad) or 
-    any(var in entrada for var in var_Oportunidad) or any(var in entrada for var in var_Economia)) and 
+    any(var in entrada for var in var_Gerente) or any(var in entrada for var in var_Mineria) or any(var in entrada for var in var_Capacitar) or
+    any(var in entrada for var in var_Emprendimiento) or any(var in entrada for var in var_Derecho) or any(var in entrada for var in var_Igualdad) or
+    any(var in entrada for var in var_Oportunidad) or any(var in entrada for var in var_Economia)) and
     any(var in entrada for var in var_Mujer) or any(var in entrada for var in var_Genero)) or
     any(var in entrada for var in var_Emprendedora)):
     Meta_5_5 = True
@@ -1654,7 +1654,7 @@ if  (((any(var in entrada for var in var_Periodismo) or any(var in entrada for v
     any(var in entrada for var in var_Ley) or any(var in entrada for var in var_Empoderar)) and
     any(var in entrada for var in var_Mujer)) or
     (any(var in entrada for var in var_Genero) and any(var in entrada for var in var_Informatico)) or
-    (((any(var in entrada for var in var_Informacion) and any(var in entrada for var in var_Tecnologia)) or 
+    (((any(var in entrada for var in var_Informacion) and any(var in entrada for var in var_Tecnologia)) or
     any(var in entrada for var in var_Informatico)) and any(var in entrada for var in var_Nina))):
     Meta_5_8 = True
     print("Meta 5.8: Mejorar el uso de la tecnologia instrumental, en particular la tecnologia de la informacion y las comunicaciones, para promover el empoderamiento de las mujeres");
@@ -2002,7 +2002,7 @@ if  (((any(var in entrada for var in var_Consumo) or any(var in entrada for var 
     (((any(var in entrada for var in var_Impacto) and any(var in entrada for var in var_Ambiente)) or
     (any(var in entrada for var in var_Sentido) and any(var in entrada for var in var_Social))) and
     any(var in entrada for var in var_Produccion)) or
-    any(var in entrada for var in var_EmpresaB) or any(var in entrada for var in var_EconomiaCircular) or 
+    any(var in entrada for var in var_EmpresaB) or any(var in entrada for var in var_EconomiaCircular) or
     (any(var in entrada for var in var_Mercado) and any(var in entrada for var in var_Justo))):
     Meta_8_4 = True
     print("Meta 8.4: Mejorar progresivamente, de aqui a 2030, la produccion y el consumo eficientes de los recursos mundiales y procurar desvincular el crecimiento economico de la degradacion del medio ambiente, conforme al Marco Decenal de Programas sobre Modalidades de Consumo y Produccion Sostenibles, empezando por los paises desarrollados");
@@ -2171,7 +2171,7 @@ else:
 #    any(var in entrada for var in var_Inclusion)) and any(var in entrada for var in var_Industria)) or
 #    (((any(var in entrada for var in var_Desarollar) and any(var in entrada for var in var_Economia)) or
 #    (any(var in entrada for var in var_Crecimiento) and any(var in entrada for var in var_Economia)) or
-#    any(var in entrada for var in var_Laboral) or any(var in entrada for var in var_PIB)) 
+#    any(var in entrada for var in var_Laboral) or any(var in entrada for var in var_PIB))
 #    (any(var in entrada for var in var_Contribucion) and any(var in entrada for var in var_Industria))) or
 #    (any(var in entrada for var in var_PIB) and any(var in entrada for var in var_Economia))):
 
@@ -2207,13 +2207,13 @@ else:
     Meta_9_4 = False
 
 #   ("ALGORITMO META 9.5")
-# Meta_9_5 =    [((var_Capacidad or var_Proyecto or 
-#               var_Desarrollar or var_Nuevo) and var_Tenologia) or 
+# Meta_9_5 =    [((var_Capacidad or var_Proyecto or
+#               var_Desarrollar or var_Nuevo) and var_Tenologia) or
 #               var_Innovacion or var_IA
 #               (var_Promocion or var_Investigacion or var_Taller) and var_Ciencia] or
 
 
-if  ((((any(var in entrada for var in var_Capacidad) or any(var in entrada for var in var_Proyecto) or 
+if  ((((any(var in entrada for var in var_Capacidad) or any(var in entrada for var in var_Proyecto) or
     any(var in entrada for var in var_Desarollar) or any(var in entrada for var in var_Nuevo)) and any(var in entrada for var in var_Tecnologia)) or
     any(var in entrada for var in var_Innovacion) or any(var in entrada for var in var_IA)) or
     ((any(var in entrada for var in var_Promover) or any(var in entrada for var in var_Investigacion) or
@@ -2801,7 +2801,7 @@ else:
 #               var_Desarollar and var_Gastronomia and var_Region,
 #               var_Ecoturismo]
 
-if  (((any(var in entrada for var in var_Identidad) or any(var in entrada for var in var_Producto)) and 
+if  (((any(var in entrada for var in var_Identidad) or any(var in entrada for var in var_Producto)) and
     any(var in entrada for var in var_Local)) or any(var in entrada for var in var_CulturaLocal) or
     ((any(var in entrada for var in var_Impacto) and any(var in entrada for var in var_Social)) or
     any(var in entrada for var in var_Sostenible)) and any(var in entrada for var in var_Turismo) or
@@ -3101,7 +3101,7 @@ if  ((any(var in entrada for var in var_Tala) and any(var in entrada for var in 
     (((any(var in entrada for var in var_Gestion) and any(var in entrada for var in var_Sostenible)) or
     any(var in entrada for var in var_Desarollar)) and any(var in entrada for var in var_Sostenible)) or
     ((any(var in entrada for var in var_Salud) or any(var in entrada for var in var_Restauracion) or
-    any(var in entrada for var in var_Sembrar) or (any(var in entrada for var in var_Uso) and any(var in entrada for var in var_Sostenible)) or 
+    any(var in entrada for var in var_Sembrar) or (any(var in entrada for var in var_Uso) and any(var in entrada for var in var_Sostenible)) or
     any(var in entrada for var in var_Nuevo)) and any(var in entrada for var in var_Forestal)) or
     any(var in entrada for var in var_Deforestar) or
     any(var in entrada for var in var_Ecoturismo)):
@@ -3198,8 +3198,8 @@ if  (((any(var in entrada for var in var_Fuera) and any(var in entrada for var i
     any(var in entrada for var in var_Aloctona) or any(var in entrada for var in var_Introduccion) or
     (any(var in entrada for var in var_Comercio) and any(var in entrada for var in var_Invadir)) or
     (any(var in entrada for var in var_Comercio) and any(var in entrada for var in var_Exotico)) or
-    (any(var in entrada for var in var_Erradicar) and any(var in entrada for var in var_Invadir)) or 
-    any(var in entrada for var in var_nativo) or 
+    (any(var in entrada for var in var_Erradicar) and any(var in entrada for var in var_Invadir)) or
+    any(var in entrada for var in var_nativo) or
     (any(var in entrada for var in var_Introduccion) and any(var in entrada for var in var_Exotico))) and
     (any(var in entrada for var in var_Animales) or any(var in entrada for var in var_Flora))):
     Meta_15_8 = True
@@ -3363,12 +3363,12 @@ else:
 #               var_Autoridad and var_CuentaPublica,
 #               var_Acceso and var_Informacion and var_Publica]
 
-if  (((any(var in entrada for var in var_Eficiente) or any(var in entrada for var in var_Fortalecimiento) or 
+if  (((any(var in entrada for var in var_Eficiente) or any(var in entrada for var in var_Fortalecimiento) or
     any(var in entrada for var in var_RendicionDeCuenta)) and
     any(var in entrada for var in var_Institucion)) or
     ((any(var in entrada for var in var_Concejo) or any(var in entrada for var in var_Chile) or
     any(var in entrada for var in var_Comite) or any(var in entrada for var in var_Portal) or
-    any(var in entrada for var in var_Ley) or any(var in entrada for var in var_Institucion) or 
+    any(var in entrada for var in var_Ley) or any(var in entrada for var in var_Institucion) or
     any(var in entrada for var in var_Publica)) and any(var in entrada for var in var_Transparencia)) or
     (any(var in entrada for var in var_Servicio) and any(var in entrada for var in var_Publico) and
     any(var in entrada for var in var_Eficiente)) or
@@ -3422,7 +3422,7 @@ else:
 #               var_Solicitud and var_Transparencia,
 #               var_Circulacion or var_Reunion and var_Derecho]
 
-if  ((any(var in entrada for var in var_Acceso) and any(var in entrada for var in var_Informacion) and 
+if  ((any(var in entrada for var in var_Acceso) and any(var in entrada for var in var_Informacion) and
     any(var in entrada for var in var_Publica)) or
     (((any(var in entrada for var in var_Padre) and any(var in entrada for var in var_Educacion) and
     any(var in entrada for var in var_Nino)) or any(var in entrada for var in var_Conciencia) or
@@ -3452,7 +3452,7 @@ else:
 
 # Meta_16_12 = [(var_Ley or var_Plan) and (var_Desarrollar and var_Sostenible)]
 
-if ((any(var in entrada for var in var_Ley) or any(var in entrada for var in var_Plan)) and 
+if ((any(var in entrada for var in var_Ley) or any(var in entrada for var in var_Plan)) and
     (any(var in entrada for var in var_Desarollar) and (any(var in entrada for var in var_Sostenible)))):
     Meta_16_12 = True
     print("Meta 16.12: Promover y aplicar leyes y politicas no discriminatorias en favor del desarrollo sostenible");

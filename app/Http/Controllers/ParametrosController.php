@@ -1259,7 +1259,7 @@ class ParametrosController extends Controller
     }
 
 
-    //TODO: Grupo de Interes
+    //TODO: Grupo de interés
     public function listarGrupos()
     {
         $grupos_int = GruposInteres::all();
@@ -1284,7 +1284,7 @@ class ParametrosController extends Controller
         // Añade el resto de los campos del modelo si son necesarios.
         $grupo->save();
 
-        return redirect()->route('admin.listar.grupos_int')->with('exito', 'Grupo de interes creado exitosamente.');
+        return redirect()->route('admin.listar.grupos_int')->with('exito', 'Grupo de interés creado exitosamente.');
     }
 
     public function eliminarGrupo(Request $request)
@@ -1292,19 +1292,19 @@ class ParametrosController extends Controller
         $grupo = GruposInteres::where('grin_codigo', $request->grin_codigo)->first();
 
         if (!$grupo) {
-            return redirect()->route('admin.listar.grupos_int')->with('error', 'El grupo de interes no se encuentra registrado en el sistema.');
+            return redirect()->route('admin.listar.grupos_int')->with('error', 'El grupo de interés no se encuentra registrado en el sistema.');
         }
         $predrop = SubGruposInteres::where('grin_codigo', $request->grin_codigo)->first();
         if ($predrop) {
-            return redirect()->route('admin.listar.grupos_int')->with('error', 'El grupo de interes está siendo ocupado en un sub-grupo de interes.');
+            return redirect()->route('admin.listar.grupos_int')->with('error', 'El grupo de interés está siendo ocupado en un sub-grupo de interés.');
         }
         $predrop = SociosComunitarios::where('grin_codigo', $request->grin_codigo)->first();
         if ($predrop) {
-            return redirect()->route('admin.listar.grupos_int')->with('error', 'El grupo de interes está siendo ocupado en un socio comunitario.');
+            return redirect()->route('admin.listar.grupos_int')->with('error', 'El grupo de interés está siendo ocupado en un socio comunitario.');
         }
         $grupo->delete();
 
-        return redirect()->route('admin.listar.grupos_int')->with('exito', 'El grupo de interes fue eliminado correctamente.');
+        return redirect()->route('admin.listar.grupos_int')->with('exito', 'El grupo de interés fue eliminado correctamente.');
     }
 
     public function actualizarGrupos(Request $request, $grin_codigo)
@@ -1323,14 +1323,14 @@ class ParametrosController extends Controller
         $grupo = GruposInteres::find($grin_codigo);
 
         if (!$grupo) {
-            return redirect()->route('admin.listar.grupos_int')->with('error', 'El grupo de interes no se encuentra registrado en el sistema.');
+            return redirect()->route('admin.listar.grupos_int')->with('error', 'El grupo de interés no se encuentra registrado en el sistema.');
         }
 
         $grupo->grin_nombre = $request->input('grin_nombre');
         // Añade el resto de los campos del modelo si son necesarios.
         $grupo->save();
 
-        return redirect()->route('admin.listar.grupos_int')->with('exito', 'Grupo de interes actualizado exitosamente.');
+        return redirect()->route('admin.listar.grupos_int')->with('exito', 'Grupo de interés actualizado exitosamente.');
     }
 
     //TODO: Tipo de Actividad
@@ -1527,7 +1527,7 @@ class ParametrosController extends Controller
 
         /* $pre_drop = IniciativasUnidades::where('sugr_codigo', $request->sugr_codigo)->first();
         if ($pre_drop) {
-            return redirect()->route('admin.listar.subgrupos')->with('error', 'El sub-grupo de interes está siendo ocupado en una iniciativa.');
+            return redirect()->route('admin.listar.subgrupos')->with('error', 'El sub-grupo de interés está siendo ocupado en una iniciativa.');
         }  */
 
         $eliminado = Unidades::where('unid_codigo', $request->unid_codigo)->delete();
@@ -1902,12 +1902,12 @@ class ParametrosController extends Controller
 
         $predrop = SociosComunitarios::where('sugr_codigo', $request->sugr_codigo)->first();
         if ($predrop) {
-            return redirect()->route('admin.listar.subgrupos')->with('error', 'El sub-grupo de interes está siendo ocupado en un socio comunitario.');
+            return redirect()->route('admin.listar.subgrupos')->with('error', 'El sub-grupo de interés está siendo ocupado en un socio comunitario.');
         }
 
         $pre_drop = IniciativasParticipantes::where('sugr_codigo', $request->sugr_codigo)->first();
         if ($pre_drop) {
-            return redirect()->route('admin.listar.subgrupos')->with('error', 'El sub-grupo de interes está siendo ocupado en una iniciativa.');
+            return redirect()->route('admin.listar.subgrupos')->with('error', 'El sub-grupo de interés está siendo ocupado en una iniciativa.');
         }
 
         $eliminado = SubGruposInteres::where('sugr_codigo', $request->sugr_codigo)->delete();
