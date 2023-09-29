@@ -34,7 +34,7 @@
     <link rel="stylesheet" href="{{ asset('/bundles/jquery-selectric/selectric.css') }}">
     <link rel="stylesheet" href="{{ asset('/bundles/izitoast/css/iziToast.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/bundles/pretty-checkbox/pretty-checkbox.min.css') }}">
-    {{-- <link rel="stylesheet" href="{{ asset('/bundles/select2/dist/css/select2.min.css') }}"> --}}
+    <link rel="stylesheet" href="{{ asset('bundles/chocolat/dist/css/chocolat.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/components.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/custom.css') }}">
@@ -170,6 +170,7 @@
     <script src="{{ asset('/bundles/jquery-pwstrength/jquery.pwstrength.min.js') }}"></script>
     <script src="{{ asset('/bundles/jquery-selectric/jquery.selectric.min.js') }}"></script>
     <script src="{{ asset('/js/page/auth-register.js') }}"></script>
+    <script src="{{ asset('bundles/chocolat/dist/js/jquery.chocolat.min.js') }}"></script>
 
 </body>
 

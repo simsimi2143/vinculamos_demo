@@ -49,9 +49,9 @@ class IniciativasController extends Controller
     public function listarIniciativas()
     {
         $iniciativas = Iniciativas::join('mecanismos', 'mecanismos.meca_codigo', 'iniciativas.meca_codigo')
-            ->join('participantes_internos', 'participantes_internos.inic_codigo', 'iniciativas.inic_codigo')
-            ->join('carreras', 'carreras.care_codigo', 'participantes_internos.care_codigo')
-            ->join('escuelas', 'escuelas.escu_codigo', 'participantes_internos.escu_codigo')
+            ->leftjoin('participantes_internos', 'participantes_internos.inic_codigo', 'iniciativas.inic_codigo')
+            ->leftjoin('carreras', 'carreras.care_codigo', 'participantes_internos.care_codigo')
+            ->leftjoin('escuelas', 'escuelas.escu_codigo', 'participantes_internos.escu_codigo')
             ->select(
                 'iniciativas.inic_codigo',
                 'iniciativas.inic_nombre',

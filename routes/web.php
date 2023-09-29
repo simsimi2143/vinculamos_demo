@@ -7,7 +7,8 @@ use App\Http\Controllers\ParametrosController;
 use App\Http\Controllers\IniciativasController;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\BitacoraController;
-
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 
 
@@ -32,6 +33,9 @@ Route::post('ingresar', [AutenticationController::class, 'validarIngreso'])->nam
 Route::get('salir', [AutenticationController::class, 'cerrarSesion'])->name('auth.cerrar');
 Route::get('registrarSuperadmin', [AutenticationController::class, 'registrarSuperadmin'])->name('registrarsuperadmin.formulario');
 Route::post('registrarSuperadmin', [AutenticationController::class, 'guardarSuperadmin'])->name('auth.registrar.superadmin');
+Route::get('home', [HomeController::class, 'vistaHome'])->name('ver.home');
+Route::post('home/cobertura/sede', [HomeController::class, 'coberturaSede']);
+Route::post('home/cobertura/escuela', [HomeController::class, 'coberturaEscuela']);
 
 
 
@@ -66,6 +70,11 @@ Route::middleware('verificar.superadmin')->group(function () {
 
 Route::middleware('verificar.admin')->group(function () {
 
+    //TODO: Prueba dashboard Eliacer
+    Route::get('dashboard', [DashboardController::class, 'Index'])->name('dashboard.ver');
+    Route::post('dashboard/sedes-datos', [DashboardController::class, 'sedesDatos']);
+    Route::post('dashboard/escuela-datos', [DashboardController::class, 'escuelasDatos']);
+    Route::post('dashboard/sedes-escuelas', [DashboardController::class, 'escuelasBySedes']);
 
     // TODO: inicio rutas para gestionar parametros
 

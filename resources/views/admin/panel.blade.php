@@ -3,7 +3,7 @@
 @section('acceso')
     <ul class="sidebar-menu" style="font-size: 110%;">
         <li class="dropdown">
-            <a href="{{route('admin.home')}}" class="nav-link">
+            <a href="{{route('dashboard.ver')}}" class="nav-link">
                 <i data-feather="home" id="saludo"></i><span>Inicio</span></a>
         </li>
 
