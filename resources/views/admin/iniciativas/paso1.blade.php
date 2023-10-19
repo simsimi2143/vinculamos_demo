@@ -15,9 +15,7 @@
         $role = 'supervisor';
     @endphp
 @endif
-
 @extends('admin.panel')
-
 @section('contenido')
     <section class="section" style="font-size: 115%;">
         <div class="section-body">
@@ -41,15 +39,59 @@
                     <div class="card">
                         <div class="card-header">
                             <h4>Sección 1 - Antecedentes generales</h4>
+                            @if (isset($iniciativa) && $editar)
+                                <div class="card-header-action">
+                                    <div class="dropdown d-inline">
+                                        <a href="{{ route('admin.iniciativas.detalles', $iniciativa->inic_codigo) }}"
+                                            class="btn btn-icon btn-warning icon-left" data-toggle="tooltip"
+                                            data-placement="top" title="Ver detalles de la iniciativa"><i
+                                                class="fas fa-eye"></i>Ver detalle</a>
+
+                                        {{-- <a href="{{ route('admin.editar.paso1', $iniciativa->inic_codigo) }}"
+                                            class="btn btn-icon btn-primary icon-left" data-toggle="tooltip"
+                                            data-placement="top" title="Editar iniciativa"><i
+                                                class="fas fa-edit"></i>Editar Iniciativa</a> --}}
+
+                                        {{-- <a href="javascript:void(0)" class="btn btn-icon btn-info icon-left"
+                                            data-toggle="tooltip" data-placement="top" title="Calcular INVI"
+                                            onclick="calcularIndice({{ $iniciativa->inic_codigo }})"><i
+                                                class="fas fa-tachometer-alt"></i>INVI</a> --}}
+
+                                        <a href="{{ route('admin.evidencias.listar', $iniciativa->inic_codigo) }}"
+                                            class="btn btn-icon btn-success icon-left" data-toggle="tooltip"
+                                            data-placement="top" title="Adjuntar evidencia"><i
+                                                class="fas fa-paperclip"></i>Evidencias</a>
+
+                                        <a href="{{ route('admin.cobertura.index', $iniciativa->inic_codigo) }}"
+                                            class="btn btn-icon btn-success icon-left" data-toggle="tooltip" data-placement="top"
+                                            title="Ingresar cobertura"><i class="fas fa-users"></i>Cobertura</a>
+
+                                        <a href="{{ route('admin.resultados.listado', $iniciativa->inic_codigo) }}"
+                                            class="btn btn-icon btn-success icon-left" data-toggle="tooltip"
+                                            data-placement="top" title="Ingresar resultado"><i
+                                                class="fas fa-flag"></i>Resultado/s</a>
+
+                                        {{-- <a href="{{ route($role . '.evaluar.iniciativa', $iniciativa->inic_codigo) }}"
+                                            class="btn btn-icon btn-success icon-left" data-toggle="tooltip"
+                                            data-placement="top" title="Evaluar iniciativa"><i
+                                                class="fas fa-file-signature"></i>Evaluar</a> --}}
+
+                                        <a href="{{ route('admin.iniciativa.listar') }}"
+                                            class="btn btn-primary mr-1 waves-effect icon-left" type="button">
+                                            <i class="fas fa-angle-left"></i> Volver a listado
+                                        </a>
+                                    </div>
+                                </div>
+                                @endif
                         </div>
                         <div class="card-body">
                             @if (isset($iniciativa) && $editar)
-                                <form action="{{ route($role . '.actualizar.paso1', $iniciativa->inic_codigo) }}"
+                                <form action="{{ route('admin.actualizar.paso1', $iniciativa->inic_codigo) }}"
                                     method="POST">
                                     @method('PUT')
                                     @csrf
                                 @else
-                                    <form action="{{ route($role . '.paso1.verificar') }}" method="POST">
+                                    <form action="{{ route('admin.paso1.verificar') }}" method="POST">
                                         @csrf
                             @endif
                             <div class="row">
@@ -227,7 +269,7 @@
                                             @else
                                                 {{-- <select class="form-control select2" name="sedes[]" multiple id="sedes"> --}}
                                                 @forelse ($carreras as $carrera)
-                                                    <option value="{{ $carrera->care_codigo }}""
+                                                    <option value="{{ $carrera->care_codigo }}"
                                                         {{ collect(old('carreras'))->contains($carrera->care_codigo) ? 'selected' : '' }}>
                                                         {{ $carrera->care_nombre }}</option>
                                                 @empty
@@ -462,7 +504,9 @@
 
         </div>
     </section>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
     <script>
         $(document).ready(function() {
             actividadesByMecanismos();
@@ -638,4 +682,5 @@
             });
         }
     </script>
+
 @endsection

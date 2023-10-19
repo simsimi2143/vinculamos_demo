@@ -915,14 +915,14 @@ class ParametrosController extends Controller
             [
                 'nombre' => 'required|max:255',
                 'director' => 'required|max:100',
-                'sedesT' => 'required', // 'sedesT' es requerido si 'nacional' no está marcado
+                /* 'sedesT' => 'required',  */// 'sedesT' es requerido si 'nacional' no está marcado
             ],
             [
                 'nombre.required' => 'El nombre es requerido.',
                 'nombre.max' => 'El nombre excede el máximo de caracteres permitidos (255).',
                 'director.required' => 'El nombre del director es requerido.',
                 'director.max' => 'El nombre del director excede el máximo de caracteres permitidos (100).',
-                'sedesT.max' => 'La carrera debe estar en al menos en una sede.',
+                /* 'sedesT.max' => 'La carrera debe estar en al menos en una sede.', */
             ]
         );
         if (!$validacion)

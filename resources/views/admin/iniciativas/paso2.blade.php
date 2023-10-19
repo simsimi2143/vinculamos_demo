@@ -15,33 +15,56 @@
         $role = 'supervisor';
     @endphp
 @endif
-
 @extends('admin.panel')
-
 @section('contenido')
     <section class="section">
         <div class="section-body">
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col-6">
-                    @foreach([
-                        'exitoPaso1' => 'alert-success',
-                        'ExisteSocio' => 'alert-warning',
-                        'errorPaso2' => 'alert-danger',
-                        'socoError' => 'alert-danger',
-                        'socoExito' => 'alert-success'
-                    ] as $sessionKey => $alertClass)
-                        @if (Session::has($sessionKey))
-                            <div class="alert {{ $alertClass }} alert-dismissible show fade mb-4 text-center">
-                                <div class="alert-body">
-                                    <strong>{{ Session::get($sessionKey) }}</strong>
-                                    <button class="close" data-dismiss="alert"><span>&times;</span></button>
-                                </div>
+                    @if (Session::has('exitoPaso1'))
+                        <div class="alert alert-success alert-dismissible show fade mb-4 text-center">
+                            <div class="alert-body">
+                                <strong>{{ Session::get('exitoPaso1') }}</strong>
+                                <button class="close" data-dismiss="alert"><span>&times;</span></button>
                             </div>
-                        @endif
-                    @endforeach
+                        </div>
+                    @endif
+                    @if (Session::has('ExisteSocio'))
+                        <div class="alert alert-warning alert-dismissible show fade mb-4 text-center">
+                            <div class="alert-body">
+                                <strong>{{ Session::get('ExisteSocio') }}</strong>
+                                <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if (Session::has('errorPaso2'))
+                        <div class="alert alert-danger alert-dismissible show fade mb-4 text-center">
+                            <div class="alert-body">
+                                <strong>{{ Session::get('errorPaso2') }}</strong>
+                                <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if (Session::has('socoError'))
+                        <div class="alert alert-danger alert-dismissible show fade mb-4 text-center">
+                            <div class="alert-body">
+                                <strong>{{ Session::get('socoError') }}</strong>
+                                <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                            </div>
+                        </div>
+                    @endif
+                    @if (Session::has('socoExito'))
+                        <div class="alert alert-success alert-dismissible show fade mb-4 text-center">
+                            <div class="alert-body">
+                                <strong>{{ Session::get('socoExito') }}</strong>
+                                <button class="close" data-dismiss="alert"><span>&times;</span></button>
+                            </div>
+                        </div>
+                    @endif
                 </div>
-                
             </div>
 
             <div class="row">
@@ -50,10 +73,50 @@
                         <div class="card-header">
                             <h2 id="idIniciativa">{{ $iniciativa->inic_codigo }}</h2>
                             <h4>Iniciativa: {{ $iniciativa->inic_nombre }}</h4>
-                            <div class="card-header-action">
-                                {{-- <button type="button" class="btn btn-primary" data-toggle="modal" --}}
-                                {{-- data-target="#modalCrearSocio"><i class="fas fa-plus"></i> Crear Socio/a</button> --}}
-                            </div>
+                            @if (isset($iniciativa))
+                                <div class="card-header-action">
+                                    <div class="dropdown d-inline">
+                                        <a href="{{ route('admin.iniciativas.detalles', $iniciativa->inic_codigo) }}"
+                                            class="btn btn-icon btn-warning icon-left" data-toggle="tooltip"
+                                            data-placement="top" title="Ver detalles de la iniciativa"><i
+                                                class="fas fa-eye"></i>Ver detalle</a>
+
+                                        {{-- <a href="{{ route('admin.editar.paso1', $iniciativa->inic_codigo) }}"
+                                            class="btn btn-icon btn-primary icon-left" data-toggle="tooltip"
+                                            data-placement="top" title="Editar iniciativa"><i
+                                                class="fas fa-edit"></i>Editar Iniciativa</a> --}}
+
+                                        {{-- <a href="javascript:void(0)" class="btn btn-icon btn-info icon-left"
+                                            data-toggle="tooltip" data-placement="top" title="Calcular INVI"
+                                            onclick="calcularIndice({{ $iniciativa->inic_codigo }})"><i
+                                                class="fas fa-tachometer-alt"></i>INVI</a> --}}
+
+                                        <a href="{{ route('admin.evidencias.listar', $iniciativa->inic_codigo) }}"
+                                            class="btn btn-icon btn-success icon-left" data-toggle="tooltip"
+                                            data-placement="top" title="Adjuntar evidencia"><i
+                                                class="fas fa-paperclip"></i>Evidencias</a>
+
+                                        <a href="{{ route('admin.cobertura.index', $iniciativa->inic_codigo) }}"
+                                            class="btn btn-icon btn-success icon-left" data-toggle="tooltip" data-placement="top"
+                                            title="Ingresar cobertura"><i class="fas fa-users"></i>Cobertura</a>
+
+                                        <a href="{{ route('admin.resultados.listado', $iniciativa->inic_codigo) }}"
+                                            class="btn btn-icon btn-success icon-left" data-toggle="tooltip"
+                                            data-placement="top" title="Ingresar resultado"><i
+                                                class="fas fa-flag"></i>Resultado/s</a>
+
+                                        {{-- <a href="{{ route($role . '.evaluar.iniciativa', $iniciativa->inic_codigo) }}"
+                                            class="btn btn-icon btn-success icon-left" data-toggle="tooltip"
+                                            data-placement="top" title="Evaluar iniciativa"><i
+                                                class="fas fa-file-signature"></i>Evaluar</a> --}}
+
+                                        <a href="{{ route('admin.iniciativa.listar') }}"
+                                            class="btn btn-primary mr-1 waves-effect icon-left" type="button">
+                                            <i class="fas fa-angle-left"></i> Volver a listado
+                                        </a>
+                                    </div>
+                                </div>
+                                @endif
                         </div>
 
                         <div class="card-body">
@@ -357,13 +420,13 @@
                                 <div class="col-12 col-md-12 col-log-12">
                                     <div class="text-right">
                                         <strong>
-                                            <a href="{{ route($role . '.editar.paso1', $iniciativa->inic_codigo) }}"
+                                            <a href="{{ route('admin.editar.paso1', $iniciativa->inic_codigo) }}"
                                                 type="button" class="btn mr-1 waves-effect"
                                                 style="background-color:#042344; color:white"><i
                                                     class="fas fa-chevron-left"></i>
                                                 Paso anterior</a>
                                         </strong>
-                                        <a href="{{ route($role . '.editar.paso3', $iniciativa->inic_codigo) }}"
+                                        <a href="{{ route('admin.editar.paso3', $iniciativa->inic_codigo) }}"
                                             type="button" class="btn btn-primary mr-1 waves-effect">
                                             Paso siguiente <i class="fas fa-chevron-right"></i></a>
                                     </div>
@@ -388,7 +451,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route($role . '.iniciativas.crear.socio') }} " method="POST">
+                    <form action="{{ route('admin.iniciativas.crear.socio') }} " method="POST">
                         @csrf
 
                         <div class="form-group">
@@ -897,4 +960,5 @@
             })
         }
     </script>
+    <script src="{{ asset('/js/admin/iniciativas/INVI.js') }}"></script>
 @endsection

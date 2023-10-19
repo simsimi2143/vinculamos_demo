@@ -41,6 +41,48 @@
                     <div class="card">
                         <div class="card-header">
                             <h4>{{ $iniciativa->inic_nombre }} - Registro de resultados finales</h4>
+                            <div class="card-header-action">
+                                <div class="dropdown d-inline">
+                                    <a href="{{ route('admin.iniciativas.detalles', $iniciativa->inic_codigo) }}"
+                                        class="btn btn-icon btn-warning icon-left" data-toggle="tooltip"
+                                        data-placement="top" title="Ver detalles de la iniciativa"><i
+                                            class="fas fa-eye"></i>Ver detalle</a>
+
+                                    <a href="{{ route('admin.editar.paso1', $iniciativa->inic_codigo) }}"
+                                        class="btn btn-icon btn-primary icon-left" data-toggle="tooltip"
+                                        data-placement="top" title="Editar iniciativa"><i
+                                            class="fas fa-edit"></i>Editar Iniciativa</a>
+
+                                    {{-- <a href="javascript:void(0)" class="btn btn-icon btn-info icon-left"
+                                        data-toggle="tooltip" data-placement="top" title="Calcular INVI"
+                                        onclick="calcularIndice({{ $iniciativa->inic_codigo }})"><i
+                                            class="fas fa-tachometer-alt"></i>INVI</a> --}}
+
+                                    <a href="{{ route('admin.evidencias.listar', $iniciativa->inic_codigo) }}"
+                                        class="btn btn-icon btn-success icon-left" data-toggle="tooltip"
+                                        data-placement="top" title="Adjuntar evidencia"><i
+                                            class="fas fa-paperclip"></i>Evidencias</a>
+
+                                    <a href="{{ route('admin.cobertura.index', $iniciativa->inic_codigo) }}"
+                                        class="btn btn-icon btn-success icon-left" data-toggle="tooltip" data-placement="top"
+                                        title="Ingresar cobertura"><i class="fas fa-users"></i>Cobertura</a>
+
+                                    {{-- <a href="{{ route('admin.resultados.listado', $iniciativa->inic_codigo) }}"
+                                        class="btn btn-icon btn-success icon-left" data-toggle="tooltip"
+                                        data-placement="top" title="Ingresar resultado"><i
+                                            class="fas fa-flag"></i>Resultado/s</a> --}}
+
+                                    {{-- <a href="{{ route($role . '.evaluar.iniciativa', $iniciativa->inic_codigo) }}"
+                                        class="btn btn-icon btn-success icon-left" data-toggle="tooltip"
+                                        data-placement="top" title="Evaluar iniciativa"><i
+                                            class="fas fa-file-signature"></i>Evaluar</a> --}}
+
+                                    <a href="{{ route('admin.iniciativa.listar') }}"
+                                        class="btn btn-primary mr-1 waves-effect icon-left" type="button">
+                                        <i class="fas fa-angle-left"></i> Volver a listado
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             {{-- <form action="" method="post"> --}}
