@@ -9,7 +9,9 @@
 
         @if (Session::has('admin'))
             <li class="menu-header fas fa-cog"> Administrador/a </li>
-            <li class="dropdown">
+            <li class="{{ Route::is('admin.iniciativa.listar') ||
+                    Route::is('admin.inicitiativas.crear.primero')
+                    ? 'dropdown active' : 'dropdown' }}">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i
                         data-feather="book-open"></i><span>Iniciativas</span></a>
                 <ul class="dropdown-menu">
@@ -26,7 +28,25 @@
                     <li><a style="font-size: 90%;" class="nav-link" href="{{route('admin.ingresar.donaciones')}}">Ingresar donación</a></li> --}}
                 </ul>
 
-            <li class="dropdown">
+                <li class="{{ Route::is('admin.listar.sedes') ||
+                            Route::is('admin.listar.escuelas')||
+                            Route::is('admin.listar.carreras')||
+                            Route::is('admin.listar.ambitos')||
+                            Route::is('admin.listar.ambitosaccion')||
+                            Route::is('admin.listar.programas')||
+                            Route::is('admin.listar.convenios')||
+                            Route::is('admin.listar.socios')||
+                            Route::is('admin.listar.mecanismos')||
+                            Route::is('admin.listar.grupos_int')||
+                            Route::is('admin.listar.subgrupos')||
+                            Route::is('admin.listar.tipoact')||
+                            Route::is('admin.listar.rrhh')||
+                            Route::is('admin.listar.tipoinfra')||
+                            Route::is('admin.listar.tipounidad')||
+                            Route::is('admin.listar.unidades')||
+                            Route::is('admin.listar.subunidades')
+                            ? 'dropdown active'
+                            : 'dropdown' }}">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i
                         data-feather="command"></i><span>Parámetros</span></a>
                 <ul class="dropdown-menu">
